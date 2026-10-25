@@ -146,7 +146,10 @@
   .app:nth-child(even){--r:3deg}
   .app::before{content:'';position:absolute;left:0;top:0;bottom:0;width:10px;background:hsl(var(--h) 75% 55%);border-right:2px solid var(--tinta)}
   .app:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--bayangan)}
-  .app:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--bayangan)}
+    .app:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--bayangan)}
+  .app:has(.pv){flex-wrap:wrap}
+  .pv{flex:0 0 100%;order:-1;aspect-ratio:16/10;margin:-4px 0 4px;overflow:hidden;position:relative;border:2px solid var(--tinta);border-radius:10px;background:var(--kartu)}
+  .pv iframe{width:1280px;height:800px;border:0;transform:scale(var(--s,.25));transform-origin:0 0;pointer-events:none;background:#fff}
   .app-ikon{
     width:56px;height:56px;flex:none;display:grid;place-items:center;font-size:1.8rem;border-radius:14px;
     background:hsl(var(--h) 90% 92%);border:2px solid var(--tinta);transform:rotate(var(--r));
@@ -546,12 +549,14 @@ function gambarBeranda(d){
   $('menu').innerHTML = jumlahMenu
     ? d.menu.map((m, i) => `
       <a class="app" href="${esc(urlAman(m.url))}" target="_blank" rel="noopener" data-mode="${esc(m.mode || 'tab')}" data-judul="${esc(m.judul)}" style="--i:${i};--h:${HUE[i % HUE.length]}" data-cari="${esc((m.judul + ' ' + (m.deskripsi || '')).toLowerCase())}">
+        ${m.mode === 'dalam' ? '<div class="pv" aria-hidden="true"><iframe loading="lazy" tabindex="-1" scrolling="no" src="' + esc(urlAman(m.url)) + '"></iframe></div>' : ''}
         <span class="app-ikon" aria-hidden="true">${esc(m.ikon || '📌')}</span>
         <span class="app-teks"><b>${esc(m.judul)}</b><small>${esc(m.deskripsi)}</small></span>
         <svg class="app-buka" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
       </a>`).join('')
     : '<p class="kosong">Belum ada aplikasi untuk peran Anda. Minta admin menambahkannya di sheet menu.</p>';
-  $('cariWrap').classList.toggle('hidden', jumlahMenu < 4);
+    $('cariWrap').classList.toggle('hidden', jumlahMenu < 4);
+  skalaPv();
 
   $('hitungAnn').textContent = d.pengumuman.length;
   $('pengumuman').innerHTML = d.pengumuman.length
@@ -942,6 +947,10 @@ $('mainAdmin').addEventListener('input', (e) => { if (e.target.id === 'uCari') {
 $('mainAdmin').addEventListener('change', (e) => { if (e.target.id === 'uPeran') { adm.peran = e.target.value; isiUsers(); } });
 
 /* ---------- Penampil aplikasi di dalam portal ---------- */
+function skalaPv(){
+  document.querySelectorAll('.pv').forEach((p) => p.style.setProperty('--s', p.clientWidth / 1280));
+}
+window.addEventListener('resize', skalaPv);
 function bukaViewer(url, judul){
   $('vJudul').textContent = judul || 'Aplikasi';
   $('vTab').href = url;
@@ -975,7 +984,7 @@ window.addEventListener('popstate', () => { if (!$('viewer').classList.contains(
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('viewer').classList.contains('hidden') && !$('dlg').open) tutupViewer(); });
 $('menu').addEventListener('click', (e) => {
   const a = e.target.closest('a.app');
-  if (!a || a.dataset.mode !== 'dalam') return;
+  if (!a || a.dataset.mode !== 'layar') return;
   if (e.ctrlKey || e.metaKey || e.shiftKey || e.button === 1) return;
   e.preventDefault();
   bukaViewer(a.getAttribute('href'), a.dataset.judul);
