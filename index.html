@@ -1,3 +1,4 @@
+<!-- github index.html -->
 <!DOCTYPE html>
 <html lang="id" data-theme="dark">
 <head>
@@ -329,6 +330,11 @@
     <p class="sub-login">Masuk dengan akun Google yang sudah didaftarkan sekolah.</p>
     <div id="tombolGoogle"></div>
     <div id="errorLogin" class="pesan-error hidden" role="alert"></div>
+    <form id="formDaftar" class="hidden" style="text-align:left;margin-top:18px" novalidate>
+      <label class="fld"><span>Nama lengkap</span><input class="in" id="dNama" maxlength="100" autocomplete="off"></label>
+      <label class="fld"><span>Kode pendaftaran</span><input class="in" id="dKode" maxlength="40" autocomplete="off"><small class="tip">Kode dibagikan oleh guru di kelas.</small></label>
+      <button type="submit" class="btn-keluar btn-utama" id="dKirim" style="width:100%">Daftar sebagai siswa</button>
+    </form>
     <p class="bantuan">Belum bisa masuk? Minta admin sekolah mendaftarkan email Anda.</p>
   </div>
 </section>
@@ -463,6 +469,7 @@ function errorLogin(teks){
   const el = $('errorLogin');
   el.textContent = teks || '';
   el.classList.toggle('hidden', !teks);
+  if (!teks) $('formDaftar').classList.add('hidden');
 }
 
 /* ---------- Tema ---------- */
@@ -494,6 +501,12 @@ async function masuk(token){
     if(!data.ok){
       sesi.hapus();
       tampil('login');
+      if (data.kode === 'TIDAK_TERDAFTAR') {
+        tokenDaftar = token;
+        $('formDaftar').classList.remove('hidden');
+        errorLogin('Email ini belum terdaftar. Kalau Anda siswa, isi formulir di bawah. Guru dan staf: hubungi admin.');
+        return;
+      }
       errorLogin(data.error || 'Gagal masuk. Coba lagi.');
       return;
     }
@@ -997,6 +1010,27 @@ $('menu').addEventListener('click', (e) => {
   if (e.ctrlKey || e.metaKey || e.shiftKey || e.button === 1) return;
   e.preventDefault();
   bukaViewer(a.getAttribute('href'), a.dataset.judul);
+});
+
+/* ---------- Pendaftaran mandiri siswa ---------- */
+let tokenDaftar = null;
+$('formDaftar').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const tb = $('dKirim');
+  tb.disabled = true; tb.textContent = 'Mendaftarkan...';
+  try {
+    const res = await fetch(CONFIG.API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ aksi: 'daftar_siswa', token: tokenDaftar, nama: $('dNama').value, kode: $('dKode').value })
+    });
+    const r = await res.json();
+    if (!r.ok) errorLogin(r.error || 'Gagal mendaftar.');
+    else { errorLogin(''); await masuk(tokenDaftar); }
+  } catch (err) {
+    errorLogin('Tidak bisa terhubung ke server. Periksa internet Anda.');
+  }
+  tb.disabled = false; tb.textContent = 'Daftar sebagai siswa';
 });
 
 /* ---------- Mulai ---------- */
