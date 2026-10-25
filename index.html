@@ -776,7 +776,8 @@ function renderUsers(){
     '<input class="in cari-in" id="uCari" type="search" placeholder="Cari nama atau email" value="' + esc(adm.cari) + '" aria-label="Cari pengguna">' +
     '<select class="in" id="uPeran" aria-label="Filter peran"><option value="">Semua peran</option>' + opsi.map(p => '<option value="' + esc(p) + '"' + (adm.peran === p ? ' selected' : '') + '>' + esc(p) + '</option>').join('') + '</select>' +
     '<button class="btn-keluar btn-utama" type="button" data-aksi="tambah">Tambah pengguna</button>' +
-    '<button class="btn-keluar" type="button" data-aksi="massal">Tempel banyak</button></div>' +
+    '<button class="btn-keluar" type="button" data-aksi="massal">Tempel banyak</button>' +
+    '<button class="btn-keluar" type="button" data-aksi="kode">Kode daftar siswa</button></div>' +
     '<p class="info-kecil" id="uInfo"></p><div class="daftar" id="admDaftar"></div>';
   isiUsers();
 }
@@ -946,6 +947,32 @@ function formMassal(){
   });
 }
 
+function formKode(){
+  bukaForm({
+    judul: 'Kode daftar siswa', fokus: '#fKode',
+    badan:
+      '<p class="tip-besar">Siswa yang emailnya belum terdaftar harus memasukkan kode ini untuk mendaftar. Hanya admin yang bisa melihatnya.</p>' +
+      '<label class="fld"><span>Kode saat ini</span><input class="in" id="fKode" maxlength="40" autocomplete="off" placeholder="Memuat..." disabled></label>' +
+      '<button type="button" class="mini-btn" id="fAcak">Buat kode acak</button>' +
+      '<small class="tip" style="margin-top:10px">Setelah diganti, kode lama langsung tidak berlaku. Siswa yang sudah terdaftar tidak terpengaruh.</small>',
+    siap: () => {
+      api('admin_kode_baca').then((r) => {
+        const el = $('fKode');
+        if (r.ok) { el.value = r.kode; el.disabled = false; }
+        else el.placeholder = r.error || 'Gagal memuat kode';
+      });
+      $('fAcak').addEventListener('click', () => {
+        const huruf = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+        const acak = crypto.getRandomValues(new Uint32Array(6));
+        const el = $('fKode');
+        el.value = Array.from(acak).map((n) => huruf[n % huruf.length]).join('');
+        el.disabled = false;
+      });
+    },
+    simpan: () => api('admin_kode_simpan', { kode: $('fKode').value }).then((r) => r.ok ? { ok: true, pesan: 'Kode diganti.' } : r)
+  });
+}
+
 /* --- Klik, ketik, dan hapus --- */
 $('mainAdmin').addEventListener('click', async (e) => {
   const t = e.target.closest('[data-aksi],[data-tab]');
@@ -956,6 +983,7 @@ $('mainAdmin').addEventListener('click', async (e) => {
   const item = t.dataset.id ? adm.data[adm.tab].find(x => x._baris === Number(t.dataset.id)) : null;
   if (aksi === 'tambah') { if (adm.tab === 'users') formUser(); else if (adm.tab === 'menu') formMenu(); else formAnn(); }
   else if (aksi === 'massal') formMassal();
+  else if (aksi === 'kode') formKode();
   else if (aksi === 'edit' && item) { if (adm.tab === 'users') formUser(item); else if (adm.tab === 'menu') formMenu(item); else formAnn(item); }
   else if (aksi === 'hapus' && item) {
     const nama = adm.tab === 'users' ? (item.nama || item.email) : item.judul;
