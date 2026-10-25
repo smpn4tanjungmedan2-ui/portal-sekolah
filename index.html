@@ -248,6 +248,17 @@
   .info-kotak{margin-top:14px;padding:12px 14px;background:var(--biru-muda);border-radius:10px;white-space:pre-line;font-size:.92rem}
   #toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--tinta);color:var(--kertas);padding:12px 18px;border-radius:12px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:100;max-width:calc(100vw - 32px)}
   #toast.tampil{opacity:1;transform:translate(-50%,0)}
+    a.btn-keluar{color:var(--tinta);text-decoration:none}
+  #viewer{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;background:var(--kertas);animation:buka .35s cubic-bezier(.2,.9,.3,1)}
+  @keyframes buka{from{opacity:0;transform:translateY(24px) scale(.985)}}
+  .viewer-bar{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:2px solid var(--tinta);background:var(--kertas)}
+  .viewer-judul{flex:1;min-width:0;font-family:var(--display);font-weight:700;font-size:1.1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .viewer-isi{position:relative;flex:1;min-height:0}
+  #vFrame{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff;opacity:0;transition:opacity .3s}
+  #vFrame.siap{opacity:1}
+  .viewer-memuat{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:10px;text-align:center;color:var(--tinta-2);padding:20px}
+  .spin{width:38px;height:38px;border-radius:50%;border:4px solid var(--titik);border-top-color:var(--biru);animation:putar .8s linear infinite}
+  @keyframes putar{to{transform:rotate(360deg)}}
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{animation:none!important;transition:none!important}
     .sketsa .g{stroke-dashoffset:0}
@@ -475,7 +486,7 @@ const HUE = [222, 168, 350, 38, 280, 150, 200, 12];
 let jumlahMenu = 0;
 
 function resetBeranda(){
-  adm.data = null; adm.berubah = false; tampilMain('beranda');
+  adm.data = null; adm.berubah = false; tampilMain('beranda'); selesaiViewer();
   clearInterval(timerJam);
   $('menu').innerHTML = '<div class="skel"></div><div class="skel"></div><div class="skel"></div>';
   $('pengumuman').innerHTML = '';
@@ -522,7 +533,7 @@ function gambarBeranda(d){
   $('hitungApp').textContent = jumlahMenu;
   $('menu').innerHTML = jumlahMenu
     ? d.menu.map((m, i) => `
-      <a class="app" href="${esc(urlAman(m.url))}" target="_blank" rel="noopener" style="--i:${i};--h:${HUE[i % HUE.length]}" data-cari="${esc((m.judul + ' ' + (m.deskripsi || '')).toLowerCase())}">
+      <a class="app" href="${esc(urlAman(m.url))}" target="_blank" rel="noopener" data-mode="${esc(m.mode || 'tab')}" data-judul="${esc(m.judul)}" style="--i:${i};--h:${HUE[i % HUE.length]}" data-cari="${esc((m.judul + ' ' + (m.deskripsi || '')).toLowerCase())}">
         <span class="app-ikon" aria-hidden="true">${esc(m.ikon || '📌')}</span>
         <span class="app-teks"><b>${esc(m.judul)}</b><small>${esc(m.deskripsi)}</small></span>
         <svg class="app-buka" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
@@ -838,6 +849,7 @@ function formMenu(item){
       '<fieldset class="fld"><legend>Siapa yang boleh melihat</legend><label class="cek"><input type="checkbox" id="fSemua"' + (semua ? ' checked' : '') + '> Semua pengguna</label><div>' +
       daftar.map(p => '<label class="cek"><input type="checkbox" class="fPeranCek" value="' + esc(p) + '"' + (dipilih.indexOf(p) > -1 ? ' checked' : '') + (semua ? ' disabled' : '') + '> ' + esc(p) + '</label>').join('') +
       '</div><small class="tip">Admin selalu bisa melihat semua aplikasi.</small></fieldset>' +
+      '<label class="cek"><input type="checkbox" id="fMode"' + (item && item.mode === 'dalam' ? ' checked' : '') + '> Buka di dalam portal (tanpa pindah tab)</label><small class="tip" style="margin:-4px 0 14px">Aktifkan hanya kalau aplikasinya mengizinkan ditampilkan di dalam halaman lain. Kalau tampil kosong, matikan lagi.</small>' +
       '<div class="dua"><label class="fld"><span>Urutan</span><input class="in" id="fUrut" type="number" min="0" max="999" value="' + (item ? esc(item.urutan) : urut) + '"></label>' +
       '<label class="cek" style="align-self:end"><input type="checkbox" id="fAktif"' + (!item || aktifYa(item.aktif) ? ' checked' : '') + '> Tampilkan di portal</label></div>',
     siap: () => {
@@ -852,7 +864,7 @@ function formMenu(item){
       let u = $('fUrl').value.trim();
       if (u && !/^https?:\/\//i.test(u)) u = 'https://' + u;
       const pilih = $('fSemua').checked ? '*' : Array.from(document.querySelectorAll('.fPeranCek:checked')).map(c => c.value).join(',');
-      return api('admin_simpan', { tabel: 'menu', baris: item ? item._baris : null, kunciLama: item ? item.judul : '', data: { judul: $('fJudul').value, deskripsi: $('fDesk').value, url: u, ikon: $('fIkon').value, peran_diizinkan: pilih, urutan: $('fUrut').value, aktif: $('fAktif').checked ? 'ya' : 'tidak' } });
+      return api('admin_simpan', { tabel: 'menu', baris: item ? item._baris : null, kunciLama: item ? item.judul : '', data: { judul: $('fJudul').value, deskripsi: $('fDesk').value, url: u, ikon: $('fIkon').value, peran_diizinkan: pilih, urutan: $('fUrut').value, mode: $('fMode').checked ? 'dalam' : 'tab', aktif: $('fAktif').checked ? 'ya' : 'tidak' } });
     }
   });
 }
@@ -916,6 +928,46 @@ $('mainAdmin').addEventListener('click', async (e) => {
 });
 $('mainAdmin').addEventListener('input', (e) => { if (e.target.id === 'uCari') { adm.cari = e.target.value; isiUsers(); } });
 $('mainAdmin').addEventListener('change', (e) => { if (e.target.id === 'uPeran') { adm.peran = e.target.value; isiUsers(); } });
+
+/* ---------- Penampil aplikasi di dalam portal ---------- */
+function bukaViewer(url, judul){
+  $('vJudul').textContent = judul || 'Aplikasi';
+  $('vTab').href = url;
+  $('vFrame').classList.remove('siap');
+  $('vMemuat').classList.remove('hidden');
+  $('vFrame').src = url;
+  $('viewer').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+  history.pushState({ viewer: 1 }, '');
+}
+function selesaiViewer(){
+  $('viewer').classList.add('hidden');
+  $('vFrame').src = 'about:blank';
+  document.body.style.overflow = '';
+}
+function tutupViewer(){
+  if (history.state && history.state.viewer) history.back(); else selesaiViewer();
+}
+$('vFrame').addEventListener('load', () => {
+  if ($('viewer').classList.contains('hidden')) return;
+  $('vFrame').classList.add('siap');
+  $('vMemuat').classList.add('hidden');
+});
+$('vKembali').onclick = tutupViewer;
+$('vMuat').onclick = () => {
+  $('vFrame').classList.remove('siap');
+  $('vMemuat').classList.remove('hidden');
+  $('vFrame').src = $('vTab').href;
+};
+window.addEventListener('popstate', () => { if (!$('viewer').classList.contains('hidden')) selesaiViewer(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('viewer').classList.contains('hidden') && !$('dlg').open) tutupViewer(); });
+$('menu').addEventListener('click', (e) => {
+  const a = e.target.closest('a.app');
+  if (!a || a.dataset.mode !== 'dalam') return;
+  if (e.ctrlKey || e.metaKey || e.shiftKey || e.button === 1) return;
+  e.preventDefault();
+  bukaViewer(a.getAttribute('href'), a.dataset.judul);
+});
 
 /* ---------- Mulai ---------- */
 (function(){
