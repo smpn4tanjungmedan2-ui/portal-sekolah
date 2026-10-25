@@ -199,6 +199,55 @@
     .cari,.cari input{width:100%}
     .kartu-login{padding:28px 20px 24px}
   }
+  .in{font:inherit;width:100%;padding:10px 12px;color:var(--tinta);background:var(--kartu);border:2px solid var(--tinta);border-radius:12px}
+  textarea.in{resize:vertical}
+  .btn-utama{background:var(--biru);color:#fff;font-weight:700}
+  [data-theme="dark"] .btn-utama{color:#0a1226}
+  .bahaya{background:var(--margin);color:#fff;font-weight:700}
+  .adm-kepala{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+  .adm-kepala h1{font-family:var(--display);font-weight:800;font-size:clamp(1.7rem,4vw,2.4rem);letter-spacing:-.03em}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;border-bottom:2px solid var(--tinta);margin-bottom:22px}
+  .tab{background:transparent;border:2px solid transparent;border-bottom:0;padding:10px 16px;border-radius:12px 12px 0 0;font-weight:600;margin-bottom:-2px;color:var(--tinta-2)}
+  .tab.aktif{background:var(--kartu);border-color:var(--tinta);color:var(--tinta)}
+  .tab-n{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 6px;border-radius:99px;background:var(--biru-muda);font-size:.78rem;margin-left:6px}
+  .alat{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+  .alat .cari-in{flex:1;min-width:180px;width:auto}
+  .alat select.in{width:auto}
+  .info-kecil{color:var(--tinta-2);font-size:.88rem}
+  .daftar{display:grid;gap:10px}
+  .baris{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 14px;background:var(--kartu);border:2px solid var(--tinta);border-radius:14px;box-shadow:3px 3px 0 var(--bayangan)}
+  .baris.mati{opacity:.6}
+  .baris-utama{flex:1;min-width:180px}
+  .baris-utama b{display:block;font-weight:600}
+  .baris-utama small{display:block;color:var(--tinta-2);font-size:.85rem;overflow-wrap:anywhere}
+  .ikon-baris{width:48px;height:48px;flex:none;display:grid;place-items:center;font-size:1.6rem;border:2px solid var(--tinta);border-radius:12px;background:var(--biru-muda)}
+  .chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chip{display:inline-block;padding:2px 10px;border-radius:99px;border:1.5px solid var(--tinta);font-size:.78rem;font-weight:600;background:var(--biru-muda)}
+  .chip.tidak{background:transparent;color:var(--tinta-2);border-style:dashed}
+  .baris-aksi{display:flex;gap:8px}
+  .mini-btn{padding:6px 12px;border:2px solid var(--tinta);border-radius:10px;background:var(--kartu);font-size:.85rem;font-weight:600}
+  .mini-btn:hover{background:var(--biru-muda)}
+  .mini-btn.merah{color:var(--margin);border-color:var(--margin)}
+  dialog{width:min(560px,calc(100vw - 24px));padding:0;color:var(--tinta);background:var(--kartu);border:2px solid var(--tinta);border-radius:18px;box-shadow:8px 8px 0 var(--bayangan)}
+  dialog::backdrop{background:rgba(5,10,25,.6)}
+  .dlg-isi{padding:24px;max-height:min(82vh,760px);overflow:auto}
+  .dlg-isi h2{font-family:var(--display);font-weight:800;font-size:1.5rem;letter-spacing:-.02em;margin-bottom:16px}
+  .dlg-isi p{line-height:1.5}
+  .fld{display:block;margin:0 0 14px;padding:0;border:0;min-width:0}
+  .fld>span,.fld>legend{display:block;font-weight:600;font-size:.9rem;margin-bottom:6px;padding:0}
+  .tip{display:block;margin-top:5px;color:var(--tinta-2);font-size:.82rem;font-weight:400}
+  .tip-besar{margin-bottom:14px;color:var(--tinta-2);font-size:.92rem}
+  .cek{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .cek input{width:20px;height:20px;accent-color:var(--biru)}
+  .dua{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .ikon-in{font-size:1.6rem;text-align:center;width:90px}
+  .emoji-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(42px,1fr));gap:6px;margin-top:10px}
+  .emoji-grid button{height:42px;font-size:1.35rem;background:var(--kartu);border:2px solid var(--titik);border-radius:10px}
+  .emoji-grid button:hover{border-color:var(--tinta);background:var(--biru-muda)}
+  .dlg-aksi{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
+  .info-kotak{margin-top:14px;padding:12px 14px;background:var(--biru-muda);border-radius:10px;white-space:pre-line;font-size:.92rem}
+  #toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--tinta);color:var(--kertas);padding:12px 18px;border-radius:12px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:100;max-width:calc(100vw - 32px)}
+  #toast.tampil{opacity:1;transform:translate(-50%,0)}
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{animation:none!important;transition:none!important}
     .sketsa .g{stroke-dashoffset:0}
@@ -272,6 +321,7 @@
         <span id="inisial" class="avatar" aria-hidden="true">?</span>
         <span class="pengguna-teks"><b id="hNamaUser"></b><small id="hPeran"></small></span>
       </div>
+      <button class="btn-ikon hidden" id="btnKelola" type="button" aria-label="Kelola portal" title="Kelola portal"><svg viewBox="0 0 24 24"><path d="M3 6h11M20 6h1M3 12h5M14 12h7M3 18h13"/><circle cx="17" cy="6" r="3"/><circle cx="11" cy="12" r="3"/><circle cx="19" cy="18" r="3"/></svg></button>
       <button class="btn-ikon" id="temaBeranda" type="button" aria-label="Ganti tema terang atau gelap">
         <svg class="i-matahari" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
         <svg class="i-bulan" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
@@ -280,7 +330,7 @@
     </div>
   </header>
 
-  <main>
+ <main id="mainBeranda">
     <div class="hero">
       <div>
         <p class="tgl" id="tanggal"></p>
@@ -314,9 +364,41 @@
       <h2>Papan pengumuman <span class="hitung" id="hitungAnn">0</span></h2>
     </div>
     <div class="papan" id="pengumuman"></div>
+</main>
+
+  <main id="mainAdmin" class="hidden">
+    <div class="adm-kepala">
+      <button class="btn-keluar" id="admKembali" type="button">Kembali</button>
+      <h1>Kelola portal</h1>
+    </div>
+    <div class="tabs" id="admTab"></div>
+    <div id="admIsi"></div>
   </main>
 
-  <footer id="footNama"></footer>
+<footer id="footNama"></footer>
+
+  <dialog id="dlg">
+    <form id="dlgForm" class="dlg-isi" novalidate>
+      <h2 id="dlgJudul"></h2>
+      <div id="dlgBadan"></div>
+      <p id="dlgError" class="pesan-error hidden" role="alert"></p>
+      <p id="dlgInfo" class="info-kotak hidden" role="status"></p>
+      <div class="dlg-aksi">
+        <button type="button" class="btn-keluar" id="dlgBatal">Batal</button>
+        <button type="submit" class="btn-keluar btn-utama" id="dlgSimpan">Simpan</button>
+      </div>
+    </form>
+  </dialog>
+  <dialog id="dlgKonf">
+    <div class="dlg-isi">
+      <p id="konfTeks"></p>
+      <div class="dlg-aksi">
+        <button type="button" class="btn-keluar" id="konfBatal">Batal</button>
+        <button type="button" class="btn-keluar bahaya" id="konfYa">Hapus</button>
+      </div>
+    </div>
+  </dialog>
+  <div id="toast" role="status" aria-live="polite"></div>
 </section>
 
 <script>
@@ -393,6 +475,7 @@ const HUE = [222, 168, 350, 38, 280, 150, 200, 12];
 let jumlahMenu = 0;
 
 function resetBeranda(){
+  adm.data = null; adm.berubah = false; tampilMain('beranda');
   clearInterval(timerJam);
   $('menu').innerHTML = '<div class="skel"></div><div class="skel"></div><div class="skel"></div>';
   $('pengumuman').innerHTML = '';
@@ -404,6 +487,8 @@ function resetBeranda(){
 
 function gambarBeranda(d){
   const sekolah = d.sekolah || 'Portal Sekolah';
+  penggunaIni = d.user;
+  $('btnKelola').classList.toggle('hidden', d.user.peran !== 'admin');
   document.title = 'Portal ' + sekolah;
   $('hNama').textContent = sekolah;
   $('footNama').textContent = 'Portal ' + sekolah;
@@ -561,6 +646,276 @@ function mulaiGoogle(){
   googleSiap = true;
   renderTombol();
 }
+
+/* ---------- Panel Kelola (admin) ---------- */
+const adm = { data: null, tab: 'users', cari: '', peran: '', berubah: false };
+let penggunaIni = null;
+let formAktif = null;
+const EMOJI = ['📝','📬','🕘','📊','📚','💰','📅','📢','🎓','🏫','📦','🎒','🗂️','💬','🎥','🏆','🧾','🧮','🔬','🎨','⚽','🎵','🕌','🚌','🍽️','📷','🔔','⚙️','🌐','📌','✅','📋','🔑','🧪','📖','💡','🛠️','👥','🏠','🧑‍💻'];
+const SARAN = [
+  [/presensi|absen|hadir/i, '🕘'], [/ujian|ulangan|asesmen|\btes\b|kuis|quiz|cbt/i, '📝'],
+  [/surat|arsip|dokumen|disposisi/i, '📬'], [/nilai|rapor|raport|leger/i, '📊'],
+  [/perpus|buku|pustaka|literasi/i, '📚'], [/uang|spp|\bkas\b|keuangan|bayar|\bbos\b/i, '💰'],
+  [/jadwal|kalender|agenda|kegiatan/i, '📅'], [/umum|info|berita/i, '📢'],
+  [/siswa|murid|peserta|ppdb|daftar/i, '🎓'], [/guru|pegawai|staf|gtk|pendidik/i, '👥'],
+  [/inventaris|sarpras|barang|aset/i, '📦'], [/konseling|\bbk\b|bimbingan/i, '💬'],
+  [/zoom|meet|video|daring/i, '🎥'], [/foto|galeri|dokumentasi/i, '📷'],
+  [/ekskul|olahraga|pramuka/i, '⚽'], [/dapodik|data/i, '🗂️'], [/web|situs|link/i, '🌐']
+];
+function saranIkon(t){ for (let i = 0; i < SARAN.length; i++) if (SARAN[i][0].test(t)) return SARAN[i][1]; return '📌'; }
+const aktifYa = (v) => ['tidak', 'false'].indexOf(String(v == null ? '' : v).trim().toLowerCase()) < 0;
+function hariIni(){ const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function toast(teks){ const t = $('toast'); t.textContent = teks; t.classList.add('tampil'); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('tampil'), 3200); }
+
+function tampilMain(nama){
+  $('mainBeranda').classList.toggle('hidden', nama !== 'beranda');
+  $('mainAdmin').classList.toggle('hidden', nama !== 'admin');
+  window.scrollTo(0, 0);
+}
+function keluarPaksa(pesan){
+  if ($('dlg').open) $('dlg').close();
+  sesi.hapus(); clearInterval(timerJam); resetBeranda(); tampil('login'); errorLogin(pesan);
+}
+async function api(aksi, data){
+  const token = sesi.get();
+  if (!token) { keluarPaksa('Sesi berakhir. Silakan masuk lagi.'); return { ok: false, error: 'Sesi berakhir.' }; }
+  try {
+    const res = await fetch(CONFIG.API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(Object.assign({ aksi: aksi, token: token }, data || {})) });
+    const r = await res.json();
+    if (!r.ok && r.kode === 'SESI') keluarPaksa('Sesi berakhir. Silakan masuk lagi.');
+    return r;
+  } catch (e) { return { ok: false, error: 'Tidak bisa terhubung ke server. Periksa internet Anda.' }; }
+}
+
+function bukaAdmin(){ if (!penggunaIni || penggunaIni.peran !== 'admin') return; tampilMain('admin'); muatAdmin(); }
+async function tutupAdmin(){
+  tampilMain('beranda');
+  if (adm.berubah) { adm.berubah = false; const r = await api('beranda'); if (r.ok) gambarBeranda(r); }
+}
+$('btnKelola').onclick = bukaAdmin;
+$('admKembali').onclick = tutupAdmin;
+
+async function muatAdmin(){
+  if (!adm.data) $('admIsi').innerHTML = '<div class="skel"></div>';
+  const r = await api('admin_baca');
+  if (!r.ok) {
+    if (!adm.data) $('admIsi').innerHTML = '<p class="kosong">' + esc(r.error || 'Gagal memuat data.') + ' <button class="mini-btn" type="button" data-aksi="muat">Coba lagi</button></p>';
+    else toast(r.error || 'Gagal memuat data.');
+    return;
+  }
+  adm.data = r; renderAdmin();
+}
+function renderAdmin(){
+  const d = adm.data; if (!d) return;
+  const tab = [['users', 'Pengguna', d.users.length], ['menu', 'Aplikasi', d.menu.length], ['pengumuman', 'Pengumuman', d.pengumuman.length]];
+  $('admTab').innerHTML = tab.map(t => '<button type="button" class="tab' + (adm.tab === t[0] ? ' aktif' : '') + '" data-tab="' + t[0] + '">' + t[1] + '<span class="tab-n">' + t[2] + '</span></button>').join('');
+  if (adm.tab === 'users') renderUsers(); else if (adm.tab === 'menu') renderMenu(); else renderAnn();
+}
+function daftarPeran(){
+  const s = new Set(['guru', 'siswa', 'kepsek']);
+  adm.data.users.forEach(u => { const p = String(u.peran || '').trim().toLowerCase(); if (p) s.add(p); });
+  s.delete('admin');
+  return Array.from(s).sort();
+}
+
+/* --- Pengguna --- */
+function renderUsers(){
+  const opsi = ['admin'].concat(daftarPeran());
+  $('admIsi').innerHTML =
+    '<div class="alat">' +
+    '<input class="in cari-in" id="uCari" type="search" placeholder="Cari nama atau email" value="' + esc(adm.cari) + '" aria-label="Cari pengguna">' +
+    '<select class="in" id="uPeran" aria-label="Filter peran"><option value="">Semua peran</option>' + opsi.map(p => '<option value="' + esc(p) + '"' + (adm.peran === p ? ' selected' : '') + '>' + esc(p) + '</option>').join('') + '</select>' +
+    '<button class="btn-keluar btn-utama" type="button" data-aksi="tambah">Tambah pengguna</button>' +
+    '<button class="btn-keluar" type="button" data-aksi="massal">Tempel banyak</button></div>' +
+    '<p class="info-kecil" id="uInfo"></p><div class="daftar" id="admDaftar"></div>';
+  isiUsers();
+}
+function isiUsers(){
+  const q = adm.cari.trim().toLowerCase();
+  const semua = adm.data.users;
+  const cocok = semua.filter(u => (!adm.peran || String(u.peran).trim().toLowerCase() === adm.peran) && (!q || (String(u.nama) + ' ' + String(u.email)).toLowerCase().indexOf(q) > -1));
+  const tampil = cocok.slice(0, 300);
+  $('uInfo').textContent = cocok.length + ' dari ' + semua.length + ' pengguna' + (cocok.length > 300 ? ' (menampilkan 300 pertama, gunakan pencarian)' : '');
+  $('admDaftar').innerHTML = tampil.length ? tampil.map(u => {
+    const diri = penggunaIni && String(u.email).trim().toLowerCase() === penggunaIni.email;
+    return '<div class="baris"><div class="baris-utama"><b>' + esc(u.nama || '(tanpa nama)') + '</b><small>' + esc(u.email) + '</small></div>' +
+      '<span class="chip">' + esc(u.peran) + '</span>' + (aktifYa(u.aktif) ? '' : '<span class="chip tidak">nonaktif</span>') +
+      '<span class="baris-aksi"><button class="mini-btn" type="button" data-aksi="edit" data-id="' + u._baris + '">Ubah</button>' +
+      (diri ? '' : '<button class="mini-btn merah" type="button" data-aksi="hapus" data-id="' + u._baris + '">Hapus</button>') + '</span></div>';
+  }).join('') : '<p class="kosong">' + (semua.length ? 'Tidak ada pengguna yang cocok.' : 'Belum ada pengguna. Klik Tambah pengguna atau Tempel banyak.') + '</p>';
+}
+
+/* --- Aplikasi --- */
+function renderMenu(){
+  const list = adm.data.menu.slice().sort((a, b) => (Number(a.urutan) || 99) - (Number(b.urutan) || 99));
+  $('admIsi').innerHTML = '<div class="alat"><button class="btn-keluar btn-utama" type="button" data-aksi="tambah">Tambah aplikasi</button><span class="info-kecil">Admin selalu melihat semua aplikasi. Urutan kartu mengikuti nomor urutan.</span></div><div class="daftar">' +
+    (list.length ? list.map(m => {
+      const hidup = aktifYa(m.aktif);
+      const peran = String(m.peran_diizinkan || '').split(',').map(s => s.trim()).filter(Boolean).map(p => p === '*' ? 'semua' : p);
+      return '<div class="baris' + (hidup ? '' : ' mati') + '"><span class="ikon-baris" aria-hidden="true">' + esc(m.ikon || '📌') + '</span>' +
+        '<div class="baris-utama"><b>' + esc(m.judul || '(tanpa nama)') + '</b><small>' + esc(m.deskripsi) + '</small><small>' + esc(m.url) + '</small></div>' +
+        '<span class="chips">' + peran.map(p => '<span class="chip">' + esc(p) + '</span>').join('') + (hidup ? '' : '<span class="chip tidak">disembunyikan</span>') + '</span>' +
+        '<span class="baris-aksi"><button class="mini-btn" type="button" data-aksi="edit" data-id="' + m._baris + '">Ubah</button><button class="mini-btn merah" type="button" data-aksi="hapus" data-id="' + m._baris + '">Hapus</button></span></div>';
+    }).join('') : '<p class="kosong">Belum ada aplikasi. Klik Tambah aplikasi.</p>') + '</div>';
+}
+
+/* --- Pengumuman --- */
+function renderAnn(){
+  const list = adm.data.pengumuman.slice().sort((a, b) => String(b.tanggal).localeCompare(String(a.tanggal)));
+  $('admIsi').innerHTML = '<div class="alat"><button class="btn-keluar btn-utama" type="button" data-aksi="tambah">Tambah pengumuman</button><span class="info-kecil">Portal menampilkan 5 pengumuman aktif yang terbaru.</span></div><div class="daftar">' +
+    (list.length ? list.map(p => '<div class="baris' + (aktifYa(p.aktif) ? '' : ' mati') + '"><div class="baris-utama"><b>' + esc(p.judul) + '</b><small>' + esc(p.tanggal) + '</small><small>' + esc(String(p.isi || '').slice(0, 120)) + '</small></div>' +
+      (aktifYa(p.aktif) ? '' : '<span class="chip tidak">disembunyikan</span>') +
+      '<span class="baris-aksi"><button class="mini-btn" type="button" data-aksi="edit" data-id="' + p._baris + '">Ubah</button><button class="mini-btn merah" type="button" data-aksi="hapus" data-id="' + p._baris + '">Hapus</button></span></div>').join('') : '<p class="kosong">Belum ada pengumuman.</p>') + '</div>';
+}
+
+/* --- Kotak formulir --- */
+function bukaForm(o){
+  formAktif = o;
+  $('dlgJudul').textContent = o.judul;
+  $('dlgBadan').innerHTML = o.badan;
+  $('dlgError').classList.add('hidden'); $('dlgInfo').classList.add('hidden');
+  $('dlgSimpan').classList.remove('hidden'); $('dlgSimpan').textContent = o.tombol || 'Simpan'; $('dlgSimpan').disabled = false;
+  $('dlgBatal').textContent = 'Batal';
+  if (o.siap) o.siap();
+  $('dlg').showModal();
+  const f = o.fokus && $('dlg').querySelector(o.fokus); if (f) f.focus();
+}
+$('dlgBatal').onclick = () => $('dlg').close();
+$('dlg').addEventListener('click', (e) => { if (e.target === $('dlg')) $('dlg').close(); });
+$('dlgForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!formAktif) return;
+  const tb = $('dlgSimpan'); const asli = tb.textContent;
+  tb.disabled = true; tb.textContent = 'Menyimpan...';
+  let r;
+  try { r = await formAktif.simpan(); } catch (err) { r = { ok: false, error: 'Terjadi kesalahan. Coba lagi.' }; }
+  tb.disabled = false; tb.textContent = asli;
+  if (!r || !r.ok) { const el = $('dlgError'); el.textContent = (r && r.error) || 'Gagal menyimpan.'; el.classList.remove('hidden'); return; }
+  adm.berubah = true;
+  await muatAdmin();
+  if (r.tetapBuka) { $('dlgInfo').textContent = r.pesan; $('dlgInfo').classList.remove('hidden'); tb.classList.add('hidden'); $('dlgBatal').textContent = 'Tutup'; return; }
+  $('dlg').close(); toast(r.pesan || 'Tersimpan.');
+});
+function konfirmasi(teks){
+  return new Promise((selesai) => {
+    const d = $('dlgKonf');
+    $('konfTeks').textContent = teks;
+    const tutup = (v) => { d.close(); selesai(v); };
+    $('konfYa').onclick = () => tutup(true);
+    $('konfBatal').onclick = () => tutup(false);
+    d.addEventListener('cancel', () => selesai(false), { once: true });
+    d.showModal();
+  });
+}
+
+function formUser(item){
+  const opsi = ['admin'].concat(daftarPeran());
+  bukaForm({
+    judul: item ? 'Ubah pengguna' : 'Tambah pengguna', fokus: '#fEmail',
+    badan:
+      '<label class="fld"><span>Email Google</span><input class="in" id="fEmail" type="email" autocomplete="off" value="' + esc(item ? item.email : '') + '"></label>' +
+      '<label class="fld"><span>Nama</span><input class="in" id="fNama" maxlength="100" value="' + esc(item ? item.nama : '') + '"><small class="tip">Boleh dikosongkan, nanti diambil dari email.</small></label>' +
+      '<label class="fld"><span>Peran</span><input class="in" id="fPeran" list="dfPeran" maxlength="30" value="' + esc(item ? item.peran : 'guru') + '"><datalist id="dfPeran">' + opsi.map(p => '<option value="' + esc(p) + '">').join('') + '</datalist></label>' +
+      '<label class="cek"><input type="checkbox" id="fAktif"' + (!item || aktifYa(item.aktif) ? ' checked' : '') + '> Boleh masuk portal</label>',
+    simpan: () => api('admin_simpan', { tabel: 'users', baris: item ? item._baris : null, kunciLama: item ? item.email : '', data: { email: $('fEmail').value, nama: $('fNama').value, peran: $('fPeran').value, aktif: $('fAktif').checked ? 'ya' : 'tidak' } })
+  });
+}
+
+function formMenu(item){
+  const dipilih = item ? String(item.peran_diizinkan || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean) : [];
+  const semua = dipilih.indexOf('*') > -1;
+  const daftar = daftarPeran();
+  dipilih.forEach(p => { if (p !== '*' && daftar.indexOf(p) < 0) daftar.push(p); });
+  const urut = adm.data.menu.reduce((m, x) => Math.max(m, Number(x.urutan) || 0), 0) + 1;
+  let manual = !!(item && item.ikon);
+  bukaForm({
+    judul: item ? 'Ubah aplikasi' : 'Tambah aplikasi', fokus: '#fJudul',
+    badan:
+      '<label class="fld"><span>Nama aplikasi</span><input class="in" id="fJudul" maxlength="60" value="' + esc(item ? item.judul : '') + '"></label>' +
+      '<label class="fld"><span>Keterangan singkat</span><input class="in" id="fDesk" maxlength="120" value="' + esc(item ? item.deskripsi : '') + '"></label>' +
+      '<label class="fld"><span>Alamat website</span><input class="in" id="fUrl" type="url" inputmode="url" placeholder="https://..." value="' + esc(item ? item.url : '') + '"></label>' +
+      '<div class="fld"><span>Ikon</span><input class="in ikon-in" id="fIkon" maxlength="8" value="' + esc(item ? item.ikon : '') + '"><small class="tip">Terisi otomatis dari nama aplikasi. Klik salah satu di bawah untuk mengganti.</small><div class="emoji-grid" id="fEmoji">' + EMOJI.map(e => '<button type="button" data-emo="' + e + '">' + e + '</button>').join('') + '</div></div>' +
+      '<fieldset class="fld"><legend>Siapa yang boleh melihat</legend><label class="cek"><input type="checkbox" id="fSemua"' + (semua ? ' checked' : '') + '> Semua pengguna</label><div>' +
+      daftar.map(p => '<label class="cek"><input type="checkbox" class="fPeranCek" value="' + esc(p) + '"' + (dipilih.indexOf(p) > -1 ? ' checked' : '') + (semua ? ' disabled' : '') + '> ' + esc(p) + '</label>').join('') +
+      '</div><small class="tip">Admin selalu bisa melihat semua aplikasi.</small></fieldset>' +
+      '<div class="dua"><label class="fld"><span>Urutan</span><input class="in" id="fUrut" type="number" min="0" max="999" value="' + (item ? esc(item.urutan) : urut) + '"></label>' +
+      '<label class="cek" style="align-self:end"><input type="checkbox" id="fAktif"' + (!item || aktifYa(item.aktif) ? ' checked' : '') + '> Tampilkan di portal</label></div>',
+    siap: () => {
+      $('fJudul').addEventListener('input', () => { if (!manual) $('fIkon').value = saranIkon($('fJudul').value); });
+      $('fIkon').addEventListener('input', () => { manual = true; });
+      $('fEmoji').addEventListener('click', (e) => { const b = e.target.closest('[data-emo]'); if (b) { $('fIkon').value = b.dataset.emo; manual = true; } });
+      $('fSemua').addEventListener('change', () => {
+        document.querySelectorAll('.fPeranCek').forEach(c => { c.disabled = $('fSemua').checked; if ($('fSemua').checked) c.checked = false; });
+      });
+    },
+    simpan: () => {
+      let u = $('fUrl').value.trim();
+      if (u && !/^https?:\/\//i.test(u)) u = 'https://' + u;
+      const pilih = $('fSemua').checked ? '*' : Array.from(document.querySelectorAll('.fPeranCek:checked')).map(c => c.value).join(',');
+      return api('admin_simpan', { tabel: 'menu', baris: item ? item._baris : null, kunciLama: item ? item.judul : '', data: { judul: $('fJudul').value, deskripsi: $('fDesk').value, url: u, ikon: $('fIkon').value, peran_diizinkan: pilih, urutan: $('fUrut').value, aktif: $('fAktif').checked ? 'ya' : 'tidak' } });
+    }
+  });
+}
+
+function formAnn(item){
+  const tgl = item && /^\d{4}-\d{2}-\d{2}$/.test(String(item.tanggal)) ? item.tanggal : hariIni();
+  bukaForm({
+    judul: item ? 'Ubah pengumuman' : 'Tambah pengumuman', fokus: '#fJudul',
+    badan:
+      '<label class="fld"><span>Tanggal</span><input class="in" id="fTgl" type="date" value="' + tgl + '"></label>' +
+      '<label class="fld"><span>Judul</span><input class="in" id="fJudul" maxlength="100" value="' + esc(item ? item.judul : '') + '"></label>' +
+      '<label class="fld"><span>Isi pengumuman</span><textarea class="in" id="fIsi" rows="5" maxlength="1000">' + esc(item ? item.isi : '') + '</textarea></label>' +
+      '<label class="cek"><input type="checkbox" id="fAktif"' + (!item || aktifYa(item.aktif) ? ' checked' : '') + '> Tampilkan di portal</label>',
+    simpan: () => api('admin_simpan', { tabel: 'pengumuman', baris: item ? item._baris : null, kunciLama: item ? item.judul : '', data: { tanggal: $('fTgl').value, judul: $('fJudul').value, isi: $('fIsi').value, aktif: $('fAktif').checked ? 'ya' : 'tidak' } })
+  });
+}
+
+function formMassal(){
+  const opsi = daftarPeran();
+  bukaForm({
+    judul: 'Tempel banyak pengguna', tombol: 'Tambahkan', fokus: '#fMassal',
+    badan:
+      '<p class="tip-besar">Satu orang per baris: <b>email</b>, <b>nama</b>, <b>peran</b>. Nama dan peran boleh dikosongkan. Bisa langsung tempel dari Excel atau Google Sheets.</p>' +
+      '<label class="fld"><span>Daftar pengguna</span><textarea class="in" id="fMassal" rows="9" placeholder="budi@belajar.id, Budi Santoso&#10;siti@belajar.id, Siti Aminah"></textarea></label>' +
+      '<label class="fld"><span>Peran untuk baris yang tidak punya peran</span><select class="in" id="fBawaan">' + opsi.map(p => '<option value="' + esc(p) + '"' + (p === 'siswa' ? ' selected' : '') + '>' + esc(p) + '</option>').join('') + '</select></label>',
+    simpan: async () => {
+      const baris = $('fMassal').value.split(/\r?\n/).map(s => s.trim()).filter(Boolean).map(s => {
+        const p = s.split(/\t|;|,/).map(x => x.trim());
+        return { email: p[0], nama: p[1] || '', peran: p[2] || '' };
+      });
+      if (!baris.length) return { ok: false, error: 'Tempel dulu daftar penggunanya.' };
+      if (baris.length > 1000) return { ok: false, error: 'Maksimal 1000 baris sekali tempel.' };
+      const r = await api('admin_users_massal', { baris: baris, peranBawaan: $('fBawaan').value });
+      if (!r.ok) return r;
+      let pesan = 'Ditambahkan ' + r.ditambah + ' pengguna.';
+      if (r.dilewati) pesan += ' ' + r.dilewati + ' dilewati karena sudah terdaftar.';
+      if (r.jumlahSalah) pesan += ' ' + r.jumlahSalah + ' baris tidak valid:\n' + r.salah.join('\n');
+      return { ok: true, pesan: pesan, tetapBuka: r.jumlahSalah > 0 };
+    }
+  });
+}
+
+/* --- Klik, ketik, dan hapus --- */
+$('mainAdmin').addEventListener('click', async (e) => {
+  const t = e.target.closest('[data-aksi],[data-tab]');
+  if (!t) return;
+  if (t.dataset.tab) { adm.tab = t.dataset.tab; renderAdmin(); return; }
+  const aksi = t.dataset.aksi;
+  if (aksi === 'muat') { muatAdmin(); return; }
+  const item = t.dataset.id ? adm.data[adm.tab].find(x => x._baris === Number(t.dataset.id)) : null;
+  if (aksi === 'tambah') { if (adm.tab === 'users') formUser(); else if (adm.tab === 'menu') formMenu(); else formAnn(); }
+  else if (aksi === 'massal') formMassal();
+  else if (aksi === 'edit' && item) { if (adm.tab === 'users') formUser(item); else if (adm.tab === 'menu') formMenu(item); else formAnn(item); }
+  else if (aksi === 'hapus' && item) {
+    const nama = adm.tab === 'users' ? (item.nama || item.email) : item.judul;
+    if (!(await konfirmasi('Hapus "' + nama + '"? Tindakan ini tidak bisa dibatalkan.'))) return;
+    const r = await api('admin_hapus', { tabel: adm.tab, baris: item._baris, kunciLama: adm.tab === 'users' ? item.email : item.judul });
+    if (!r.ok) { toast(r.error || 'Gagal menghapus.'); return; }
+    adm.berubah = true; toast('Terhapus.'); await muatAdmin();
+  }
+});
+$('mainAdmin').addEventListener('input', (e) => { if (e.target.id === 'uCari') { adm.cari = e.target.value; isiUsers(); } });
+$('mainAdmin').addEventListener('change', (e) => { if (e.target.id === 'uPeran') { adm.peran = e.target.value; isiUsers(); } });
 
 /* ---------- Mulai ---------- */
 (function(){
