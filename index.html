@@ -148,8 +148,17 @@
   .app:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--bayangan)}
     .app:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--bayangan)}
   .app:has(.pv){flex-wrap:wrap}
-  .pv{flex:0 0 100%;order:-1;aspect-ratio:16/10;margin:-4px 0 4px;overflow:hidden;position:relative;border:2px solid var(--tinta);border-radius:10px;background:var(--kartu)}
-  .pv iframe{width:1280px;height:800px;border:0;transform:scale(var(--s,.25));transform-origin:0 0;pointer-events:none;background:#fff}
+  .pv{flex:0 0 100%;order:-1;aspect-ratio:16/10;margin:-4px 0 4px;overflow:hidden;position:relative;border:2px solid var(--tinta);border-radius:10px;
+    background:linear-gradient(100deg,var(--kartu) 30%,var(--biru-muda) 50%,var(--kartu) 70%) 0 0/220% 100%;animation:kilau 1.3s linear infinite,tirai .8s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:0s,calc(var(--i) * 70ms + 600ms)}
+  .pv iframe{width:1280px;height:800px;border:0;transform:scale(var(--s,.25));transform-origin:0 0;pointer-events:none;background:#fff;opacity:0;transition:opacity .7s,transform .9s cubic-bezier(.2,.8,.2,1)}
+  .pv iframe.siap{opacity:1}
+  .app:hover .pv iframe{transform:scale(calc(var(--s,.25) * 1.1)) translateY(-18px)}
+  .pv::before{content:'LIVE';position:absolute;z-index:2;top:8px;right:8px;padding:2px 8px 2px 18px;border-radius:99px;background:rgba(10,15,30,.78);color:#fff;font:700 10px/1.6 system-ui,sans-serif;letter-spacing:.08em}
+  .pv::after{content:'';position:absolute;z-index:1;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.35) 50%,transparent 60%);transform:translateX(-120%)}
+  .app:hover .pv::after{transform:translateX(120%);transition:transform .9s ease}
+  .pv i{position:absolute;z-index:3;top:15px;right:63px;width:7px;height:7px;border-radius:50%;background:#ff4d4d;animation:kedip 1.4s ease-in-out infinite}
+  @keyframes tirai{from{clip-path:inset(0 100% 0 0)}}
+  @keyframes kedip{50%{opacity:.25;transform:scale(.7)}}
   .app-ikon{
     width:56px;height:56px;flex:none;display:grid;place-items:center;font-size:1.8rem;border-radius:14px;
     background:hsl(var(--h) 90% 92%);border:2px solid var(--tinta);transform:rotate(var(--r));
@@ -549,7 +558,7 @@ function gambarBeranda(d){
   $('menu').innerHTML = jumlahMenu
     ? d.menu.map((m, i) => `
       <a class="app" href="${esc(urlAman(m.url))}" target="_blank" rel="noopener" data-mode="${esc(m.mode || 'tab')}" data-judul="${esc(m.judul)}" style="--i:${i};--h:${HUE[i % HUE.length]}" data-cari="${esc((m.judul + ' ' + (m.deskripsi || '')).toLowerCase())}">
-        ${m.mode === 'dalam' ? '<div class="pv" aria-hidden="true"><iframe loading="lazy" tabindex="-1" scrolling="no" src="' + esc(urlAman(m.url)) + '"></iframe></div>' : ''}
+        ${m.mode === 'dalam' ? '<div class="pv" aria-hidden="true"><i></i><iframe loading="lazy" tabindex="-1" scrolling="no" onload="this.classList.add(\'siap\')" src="' + esc(urlAman(m.url)) + '"></iframe></div>' : ''}
         <span class="app-ikon" aria-hidden="true">${esc(m.ikon || '📌')}</span>
         <span class="app-teks"><b>${esc(m.judul)}</b><small>${esc(m.deskripsi)}</small></span>
         <svg class="app-buka" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
