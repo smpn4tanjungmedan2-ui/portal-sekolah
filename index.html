@@ -228,7 +228,7 @@
   .mini-btn{padding:6px 12px;border:2px solid var(--tinta);border-radius:10px;background:var(--kartu);font-size:.85rem;font-weight:600}
   .mini-btn:hover{background:var(--biru-muda)}
   .mini-btn.merah{color:var(--margin);border-color:var(--margin)}
-  dialog{width:min(560px,calc(100vw - 24px));padding:0;color:var(--tinta);background:var(--kartu);border:2px solid var(--tinta);border-radius:18px;box-shadow:8px 8px 0 var(--bayangan)}
+ dialog{margin:auto;width:min(560px,calc(100vw - 24px));padding:0;color:var(--tinta);background:var(--kartu);border:2px solid var(--tinta);border-radius:18px;box-shadow:8px 8px 0 var(--bayangan)}
   dialog::backdrop{background:rgba(5,10,25,.6)}
   .dlg-isi{padding:24px;max-height:min(82vh,760px);overflow:auto}
   .dlg-isi h2{font-family:var(--display);font-weight:800;font-size:1.5rem;letter-spacing:-.02em;margin-bottom:16px}
@@ -815,7 +815,7 @@ function formUser(item){
     badan:
       '<label class="fld"><span>Email Google</span><input class="in" id="fEmail" type="email" autocomplete="off" value="' + esc(item ? item.email : '') + '"></label>' +
       '<label class="fld"><span>Nama</span><input class="in" id="fNama" maxlength="100" value="' + esc(item ? item.nama : '') + '"><small class="tip">Boleh dikosongkan, nanti diambil dari email.</small></label>' +
-      '<label class="fld"><span>Peran</span><input class="in" id="fPeran" list="dfPeran" maxlength="30" value="' + esc(item ? item.peran : 'guru') + '"><datalist id="dfPeran">' + opsi.map(p => '<option value="' + esc(p) + '">').join('') + '</datalist></label>' +
+      '<label class="fld"><span>Peran</span><select class="in" id="fPeran">' + opsi.concat(item && opsi.indexOf(String(item.peran).trim().toLowerCase()) < 0 ? [String(item.peran).trim().toLowerCase()] : []).map(p => '<option value="' + esc(p) + '"' + (p === (item ? String(item.peran).trim().toLowerCase() : 'guru') ? ' selected' : '') + '>' + esc(p) + '</option>').join('') + '</select></label>' +
       '<label class="cek"><input type="checkbox" id="fAktif"' + (!item || aktifYa(item.aktif) ? ' checked' : '') + '> Boleh masuk portal</label>',
     simpan: () => api('admin_simpan', { tabel: 'users', baris: item ? item._baris : null, kunciLama: item ? item.email : '', data: { email: $('fEmail').value, nama: $('fNama').value, peran: $('fPeran').value, aktif: $('fAktif').checked ? 'ya' : 'tidak' } })
   });
