@@ -1,0 +1,227 @@
+<!-- appscript index.html -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Portal Sekolah</title>
+<meta name="theme-color" content="#1a56db">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+  :root{
+    --biru:#1a56db; --biru-tua:#1240a8; --latar:#f3f6fb; --kartu:#fff;
+    --teks:#1c2433; --abu:#64708a; --garis:#e3e8f0; --merah:#c0392b;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --latar:#0f1420; --kartu:#192032; --teks:#e8ecf5; --abu:#97a3bd; --garis:#2a3450; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--latar);color:var(--teks);min-height:100vh}
+  .hidden{display:none!important}
+
+  /* Layar login */
+  #login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+  .kotak-login{background:var(--kartu);border:1px solid var(--garis);border-radius:20px;padding:36px 28px;max-width:380px;width:100%;text-align:center;box-shadow:0 8px 30px rgba(20,40,90,.08)}
+  .logo{width:72px;height:72px;border-radius:18px;margin:0 auto 16px;display:block}
+  .kotak-login h1{margin:0 0 6px;font-size:1.4rem}
+  .kotak-login p{margin:0 0 24px;color:var(--abu);font-size:.95rem}
+  #tombolGoogle{display:flex;justify-content:center;min-height:44px}
+  .pesan-error{margin-top:16px;color:var(--merah);font-size:.9rem;line-height:1.4}
+
+  /* Beranda */
+  header{background:var(--biru);color:#fff;padding:14px 16px;position:sticky;top:0;z-index:5}
+  .bar{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:12px}
+  .bar .judul{flex:1;min-width:0}
+  .bar .judul b{display:block;font-size:1.02rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bar .judul small{opacity:.85}
+  .avatar{width:36px;height:36px;border-radius:50%;background:#ffffff33;object-fit:cover}
+  .btn-kecil{background:#ffffff26;color:#fff;border:0;padding:8px 12px;border-radius:10px;font-size:.85rem;cursor:pointer}
+  .btn-kecil:hover{background:#ffffff40}
+  main{max-width:960px;margin:0 auto;padding:20px 16px 40px}
+  .sapaan{margin:4px 0 18px}
+  .sapaan h2{margin:0;font-size:1.3rem}
+  .sapaan span{color:var(--abu);font-size:.92rem}
+  h3.seksi{margin:26px 0 12px;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--abu)}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+  a.kartu{display:flex;flex-direction:column;gap:6px;background:var(--kartu);border:1px solid var(--garis);border-radius:16px;padding:18px;text-decoration:none;color:inherit;transition:transform .12s,box-shadow .12s,border-color .12s}
+  a.kartu:hover,a.kartu:focus-visible{transform:translateY(-2px);box-shadow:0 8px 22px rgba(20,40,90,.12);border-color:var(--biru);outline:none}
+  .kartu .ikon{font-size:2rem;line-height:1}
+  .kartu b{font-size:1.02rem}
+  .kartu span{color:var(--abu);font-size:.88rem;line-height:1.35}
+
+  .pengumuman{background:var(--kartu);border:1px solid var(--garis);border-left:4px solid var(--biru);border-radius:12px;padding:14px 16px;margin-bottom:10px}
+  .pengumuman small{color:var(--abu)}
+  .pengumuman b{display:block;margin:2px 0 4px}
+  .pengumuman p{margin:0;font-size:.92rem;line-height:1.45;white-space:pre-line}
+  .kosong{color:var(--abu);font-size:.92rem}
+
+  /* Skeleton */
+  .skel{height:110px;border-radius:16px;background:linear-gradient(90deg,var(--garis) 25%,var(--kartu) 50%,var(--garis) 75%);background-size:200% 100%;animation:kilau 1.2s infinite}
+  @keyframes kilau{to{background-position:-200% 0}}
+
+  #pasang{position:fixed;left:16px;right:16px;bottom:16px;max-width:420px;margin:0 auto;background:var(--kartu);border:1px solid var(--garis);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 30px rgba(0,0,0,.18)}
+  #pasang span{flex:1;font-size:.9rem}
+  #pasang button{border:0;border-radius:10px;padding:8px 14px;cursor:pointer;font-size:.88rem}
+  #btnPasang{background:var(--biru);color:#fff}
+  #btnTutup{background:transparent;color:var(--abu)}
+</style>
+</head>
+<body>
+
+<!-- ====== KONFIGURASI: ganti dua nilai ini ====== -->
+<script>
+  const CONFIG = {
+    CLIENT_ID: '570139079101-cej58lqf50dasq22njjf6qje7kqcvlk2.apps.googleusercontent.com',
+    API_URL:   'https://script.google.com/macros/s/AKfycbxwwCQuI2L0EizTHFgtKjfHtca7SCn6ZYCrESn1Ro4HNr0Yy86lJ3BgRwnjkWgFZn-E/exec'
+  };
+</script>
+
+<!-- LOGIN -->
+<section id="login">
+  <div class="kotak-login">
+    <h1 id="namaSekolahLogin">Portal Sekolah</h1>
+    <p>Masuk dengan akun Google yang didaftarkan sekolah.</p>
+    <div id="tombolGoogle"></div>
+    <div id="errorLogin" class="pesan-error hidden"></div>
+  </div>
+</section>
+
+<!-- BERANDA -->
+<section id="beranda" class="hidden">
+  <header>
+    <div class="bar">
+      <img id="foto" class="avatar" alt="" referrerpolicy="no-referrer">
+      <div class="judul"><b id="hNama">-</b><small id="hPeran"></small></div>
+      <button class="btn-kecil" id="btnKeluar">Keluar</button>
+    </div>
+  </header>
+  <main>
+    <div class="sapaan"><h2 id="sapaan">Halo</h2><span id="tanggal"></span></div>
+
+    <h3 class="seksi">Aplikasi</h3>
+    <div class="grid" id="menu"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
+
+    <h3 class="seksi">Pengumuman</h3>
+    <div id="pengumuman"></div>
+  </main>
+</section>
+
+<div id="pasang" class="hidden">
+  <span>Pasang portal di layar utama HP Anda?</span>
+  <button id="btnPasang">Pasang</button>
+  <button id="btnTutup">Nanti</button>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const KUNCI = 'portal_token';
+
+/* ---------- Layar ---------- */
+function tampil(nama){
+  $('login').classList.toggle('hidden', nama !== 'login');
+  $('beranda').classList.toggle('hidden', nama !== 'beranda');
+}
+function errorLogin(teks){
+  const el = $('errorLogin');
+  el.textContent = teks || '';
+  el.classList.toggle('hidden', !teks);
+}
+function bersih(s){ const d = document.createElement('div'); d.textContent = s == null ? '' : s; return d.innerHTML; }
+function urlAman(u){ return /^https?:\/\//i.test(u) ? u : '#'; }
+
+/* ---------- Panggil backend ---------- */
+async function panggil(token){
+  const res = await fetch(CONFIG.API_URL, {
+    method: 'POST',
+    // text/plain menghindari preflight CORS yang tidak didukung Apps Script
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ aksi: 'beranda', token })
+  });
+  return res.json();
+}
+
+/* ---------- Alur login ---------- */
+async function masuk(token){
+  tampil('beranda');
+  try{
+    const data = await panggil(token);
+    if(!data.ok){
+      sessionStorage.removeItem(KUNCI);
+      tampil('login');
+      errorLogin(data.error || 'Gagal masuk.');
+      return;
+    }
+    sessionStorage.setItem(KUNCI, token);
+    gambarBeranda(data);
+  }catch(e){
+    tampil('login');
+    errorLogin('Tidak bisa terhubung ke server. Periksa internet Anda lalu coba lagi.');
+  }
+}
+
+function gambarBeranda(d){
+  document.title = d.sekolah ? 'Portal ' + d.sekolah : 'Portal Sekolah';
+  $('hNama').textContent = d.sekolah || 'Portal Sekolah';
+  $('hPeran').textContent = d.user.nama + ' · ' + d.user.peran;
+  if(d.user.foto) $('foto').src = d.user.foto; else $('foto').classList.add('hidden');
+
+  const jam = new Date().getHours();
+  const salam = jam < 11 ? 'Selamat pagi' : jam < 15 ? 'Selamat siang' : jam < 18 ? 'Selamat sore' : 'Selamat malam';
+  $('sapaan').textContent = salam + ', ' + d.user.nama.split(' ')[0];
+  $('tanggal').textContent = new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+  $('menu').innerHTML = d.menu.length
+    ? d.menu.map(m => `<a class="kartu" href="${bersih(urlAman(m.url))}" target="_blank" rel="noopener">
+        <div class="ikon">${bersih(m.ikon)}</div><b>${bersih(m.judul)}</b><span>${bersih(m.deskripsi)}</span></a>`).join('')
+    : '<div class="kosong">Belum ada aplikasi untuk peran Anda.</div>';
+
+  $('pengumuman').innerHTML = d.pengumuman.length
+    ? d.pengumuman.map(p => `<div class="pengumuman"><small>${bersih(p.tanggal)}</small><b>${bersih(p.judul)}</b><p>${bersih(p.isi)}</p></div>`).join('')
+    : '<div class="kosong">Belum ada pengumuman.</div>';
+}
+
+function keluar(){
+  sessionStorage.removeItem(KUNCI);
+  if(window.google && google.accounts) google.accounts.id.disableAutoSelect();
+  errorLogin('');
+  tampil('login');
+}
+$('btnKeluar').onclick = keluar;
+
+/* ---------- Google Sign-In ---------- */
+function mulaiGoogle(){
+  if(!(window.google && google.accounts)){ setTimeout(mulaiGoogle, 200); return; }
+  google.accounts.id.initialize({
+    client_id: CONFIG.CLIENT_ID,
+    callback: (r) => { errorLogin(''); masuk(r.credential); },
+    auto_select: true
+  });
+  google.accounts.id.renderButton($('tombolGoogle'), { theme:'outline', size:'large', text:'signin_with', locale:'id', width:280 });
+}
+
+/* ---------- Mulai ---------- */
+(function(){
+  const tersimpan = sessionStorage.getItem(KUNCI);
+  if(tersimpan) masuk(tersimpan); else tampil('login');
+  mulaiGoogle();
+})();
+
+/* ---------- PWA ---------- */
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
+let tundaPasang;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault(); tundaPasang = e;
+  if(!localStorage.getItem('tolak_pasang')) $('pasang').classList.remove('hidden');
+});
+$('btnPasang').onclick = async () => {
+  $('pasang').classList.add('hidden');
+  if(tundaPasang){ tundaPasang.prompt(); tundaPasang = null; }
+};
+$('btnTutup').onclick = () => { $('pasang').classList.add('hidden'); try{localStorage.setItem('tolak_pasang','1')}catch(e){} };
+</script>
+</body>
+</html>
