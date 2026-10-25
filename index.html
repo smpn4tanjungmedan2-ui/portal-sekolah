@@ -409,6 +409,18 @@
       </div>
     </div>
   </dialog>
+  <div id="viewer" class="hidden" role="dialog" aria-modal="true" aria-label="Aplikasi">
+    <div class="viewer-bar">
+      <button class="btn-keluar" id="vKembali" type="button">Kembali</button>
+      <b class="viewer-judul" id="vJudul"></b>
+      <button class="btn-ikon" id="vMuat" type="button" aria-label="Muat ulang" title="Muat ulang"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7M20 4v5h-5"/></svg></button>
+      <a class="btn-keluar" id="vTab" href="#" target="_blank" rel="noopener" title="Buka di tab baru">Tab baru</a>
+    </div>
+    <div class="viewer-isi">
+      <div class="viewer-memuat" id="vMemuat"><div class="spin"></div><p>Memuat aplikasi...</p><small>Kalau tetap kosong atau menolak tampil, klik Tab baru.</small></div>
+      <iframe id="vFrame" title="Aplikasi" allow="camera; microphone; geolocation; fullscreen; clipboard-write"></iframe>
+    </div>
+  </div>
   <div id="toast" role="status" aria-live="polite"></div>
 </section>
 
