@@ -1443,12 +1443,12 @@ const KT = {
       { k: 'foto', label: 'Foto', tipe: 'foto', maks: 1280 }] },
   slider: { nama: 'slider', ikon: '🖼️', tambah: 'Tambah foto slider', info: 'Foto besar yang bergulir di bagian paling atas. Pakai foto melebar (landscape).',
     judul: i => 'Foto slider', sub: i => 'Urutan ' + (i.urutan || '-'),
-    f: [{ k: 'foto', label: 'Foto', tipe: 'foto', maks: 1280 }, { k: 'urutan', label: 'Urutan (1 paling depan)', tipe: 'angka', awal: '1' }] },
+    f: [{ k: 'foto', label: 'Foto', tipe: 'foto', maks: 1280 }, { k: 'urutan', label: 'Urutan (1 paling depan)', tipe: 'angka', awal: 'urut' }] },
   guru: { nama: 'guru', ikon: '👩‍🏫', tambah: 'Tambah guru', info: 'Guru dan tenaga pendidik beserta foto.',
     judul: i => i.nama, sub: i => [i.jabatan, i.bidang].filter(Boolean).join(' · '),
     f: [{ k: 'nama', label: 'Nama' }, { k: 'jabatan', label: 'Jabatan (contoh: Guru Matematika)' },
       { k: 'bidang', label: 'Keahlian atau mata pelajaran' }, { k: 'foto', label: 'Foto', tipe: 'foto', maks: 900 },
-      { k: 'urutan', label: 'Urutan', tipe: 'angka', awal: '1' }] },
+      { k: 'urutan', label: 'Urutan', tipe: 'angka', awal: 'urut' }] },
   testimoni: { nama: 'testimoni', ikon: '💬', tambah: 'Tambah testimoni', info: 'Kesan alumni, siswa, atau orang tua.',
     judul: i => i.nama, sub: i => i.sebagai,
     f: [{ k: 'nama', label: 'Nama' }, { k: 'sebagai', label: 'Sebagai (contoh: Alumni 2024)' },
@@ -1574,11 +1574,15 @@ function renderPpdb(){
   $('admIsi').innerHTML = '<div class="alat"><button class="btn-keluar" type="button" data-aksi="p-unduh">Unduh data (CSV)</button><span class="info-kecil">' + list.length + ' pendaftar: ' + hitung('baru') + ' baru, ' + hitung('diterima') + ' diterima, ' + hitung('cadangan') + ' cadangan, ' + hitung('ditolak') + ' ditolak. Data pribadi, jangan dibagikan.</span></div><div class="daftar">' +
     (list.length ? list.map(x => '<div class="baris"><div class="baris-utama"><b>' + esc(x.nama) + '</b><small>' + esc(x.asal_sekolah) + ' · ortu: ' + esc(x.nama_ayah || x.nama_ibu || x.nama_wali) + ' · ' + esc(x.hp_wali) + '</small><small>' + esc(x.waktu) + '</small></div><span class="chip">' + esc(x.status || 'baru') + '</span><span class="baris-aksi"><button class="mini-btn" type="button" data-aksi="p-status" data-id="' + esc(x.id) + '">Detail</button><button class="mini-btn merah" type="button" data-aksi="k-hapus" data-id="' + esc(x.id) + '">Hapus</button></span></div>').join('') : '<p class="kosong">Belum ada pendaftar.</p>') + '</div>';
 }
+function urutBerikut(tab){
+  const n = ((kdata && kdata[tab]) || []).map(x => Number(x.urutan) || 0);
+  return String(Math.min(999, (n.length ? Math.max.apply(null, n) : 0) + 1));
+}
 function formKonten(tab, item){
   const c = KT[tab];
   bukaForm({
     judul: (item ? 'Ubah ' : 'Tambah ') + c.nama, fokus: '#dlgBadan .in',
-    badan: c.f.map(f => inputKonten(f, item ? item[f.k] : (f.awal === 'hari' ? hariIni() : (f.awal || '')))).join('') +
+    badan: c.f.map(f => inputKonten(f, item ? item[f.k] : (f.awal === 'hari' ? hariIni() : f.awal === 'urut' ? urutBerikut(tab) : (f.awal || '')))).join('') +
       '<label class="cek"><input type="checkbox" id="kf_aktif"' + (!item || aktifYa(item.aktif) ? ' checked' : '') + '> Tampilkan di landing page</label>',
     siap: () => { c.f.filter(f => f.tipe === 'foto').forEach(f => pasangFoto('kf_' + f.k, f.maks || 900)); },
     simpan: () => {
