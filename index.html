@@ -272,6 +272,34 @@
   .viewer-memuat{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:10px;text-align:center;color:var(--tinta-2);padding:20px}
   .spin{width:38px;height:38px;border-radius:50%;border:4px solid var(--titik);border-top-color:var(--biru);animation:putar .8s linear infinite}
   @keyframes putar{to{transform:rotate(360deg)}}
+  .l-bar{max-width:1100px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:12px}
+  .l-bar .nama{flex:1;font-family:var(--display);font-weight:700;font-size:1.15rem}
+  .l-hero{max-width:1100px;margin:0 auto;padding:36px 20px 30px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:36px;align-items:center}
+  .l-hero h1{font-family:var(--display);font-weight:800;font-size:clamp(2.3rem,6vw,4.2rem);line-height:1.02;letter-spacing:-.04em;margin-bottom:16px;text-wrap:balance}
+  .l-hero h1 mark{color:inherit;background:linear-gradient(var(--pensil),var(--pensil)) 0 88%/0 .4em no-repeat;animation:stabilo 1s .6s forwards}
+  @keyframes stabilo{to{background-size:100% .4em}}
+  .l-hero p{color:var(--tinta-2);max-width:46ch;margin-bottom:24px;font-size:1.05rem}
+  .l-aksi{display:flex;gap:12px;flex-wrap:wrap}
+  .l-aksi .btn-keluar{height:50px;padding:0 22px;font-size:1rem;cursor:pointer}
+  .l-gambar{background:var(--kartu);border:2px solid var(--tinta);border-radius:22px;box-shadow:6px 6px 0 var(--bayangan);padding:26px;display:grid;place-items:center}
+  .l-gambar svg{width:min(230px,70%);height:auto;animation:melayang 4s ease-in-out infinite}
+  @keyframes melayang{50%{transform:translateY(-10px) rotate(-1.5deg)}}
+  .l-bagian{max-width:1100px;margin:0 auto;padding:30px 20px}
+  .l-bagian h2{font-family:var(--display);font-weight:800;font-size:1.7rem;letter-spacing:-.02em;margin-bottom:18px}
+  .l-fitur{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px}
+  .l-fitur .f{padding:20px;background:var(--kartu);border:2px solid var(--tinta);border-radius:16px;box-shadow:4px 4px 0 var(--bayangan);transition:transform .18s;animation:cap .55s cubic-bezier(.2,.9,.3,1.25) backwards;animation-delay:calc(var(--i) * 90ms + 300ms)}
+  .l-fitur .f:hover{transform:translate(-2px,-2px) rotate(-.6deg)}
+  .l-fitur .f span{display:block;font-size:2rem;margin-bottom:8px}
+  .l-fitur .f b{font-family:var(--display);font-size:1.15rem}
+  .l-fitur .f small{display:block;margin-top:4px;color:var(--tinta-2);line-height:1.45}
+  .l-langkah{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}
+  .l-langkah .s{position:relative;padding:22px 20px 20px;background:var(--memo);border:2px solid var(--memo-garis);border-radius:6px 6px 16px 6px;box-shadow:4px 4px 0 var(--bayangan)}
+  .l-langkah .s i{position:absolute;top:-14px;left:16px;width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:var(--biru);color:#fff;border:2px solid var(--tinta);font-style:normal;font-weight:800}
+  [data-theme="dark"] .l-langkah .s i{color:#0a1226}
+  .l-langkah .s b{display:block;margin-bottom:4px}
+  .l-langkah .s small{color:var(--tinta-2);line-height:1.5;display:block}
+  .l-kaki{max-width:1100px;margin:0 auto;padding:20px 20px 40px;color:var(--tinta-2);font-size:.85rem}
+  @media (max-width:820px){.l-hero{grid-template-columns:1fr}.l-gambar{order:-1}}
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{animation:none!important;transition:none!important}
     .sketsa .g{stroke-dashoffset:0}
@@ -302,6 +330,51 @@
     <rect x="31.2" y="5" width="1.6" height="9" fill="#fff"/><path d="M32.8 5.5 40 8l-7.2 2.5Z" fill="#ffc93c"/>
   </symbol>
 </svg>
+
+<!-- ===================== LANDING ===================== -->
+<section id="landing">
+  <div class="l-bar">
+    <svg class="mini" viewBox="0 0 64 64" aria-hidden="true"><use href="#gedung"/></svg>
+    <div class="nama">Portal Sekolah</div>
+    <button class="btn-ikon" id="temaLanding" type="button" aria-label="Ganti tema terang atau gelap">
+      <svg class="i-matahari" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg class="i-bulan" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+    </button>
+  </div>
+
+  <div class="l-hero">
+    <div>
+      <h1>Semua layanan sekolah, <mark>satu pintu</mark>.</h1>
+      <p>Ujian online, arsip surat, presensi, dan pengumuman sekolah bisa dibuka dari satu portal dengan satu akun Google.</p>
+      <div class="l-aksi">
+        <button class="btn-keluar btn-utama" id="lMasuk" type="button">Masuk</button>
+        <button class="btn-keluar" id="lDaftar" type="button">Daftar sebagai siswa</button>
+      </div>
+    </div>
+    <div class="l-gambar"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#gedung"/></svg></div>
+  </div>
+
+  <div class="l-bagian">
+    <h2>Yang bisa Anda lakukan</h2>
+    <div class="l-fitur">
+      <div class="f" style="--i:0"><span>📝</span><b>Ujian Online</b><small>Kerjakan ujian dari HP atau laptop, nilai langsung tercatat.</small></div>
+      <div class="f" style="--i:1"><span>📬</span><b>Arsip Surat</b><small>Surat masuk dan keluar tersimpan rapi dan mudah dicari.</small></div>
+      <div class="f" style="--i:2"><span>🕘</span><b>Presensi</b><small>Catat kehadiran tanpa kertas, rekap otomatis.</small></div>
+      <div class="f" style="--i:3"><span>📢</span><b>Pengumuman</b><small>Informasi terbaru sekolah di satu papan.</small></div>
+    </div>
+  </div>
+
+  <div class="l-bagian">
+    <h2>Cara bergabung</h2>
+    <div class="l-langkah">
+      <div class="s"><i>1</i><b>Klik Masuk atau Daftar</b><small>Lalu pilih akun Google yang Anda pakai.</small></div>
+      <div class="s"><i>2</i><b>Siswa: isi nama dan kode</b><small>Kode pendaftaran dibagikan oleh guru di kelas. Guru dan staf didaftarkan oleh admin.</small></div>
+      <div class="s"><i>3</i><b>Mulai pakai</b><small>Semua aplikasi sekolah langsung terbuka di beranda.</small></div>
+    </div>
+  </div>
+
+  <div class="l-kaki">Portal Sekolah</div>
+</section>
 
 <!-- ===================== LOGIN ===================== -->
 <section id="login">
@@ -336,6 +409,7 @@
       <button type="submit" class="btn-keluar btn-utama" id="dKirim" style="width:100%">Daftar sebagai siswa</button>
     </form>
     <p class="bantuan">Belum bisa masuk? Minta admin sekolah mendaftarkan email Anda.</p>
+    <p class="bantuan"><button type="button" class="mini-btn" id="lKembali">Kembali ke beranda</button></p>
   </div>
 </section>
 
@@ -461,6 +535,7 @@ const BULAN = {Jan:'Jan',Feb:'Feb',Mar:'Mar',Apr:'Apr',May:'Mei',Jun:'Jun',Jul:'
 function tglID(s){ return String(s || '').replace(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\b/, (m) => BULAN[m]); }
 
 function tampil(nama){
+  $('landing').classList.toggle('hidden', nama !== 'landing');
   $('login').classList.toggle('hidden', nama !== 'login');
   $('beranda').classList.toggle('hidden', nama !== 'beranda');
   window.scrollTo(0, 0);
@@ -672,7 +747,7 @@ $('btnKeluar').onclick = () => {
   clearInterval(timerJam);
   if(window.google && google.accounts && google.accounts.id) google.accounts.id.disableAutoSelect();
   errorLogin('');
-  tampil('login');
+  tampil('landing');
 };
 
 /* ---------- Google Sign-In ---------- */
@@ -1061,10 +1136,16 @@ $('formDaftar').addEventListener('submit', async (e) => {
   tb.disabled = false; tb.textContent = 'Daftar sebagai siswa';
 });
 
+/* ---------- Landing ---------- */
+$('temaLanding').onclick = ubahTema;
+$('lMasuk').onclick = () => { errorLogin(''); tampil('login'); };
+$('lDaftar').onclick = () => { errorLogin(''); tampil('login'); };
+$('lKembali').onclick = () => { errorLogin(''); tampil('landing'); };
+
 /* ---------- Mulai ---------- */
 (function(){
   const tersimpan = sesi.get();
-  if(tersimpan) masuk(tersimpan); else tampil('login');
+  if(tersimpan) masuk(tersimpan); else tampil('landing');
   mulaiGoogle();
 })();
 </script>
