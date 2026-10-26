@@ -258,6 +258,9 @@
   .emoji-grid button{height:42px;font-size:1.35rem;background:var(--kartu);border:2px solid var(--titik);border-radius:10px}
   .emoji-grid button:hover{border-color:var(--tinta);background:var(--biru-muda)}
   .dlg-aksi{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
+  .ppdb-sek{font-family:var(--display);font-weight:800;font-size:1.05rem;margin:20px 0 12px;padding-top:14px;border-top:2px dashed var(--titik)}
+  .ppdb-sek:first-of-type{margin-top:0;padding-top:0;border-top:0}
+  @media (max-width:520px){.dua{grid-template-columns:1fr}}
   .info-kotak{margin-top:14px;padding:12px 14px;background:var(--biru-muda);border-radius:10px;white-space:pre-line;font-size:.92rem}
   #toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--tinta);color:var(--kertas);padding:12px 18px;border-radius:12px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:100;max-width:calc(100vw - 32px)}
   #toast.tampil{opacity:1;transform:translate(-50%,0)}
@@ -685,6 +688,17 @@
 </section>
 
 <!-- ===================== LOGIN ===================== -->
+<dialog id="dlgPpdb">
+  <form id="ppdbForm" class="dlg-isi" novalidate>
+    <h2>Pendaftaran kelas 7</h2>
+    <div id="ppdbBadan"></div>
+    <p id="ppdbError" class="pesan-error hidden" role="alert"></p>
+    <div class="dlg-aksi">
+      <button type="button" class="btn-keluar" id="ppdbBatal">Batal</button>
+      <button type="submit" class="btn-keluar btn-utama" id="ppdbKirim">Kirim pendaftaran</button>
+    </div>
+  </form>
+</dialog>
 <section id="login">
   <button class="btn-ikon tema-login" id="temaLogin" type="button" aria-label="Ganti tema terang atau gelap">
     <svg class="i-matahari" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
@@ -1518,7 +1532,7 @@ function renderPpdb(){
   const list = (kdata.ppdb || []).slice().sort((a, b) => String(b.waktu).localeCompare(String(a.waktu)));
   const hitung = (s) => list.filter(x => (x.status || 'baru') === s).length;
   $('admIsi').innerHTML = '<div class="alat"><button class="btn-keluar" type="button" data-aksi="p-unduh">Unduh data (CSV)</button><span class="info-kecil">' + list.length + ' pendaftar: ' + hitung('baru') + ' baru, ' + hitung('diterima') + ' diterima, ' + hitung('cadangan') + ' cadangan, ' + hitung('ditolak') + ' ditolak. Data pribadi, jangan dibagikan.</span></div><div class="daftar">' +
-    (list.length ? list.map(x => '<div class="baris"><div class="baris-utama"><b>' + esc(x.nama) + '</b><small>' + esc(x.asal_sekolah) + ' · wali: ' + esc(x.nama_wali) + ' · ' + esc(x.hp_wali) + '</small><small>' + esc(x.waktu) + '</small></div><span class="chip">' + esc(x.status || 'baru') + '</span><span class="baris-aksi"><button class="mini-btn" type="button" data-aksi="p-status" data-id="' + esc(x.id) + '">Detail</button><button class="mini-btn merah" type="button" data-aksi="k-hapus" data-id="' + esc(x.id) + '">Hapus</button></span></div>').join('') : '<p class="kosong">Belum ada pendaftar.</p>') + '</div>';
+    (list.length ? list.map(x => '<div class="baris"><div class="baris-utama"><b>' + esc(x.nama) + '</b><small>' + esc(x.asal_sekolah) + ' · ortu: ' + esc(x.nama_ayah || x.nama_ibu || x.nama_wali) + ' · ' + esc(x.hp_wali) + '</small><small>' + esc(x.waktu) + '</small></div><span class="chip">' + esc(x.status || 'baru') + '</span><span class="baris-aksi"><button class="mini-btn" type="button" data-aksi="p-status" data-id="' + esc(x.id) + '">Detail</button><button class="mini-btn merah" type="button" data-aksi="k-hapus" data-id="' + esc(x.id) + '">Hapus</button></span></div>').join('') : '<p class="kosong">Belum ada pendaftar.</p>') + '</div>';
 }
 function formKonten(tab, item){
   const c = KT[tab];
@@ -1540,14 +1554,21 @@ function formStatus(item){
   const baris = [['Nomor', 'PPDB-' + String(item.id).substring(0, 6).toUpperCase()], ['Nama', item.nama], ['Jenis kelamin', item.jenis_kelamin], ['Tempat, tanggal lahir', item.tempat_lahir + ', ' + item.tanggal_lahir], ['Asal sekolah', item.asal_sekolah], ['Orang tua/wali', item.nama_wali], ['HP/WhatsApp', item.hp_wali], ['Alamat', item.alamat], ['Daftar pada', item.waktu]];
   bukaForm({
     judul: 'Detail pendaftar', tombol: 'Simpan status',
-    badan: '<div class="info-kotak" style="margin:0 0 14px">' + baris.map(x => esc(x[0] + ': ' + x[1])).join('\n') + '</div>' +
+    badan: '<div class="info-kotak" style="margin:0 0 14px;max-height:46vh;overflow:auto">' + rincianPpdb(item).map(x => esc(x[0] + ': ' + (x[1] || '-'))).join('\n') + '</div>' +
       '<label class="fld"><span>Status</span><select class="in" id="kf_status">' + ['baru', 'diterima', 'cadangan', 'ditolak'].map(s => '<option value="' + s + '"' + ((item.status || 'baru') === s ? ' selected' : '') + '>' + s + '</option>').join('') + '</select></label>' +
       '<label class="fld"><span>Catatan (opsional)</span><textarea class="in" id="kf_catatan" rows="2" maxlength="300">' + esc(item.catatan || '') + '</textarea></label>',
     simpan: () => api('admin_ppdb_status', { id: item.id, status: $('kf_status').value, catatan: $('kf_catatan').value })
   });
 }
+function rincianPpdb(x){
+  return [['Nomor', 'PPDB-' + String(x.id).substring(0, 6).toUpperCase()], ['Nama', x.nama], ['NIK', x.nik], ['No. KK', x.no_kk], ['Jenis kelamin', x.jenis_kelamin],
+    ['Tempat, tgl lahir', (x.tempat_lahir || '-') + ', ' + (x.tanggal_lahir || '-')], ['Asal sekolah', x.asal_sekolah], ['Alamat', x.alamat],
+    ['Ayah', x.nama_ayah], ['Ibu kandung', x.nama_ibu], ['Wali', x.nama_wali], ['Pekerjaan ortu', x.pekerjaan_ortu], ['Penghasilan ortu', x.penghasilan_ortu], ['HP', x.hp_wali],
+    ['Tinggi / berat', (x.tinggi_badan || '-') + ' cm / ' + (x.berat_badan || '-') + ' kg'], ['Jarak / waktu tempuh', (x.jarak_km || '-') + ' km / ' + (x.waktu_tempuh || '-') + ' menit'],
+    ['Jumlah saudara', x.jumlah_saudara], ['KIP/PKH', x.kip_pkh], ['Hobi', x.hobi], ['Cita-cita', x.cita_cita], ['Daftar pada', x.waktu]];
+}
 function unduhPpdb(){
-  const kol = ['id', 'waktu', 'nama', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'asal_sekolah', 'nama_wali', 'hp_wali', 'alamat', 'status', 'catatan'];
+  const kol = ['id', 'waktu', 'nama', 'nik', 'no_kk', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'asal_sekolah', 'alamat', 'hp_wali', 'nama_ayah', 'nama_ibu', 'pekerjaan_ortu', 'penghasilan_ortu', 'nama_wali', 'tinggi_badan', 'berat_badan', 'jarak_km', 'waktu_tempuh', 'jumlah_saudara', 'kip_pkh', 'hobi', 'cita_cita', 'status', 'catatan'];
   const aman = (v) => { const s = String(v == null ? '' : v); return '"' + (/^[=+\-@]/.test(s) ? "'" + s : s).replace(/"/g, '""') + '"'; };
   const csv = '\ufeff' + [kol].concat((kdata.ppdb || []).map(r => kol.map(k => r[k]))).map(r => r.map(aman).join(',')).join('\r\n');
   const a = document.createElement('a');
@@ -1687,6 +1708,71 @@ const FORM_PPDB =
   '<p class="pesan-error hidden w" id="pdError" role="alert"></p>' +
   '<button class="lp-btn utama besar w" type="submit" id="pdKirim">Kirim pendaftaran</button></form>';
 
+const CTA_PPDB = '<div class="lp-form"><div class="w"><h3 style="font-family:var(--display);font-size:1.5rem;color:var(--lt);margin-bottom:8px">Siap mendaftar?</h3><p style="color:var(--lm);margin-bottom:16px">Siapkan NIK dan nomor KK calon siswa, serta data orang tua. Pengisian sekitar 5 menit.</p><button class="lp-btn utama besar" type="button" data-ppdb="buka">Daftar sekarang</button></div></div>';
+
+const HOBI = ['Belanja','Berkemah','Berlari','Bermain Biola','Bermain Bola','Bermain Bola Tenis','Bermain Boneka','Bermain Bulu Tangkis','Bermain Gitar','Bermain Musik','Bermain Piano','Berselancar','Fitness','Fotografi','Jogging','Kesenian','Main Puzzle','Makan','Memancing','Membaca','Mendaki','Menggambar','Menjahit','Menulis','Mewarnai','Olah Raga','Traveling','Lainnya'];
+const CITA = ['Arsitek','Astronot','Atlet','Atlet E-Sport Profesional','Atlit Olahraga','Bidan','Content Creator',"Da'i / Ustadz",'Designer','Dokter','Entertainer / Pekerja Seni','Guru/Dosen','Koki','Masinis Kereta Api','Pegawai Negeri Sipil / PNS','Pelaut','Pemadam Kebakaran','Pembalap','Pembawa Acara / Master Ceremony','Pendeta','Pengacara','Penghafal Al-Qur\'an','Pengusaha / Bisnismen','Penulis','Penyiar Radio','Perawat','Perawat / Suster','Pilot','PNS','Polisi','Politikus','Presiden','Seni/Lukis/Artis/Sejenis','TNI/Polri','Translator','Vloger','Wartawan','Wiraswasta','Lainnya'];
+const PEKERJAAN = ['Tidak bekerja','Petani','Nelayan','Peternak','Pedagang kecil','Pedagang besar','Wiraswasta','Karyawan swasta','Buruh','Guru/Dosen','PNS/TNI/Polri','Pensiunan','Sudah meninggal','Lainnya'];
+const PENGHASILAN = ['Tidak berpenghasilan','Kurang dari Rp 500.000','Rp 500.000 - Rp 999.999','Rp 1.000.000 - Rp 1.999.999','Rp 2.000.000 - Rp 4.999.999','Rp 5.000.000 - Rp 20.000.000','Lebih dari Rp 20.000.000'];
+const KIPPKH = ['Tidak ada','KIP','PKH','KIP dan PKH'];
+const KUNCI_PPDB = ['nama','nik','no_kk','jenis_kelamin','tanggal_lahir','tempat_lahir','asal_sekolah','alamat','nama_ayah','nama_ibu','pekerjaan_ortu','penghasilan_ortu','nama_wali','hp_wali','tinggi_badan','berat_badan','jarak_km','waktu_tempuh','jumlah_saudara','kip_pkh','hobi','cita_cita'];
+
+function bukaPpdb(){
+  const pil = (a) => '<option value="">Pilih</option>' + a.map((x) => '<option>' + esc(x) + '</option>').join('');
+  const f = (k, label, isi, tip) => '<label class="fld"><span>' + label + '</span>' + isi + (tip ? '<small class="tip">' + tip + '</small>' : '') + '</label>';
+  const inp = (k, ex) => '<input class="in" id="pp_' + k + '" ' + (ex || '') + ' autocomplete="off">';
+  const sel = (k, a) => '<select class="in" id="pp_' + k + '">' + pil(a) + '</select>';
+  const angka = (k, maks, ex) => inp(k, 'type="text" inputmode="decimal" maxlength="' + maks + '" ' + (ex || ''));
+  $('ppdbBadan').innerHTML =
+    '<h3 class="ppdb-sek">Data calon siswa</h3>' +
+    f('nama', 'Nama lengkap', inp('nama', 'maxlength="100"')) +
+    '<div class="dua">' + f('nik', 'NIK', inp('nik', 'inputmode="numeric" maxlength="16"'), '16 angka, sesuai KK') + f('no_kk', 'Nomor KK', inp('no_kk', 'inputmode="numeric" maxlength="16"'), '16 angka') + '</div>' +
+    '<div class="dua">' + f('jenis_kelamin', 'Jenis kelamin', sel('jenis_kelamin', ['Laki-laki', 'Perempuan'])) + f('tanggal_lahir', 'Tanggal lahir', inp('tanggal_lahir', 'type="date"')) + '</div>' +
+    '<div class="dua">' + f('tempat_lahir', 'Tempat lahir', inp('tempat_lahir', 'maxlength="60"')) + f('asal_sekolah', 'Asal SD/MI', inp('asal_sekolah', 'maxlength="100"')) + '</div>' +
+    f('alamat', 'Alamat tempat tinggal', '<textarea class="in" id="pp_alamat" rows="3" maxlength="300"></textarea>') +
+    '<h3 class="ppdb-sek">Orang tua / wali</h3>' +
+    '<div class="dua">' + f('nama_ayah', 'Nama ayah', inp('nama_ayah', 'maxlength="100"')) + f('nama_ibu', 'Nama ibu kandung', inp('nama_ibu', 'maxlength="100"')) + '</div>' +
+    '<div class="dua">' + f('pekerjaan_ortu', 'Pekerjaan orang tua', sel('pekerjaan_ortu', PEKERJAAN)) + f('penghasilan_ortu', 'Penghasilan orang tua', sel('penghasilan_ortu', PENGHASILAN)) + '</div>' +
+    '<div class="dua">' + f('nama_wali', 'Nama wali (jika ada)', inp('nama_wali', 'maxlength="100"'), 'Kosongkan jika tidak ada') + f('hp_wali', 'No. telepon / HP', inp('hp_wali', 'type="tel" inputmode="tel" maxlength="20"'), 'Yang aktif WhatsApp') + '</div>' +
+    '<h3 class="ppdb-sek">Kondisi calon siswa</h3>' +
+    '<div class="dua">' + f('tinggi_badan', 'Tinggi badan (cm)', angka('tinggi_badan', 5)) + f('berat_badan', 'Berat badan (kg)', angka('berat_badan', 5)) + '</div>' +
+    '<div class="dua">' + f('jarak_km', 'Jarak ke sekolah (km)', angka('jarak_km', 5)) + f('waktu_tempuh', 'Waktu tempuh (menit)', angka('waktu_tempuh', 3)) + '</div>' +
+    '<div class="dua">' + f('jumlah_saudara', 'Jumlah saudara kandung', angka('jumlah_saudara', 2)) + f('kip_pkh', 'Memiliki KIP / PKH', sel('kip_pkh', KIPPKH)) + '</div>' +
+    '<h3 class="ppdb-sek">Hobi dan cita-cita</h3>' +
+    '<div class="dua">' + f('hobi', 'Hobi', sel('hobi', HOBI)) + f('cita_cita', 'Cita-cita', sel('cita_cita', CITA)) + '</div>' +
+    '<div aria-hidden="true" style="position:absolute;left:-9999px"><input id="pp_web" tabindex="-1" autocomplete="off"></div>' +
+    '<p class="tip-besar">Data hanya dipakai sekolah untuk proses penerimaan siswa baru.</p>';
+  $('ppdbError').classList.add('hidden');
+  $('ppdbKirim').classList.remove('hidden'); $('ppdbKirim').disabled = false; $('ppdbKirim').textContent = 'Kirim pendaftaran';
+  $('ppdbBatal').textContent = 'Batal';
+  $('dlgPpdb').showModal();
+  $('pp_nama').focus();
+}
+document.addEventListener('click', (e) => { if (e.target.closest('[data-ppdb="buka"]')) bukaPpdb(); });
+$('ppdbBatal').onclick = () => $('dlgPpdb').close();
+$('dlgPpdb').addEventListener('click', (e) => { if (e.target === $('dlgPpdb')) $('dlgPpdb').close(); });
+$('ppdbForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const tb = $('ppdbKirim'), er = $('ppdbError');
+  if (!$('pp_nama')) return;
+  er.classList.add('hidden'); tb.disabled = true; tb.textContent = 'Mengirim...';
+  const data = {};
+  KUNCI_PPDB.forEach((k) => { data[k] = $('pp_' + k).value; });
+  try {
+    const res = await fetch(CONFIG.API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ aksi: 'ppdb_daftar', web: $('pp_web').value, data: data }) });
+    const r = await res.json();
+    if (!r.ok) throw new Error(r.error || 'Gagal mengirim pendaftaran.');
+    $('ppdbBadan').innerHTML = '<h3 class="ppdb-sek">Pendaftaran terkirim</h3><p>Nomor pendaftaran Anda:</p><p class="info-kotak" style="font-size:1.6rem;font-weight:800;text-align:center">' + esc(r.nomor) + '</p><p style="margin-top:12px">Simpan nomor ini. Sekolah akan menghubungi lewat nomor HP yang didaftarkan. Setelah diterima, minta kode akses ke sekolah, lalu klik Masuk untuk membuka aplikasi sekolah.</p>';
+    tb.classList.add('hidden'); $('ppdbBatal').textContent = 'Tutup';
+    return;
+  } catch (err) {
+    er.textContent = err.message || 'Tidak bisa terhubung ke server.';
+    er.classList.remove('hidden');
+    $('dlgPpdb').querySelector('.dlg-isi').scrollTop = 1e6;
+  }
+  tb.disabled = false; tb.textContent = 'Kirim pendaftaran';
+});
+
 function gambarLanding(d){
   dataLP = d;
   const p = d.pengaturan || {};
@@ -1694,7 +1780,7 @@ function gambarLanding(d){
   const slider = d.slider || [], berita = d.berita || [], guru = d.guru || [], testi = d.testimoni || [], peng = d.pengumuman || [];
   const buka = String(p.ppdb_buka || 'ya').trim().toLowerCase() !== 'tidak';
 
-  const tombol = '<a class="lp-btn utama besar" href="#h-ppdb">Daftar Kelas 7</a><button class="lp-btn besar" type="button" data-lp="masuk">Masuk ke portal</button>';
+  const tombol = '<button class="lp-btn utama besar" type="button" data-ppdb="buka">Daftar Kelas 7</button><button class="lp-btn besar" type="button" data-lp="masuk">Masuk ke portal</button>';
   const lencana = '<span class="lp-lencana"><i></i> ' + (buka ? 'PPDB kelas 7 dibuka' : 'Portal resmi sekolah') + '</span>';
   const slides = slider.length ? slider : [{ judul: sek, teks: p.tagline || 'Semua layanan sekolah dalam satu pintu.' }];
   const slideHtml = (s, i) => '<div class="hs-s' + (i === 0 ? ' on' : '') + '">' + (fotoUrl(s.foto) ? '<img class="hs-img" alt="" ' + (i ? 'loading="lazy" ' : '') + 'referrerpolicy="no-referrer" src="' + esc(fotoUrl(s.foto)) + '">' : '') +
@@ -1734,7 +1820,7 @@ function gambarLanding(d){
 
   const hPpdb = '<section class="lp-sec" id="h-ppdb"><p class="kecil">PPDB</p><h2 class="rv">Pendaftaran siswa baru kelas 7</h2><p class="lead">' + esc(p.ppdb_info || 'Isi formulir berikut untuk mendaftar.') + '</p><div class="pd">' +
     '<div class="pd-info rv"><h3>Alur pendaftaran</h3><ol><li>Isi formulir pendaftaran.</li><li>Simpan nomor pendaftaran yang muncul.</li><li>Sekolah menghubungi wali lewat nomor HP yang didaftarkan.</li><li>Setelah diterima, minta kode akses dari sekolah, klik Masuk, lalu daftar akun siswa untuk membuka aplikasi sekolah.</li></ol></div>' +
-    '<div id="pdBox" class="rv">' + (buka ? FORM_PPDB : '<div class="lp-form"><p class="w">Pendaftaran sedang ditutup. Hubungi sekolah untuk informasi lebih lanjut.</p></div>') + '</div></div></section>';
+    '<div id="pdBox" class="rv">' + (buka ? CTA_PPDB : '<div class="lp-form"><p class="w">Pendaftaran sedang ditutup. Hubungi sekolah untuk informasi lebih lanjut.</p></div>') + '</div></div></section>';
 
   const alamat = p.alamat || '';
   const hKontak = '<section class="lp-sec" id="h-kontak"><p class="kecil">Kontak</p><h2 class="rv">Hubungi kami</h2><p class="lead">Ada kendala masuk atau pendaftaran? Hubungi sekolah.</p><div class="lp-kontak"><div class="lp-info rv">' +
