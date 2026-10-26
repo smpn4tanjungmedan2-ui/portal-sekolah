@@ -1580,7 +1580,7 @@ async function simpanProfil(t){
 function renderPpdb(){
   const list = (kdata.ppdb || []).slice().sort((a, b) => String(b.waktu).localeCompare(String(a.waktu)));
   const hitung = (s) => list.filter(x => (x.status || 'baru') === s).length;
-  $('admIsi').innerHTML = '<div class="alat"><button class="btn-keluar" type="button" data-aksi="p-unduh">Unduh data (CSV)</button><span class="info-kecil">' + list.length + ' pendaftar: ' + hitung('baru') + ' baru, ' + hitung('diterima') + ' diterima, ' + hitung('cadangan') + ' cadangan, ' + hitung('ditolak') + ' ditolak. Data pribadi, jangan dibagikan.</span></div><div class="daftar">' +
+  $('admIsi').innerHTML = '<div class="alat"><button class="btn-keluar" type="button" data-aksi="p-unduh">Unduh data (CSV)</button><button class="btn-keluar btn-utama" type="button" data-aksi="p-cetak-semua">Cetak semua (PDF)</button><span class="info-kecil">' + list.length + ' pendaftar: ' + hitung('baru') + ' baru, ' + hitung('diterima') + ' diterima, ' + hitung('cadangan') + ' cadangan, ' + hitung('ditolak') + ' ditolak. Data pribadi, jangan dibagikan.</span></div><div class="daftar">' +
     (list.length ? list.map(x => '<div class="baris"><div class="baris-utama"><b>' + esc(x.nama) + '</b><small>' + esc(x.asal_sekolah) + ' · ortu: ' + esc(x.nama_ayah || x.nama_ibu || x.nama_wali) + ' · ' + esc(x.hp_wali) + '</small><small>' + esc(x.waktu) + '</small></div><span class="chip">' + esc(x.status || 'baru') + '</span><span class="baris-aksi"><button class="mini-btn" type="button" data-aksi="p-status" data-id="' + esc(x.id) + '">Detail</button><button class="mini-btn merah" type="button" data-aksi="k-hapus" data-id="' + esc(x.id) + '">Hapus</button></span></div>').join('') : '<p class="kosong">Belum ada pendaftar.</p>') + '</div>';
 }
 function urutBerikut(tab){
@@ -1609,7 +1609,9 @@ function formStatus(item){
     judul: 'Detail pendaftar', tombol: 'Simpan status',
     badan: '<div class="info-kotak" style="margin:0 0 14px;max-height:46vh;overflow:auto">' + rincianPpdb(item).map(x => esc(x[0] + ': ' + (x[1] || '-'))).join('\n') + '</div>' +
       '<label class="fld"><span>Status</span><select class="in" id="kf_status">' + ['baru', 'diterima', 'cadangan', 'ditolak'].map(s => '<option value="' + s + '"' + ((item.status || 'baru') === s ? ' selected' : '') + '>' + s + '</option>').join('') + '</select></label>' +
-      '<label class="fld"><span>Catatan (opsional)</span><textarea class="in" id="kf_catatan" rows="2" maxlength="300">' + esc(item.catatan || '') + '</textarea></label>',
+      '<label class="fld"><span>Catatan (opsional)</span><textarea class="in" id="kf_catatan" rows="2" maxlength="300">' + esc(item.catatan || '') + '</textarea></label>' +
+      '<button type="button" class="btn-keluar" id="kf_cetak">Cetak / simpan PDF</button>',
+    siap: () => { $('kf_cetak').onclick = () => cetakIdentitas([item]); },
     simpan: () => api('admin_ppdb_status', { id: item.id, status: $('kf_status').value, catatan: $('kf_catatan').value })
   });
 }
@@ -1619,6 +1621,48 @@ function rincianPpdb(x){
     ['Ayah', x.nama_ayah], ['Ibu kandung', x.nama_ibu], ['Wali', x.nama_wali], ['Pekerjaan ortu', x.pekerjaan_ortu], ['Penghasilan ortu', x.penghasilan_ortu], ['HP', x.hp_wali],
     ['Tinggi / berat', (x.tinggi_badan || '-') + ' cm / ' + (x.berat_badan || '-') + ' kg'], ['Jarak / waktu tempuh', (x.jarak_km || '-') + ' km / ' + (x.waktu_tempuh || '-') + ' menit'],
     ['Jumlah saudara', x.jumlah_saudara], ['KIP/PKH', x.kip_pkh], ['Hobi', x.hobi], ['Cita-cita', x.cita_cita], ['Daftar pada', x.waktu]];
+}
+function cetakIdentitas(daftar){
+  if (!daftar || !daftar.length) return;
+  const w = window.open('', '_blank');
+  if (!w) { alert('Izinkan pop-up untuk situs ini, lalu coba lagi.'); return; }
+  const lp = (typeof dataLP !== 'undefined' && dataLP) ? dataLP : {};
+  const p = lp.pengaturan || {};
+  const sek = String(lp.sekolah || 'Portal Sekolah');
+  const hariIniTeks = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+  const tgl = (s) => (typeof tglPanjang === 'function' && s) ? tglPanjang(s) : (s || '-');
+  const hal = daftar.map((x) => {
+    const v = (k) => (x[k] == null || String(x[k]).trim() === '') ? '-' : String(x[k]);
+    const nomor = x.nomor || ('PPDB-' + String(x.id || '').substring(0, 6).toUpperCase());
+    const isi = [
+      ['Nomor pendaftaran', nomor], ['Nama lengkap peserta didik', v('nama')], ['NIK', v('nik')], ['Nomor KK', v('no_kk')],
+      ['Tempat, tanggal lahir', v('tempat_lahir') + ', ' + tgl(x.tanggal_lahir)], ['Jenis kelamin', v('jenis_kelamin')],
+      ['Asal sekolah (SD/MI)', v('asal_sekolah')], ['Alamat tempat tinggal', v('alamat')], ['Nomor telepon / HP', v('hp_wali')],
+      ['Nama ayah', v('nama_ayah')], ['Nama ibu kandung', v('nama_ibu')], ['Pekerjaan orang tua', v('pekerjaan_ortu')],
+      ['Penghasilan orang tua', v('penghasilan_ortu')], ['Nama wali (jika ada)', v('nama_wali')],
+      ['Tinggi / berat badan', v('tinggi_badan') + ' cm / ' + v('berat_badan') + ' kg'],
+      ['Jarak / waktu tempuh ke sekolah', v('jarak_km') + ' km / ' + v('waktu_tempuh') + ' menit'],
+      ['Jumlah saudara kandung', v('jumlah_saudara')], ['Memiliki KIP / PKH', v('kip_pkh')],
+      ['Hobi', v('hobi')], ['Cita-cita', v('cita_cita')], ['Tanggal mendaftar', v('waktu')]
+    ];
+    const baris = isi.map((r, i) => '<tr><td class="n">' + (i + 1) + '.</td><td>' + esc(r[0]) + '</td><td class="t">:</td><td>' + esc(r[1]) + '</td></tr>').join('');
+    return '<section class="hal"><div class="kop">' + esc(sek.toUpperCase()) + '</div><h1>IDENTITAS PESERTA DIDIK</h1><table>' + baris + '</table>' +
+      '<div class="ttd"><div class="foto">Pas foto<br>3 x 4</div><div><p>Orang tua / wali,</p><div class="sp"></div><p>(................................)</p></div>' +
+      '<div><p>Tanjung Medan, ' + esc(hariIniTeks) + '</p><p>Kepala Sekolah,</p><div class="sp"></div><p><u>' + esc(p.kepsek_nama || '................................') + '</u></p><p>NIP. ................................</p></div></div></section>';
+  }).join('');
+  const css = '@page{size:A4;margin:16mm}body{font-family:Arial,Helvetica,sans-serif;font-size:12.5px;color:#000;margin:0}' +
+    '.info{background:#fff7d6;border:1px solid #e5c100;padding:10px 14px;margin:10px;border-radius:8px;font-size:13px}' +
+    '.hal{page-break-after:always;max-width:720px;margin:0 auto;padding:10px 20px}.hal:last-of-type{page-break-after:auto}' +
+    '.kop{text-align:center;font-weight:700;letter-spacing:.04em;margin-bottom:4px}h1{text-align:center;font-size:15px;text-decoration:underline;margin:6px 0 18px}' +
+    'table{width:100%;border-collapse:collapse}td{padding:4px;vertical-align:top;line-height:1.4}td.n{width:28px}td.t{width:12px}td:nth-child(2){width:230px}' +
+    '.ttd{display:flex;justify-content:space-between;gap:20px;margin-top:30px;align-items:flex-end}.ttd>div{width:31%}.ttd p{margin:2px 0}.sp{height:62px}' +
+    '.ttd>.foto{width:30mm;height:40mm;border:1px solid #000;display:flex;align-items:center;justify-content:center;text-align:center;font-size:11px}' +
+    '@media print{.info{display:none}}';
+  const judul = daftar.length === 1 ? 'Identitas ' + (daftar[0].nama || '') : 'Identitas Peserta Didik PPDB';
+  w.document.write('<!doctype html><html lang="id"><head><meta charset="utf-8"><title>' + esc(judul) + '</title><style>' + css + '</style></head><body>' +
+    '<p class="info">Di jendela cetak, pilih Tujuan: <b>Simpan sebagai PDF</b>, lalu klik Simpan.</p>' + hal + '</body></html>');
+  w.document.close();
+  setTimeout(() => { w.focus(); w.print(); }, 500);
 }
 function unduhPpdb(){
   const kol = ['id', 'waktu', 'nama', 'nik', 'no_kk', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'asal_sekolah', 'alamat', 'hp_wali', 'nama_ayah', 'nama_ibu', 'pekerjaan_ortu', 'penghasilan_ortu', 'nama_wali', 'tinggi_badan', 'berat_badan', 'jarak_km', 'waktu_tempuh', 'jumlah_saudara', 'kip_pkh', 'hobi', 'cita_cita', 'status', 'catatan'];
@@ -1636,6 +1680,7 @@ async function aksiKonten(t){
   if (aksi === 'k-tambah') { formKonten(tab); return; }
   if (aksi === 'p-simpan') { simpanProfil(t); return; }
   if (aksi === 'p-unduh') { unduhPpdb(); return; }
+  if (aksi === 'p-cetak-semua') { cetakIdentitas((kdata.ppdb || []).slice().sort((a, b) => String(a.nama).localeCompare(String(b.nama)))); return; }
   const item = t.dataset.id && kdata ? (kdata[tab] || []).find(x => String(x.id) === t.dataset.id) : null;
   if (!item) return;
   if (aksi === 'k-edit') formKonten(tab, item);
@@ -1816,6 +1861,8 @@ $('ppdbForm').addEventListener('submit', async (e) => {
     const r = await res.json();
     if (!r.ok) throw new Error(r.error || 'Gagal mengirim pendaftaran.');
     $('ppdbBadan').innerHTML = '<h3 class="ppdb-sek">Pendaftaran terkirim</h3><p>Nomor pendaftaran Anda:</p><p class="info-kotak" style="font-size:1.6rem;font-weight:800;text-align:center">' + esc(r.nomor) + '</p><p style="margin-top:12px">Simpan nomor ini. Sekolah akan menghubungi lewat nomor HP yang didaftarkan. Setelah diterima, minta kode akses ke sekolah, lalu klik Masuk untuk membuka aplikasi sekolah.</p>';
+       $('ppdbBadan').insertAdjacentHTML('beforeend', '<p style="margin-top:14px"><button class="btn-keluar btn-utama" type="button" id="ppdbCetak">Simpan bukti pendaftaran (PDF)</button></p>');
+    $('ppdbCetak').onclick = () => cetakIdentitas([Object.assign({}, data, { nomor: r.nomor, waktu: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) })]);
     tb.classList.add('hidden'); $('ppdbBatal').textContent = 'Tutup';
     return;
   } catch (err) {
