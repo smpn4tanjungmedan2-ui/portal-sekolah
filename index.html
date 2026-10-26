@@ -332,6 +332,13 @@
   #landing .l-fitur .f small,#landing .l-langkah .s small,#landing .l-kaki{color:var(--lm)}
   #landing .l-langkah .s i{background:var(--la);border:0;color:#fff}
   html{scroll-behavior:smooth}
+  *{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--la) 65%,transparent) transparent}
+  @supports not (scrollbar-width:thin){
+    *::-webkit-scrollbar{width:9px;height:9px}
+    *::-webkit-scrollbar-track{background:transparent}
+    *::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--la) 65%,transparent);border-radius:99px;border:2px solid transparent;background-clip:content-box}
+    *::-webkit-scrollbar-button{display:none}
+  }
   .lp-nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:12px}
   .lp-nav-in{max-width:1180px;margin:0 auto;padding:8px 10px 8px 16px;display:flex;align-items:center;gap:6px;border-radius:999px;background:color-mix(in srgb,var(--lb) 14%,transparent);-webkit-backdrop-filter:blur(12px) saturate(1.5);backdrop-filter:blur(12px) saturate(1.5);border:1px solid rgba(255,255,255,.22);transition:background .35s}
   .lp-nav.solid .lp-nav-in{background:color-mix(in srgb,var(--lb) 80%,transparent);border-color:var(--lg)}
