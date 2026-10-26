@@ -308,6 +308,10 @@
   body:has(#landing:not(.hidden)){background:var(--lb)}
   body:has(#landing:not(.hidden))::before{display:none}
   #landing{color:var(--lt)}
+  #h-layanan.lp-dalam{max-width:1180px;margin:0 auto;padding:90px 0 20px;color:var(--tinta)}
+  .lp-dalam .rv{opacity:1!important;transform:none!important}
+  body.lp-login{overflow:hidden}
+  body.lp-login #login{position:fixed;inset:0;z-index:300;overflow:auto;background:rgba(5,10,25,.55);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
   #landing .l-bar{padding:18px 20px}
   #landing .mini{border-radius:10px}
   #landing .btn-ikon,#landing .btn-keluar{box-shadow:none;border:1px solid var(--lg);background:var(--lk);color:var(--lt);border-radius:10px}
@@ -574,7 +578,9 @@
           <svg class="i-bulan" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
         </button>
         <a class="lp-btn" href="#h-ppdb">PPDB Kelas 7</a>
-        <button class="lp-btn utama" data-lp="masuk" type="button">Masuk</button>
+        <button class="lp-btn utama" id="lpMasuk" data-lp="masuk" type="button">Masuk</button>
+        <button class="lp-btn hidden" id="lpKelola" type="button">Kelola</button>
+        <button class="lp-btn hidden" id="lpKeluar" type="button">Keluar</button>
         <button class="lp-ikon" id="lpBurger" type="button" aria-label="Menu"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
       </div>
     </div>
@@ -862,11 +868,33 @@ function urlAman(u){ return /^https?:\/\//i.test(u) ? u : '#'; }
 const BULAN = {Jan:'Jan',Feb:'Feb',Mar:'Mar',Apr:'Apr',May:'Mei',Jun:'Jun',Jul:'Jul',Aug:'Agu',Sep:'Sep',Oct:'Okt',Nov:'Nov',Dec:'Des'};
 function tglID(s){ return String(s || '').replace(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\b/, (m) => BULAN[m]); }
 
+function lepasBeranda(){
+  const m = $('mainBeranda');
+  if (m && m.closest('#lpIsi')) $('beranda').insertBefore(m, $('mainAdmin'));
+}
+function pasangBeranda(){
+  const sec = $('h-layanan');
+  if (!sec || !sesi.get()) return;
+  const m = $('mainBeranda');
+  if (!sec.contains(m)) { sec.innerHTML = ''; sec.classList.add('lp-dalam'); sec.appendChild(m); }
+  if (typeof skalaPv === 'function') skalaPv();
+}
+function navMasuk(){
+  const sudah = !!sesi.get();
+  $('lpMasuk').classList.toggle('hidden', sudah);
+  $('lpKeluar').classList.toggle('hidden', !sudah);
+  $('lpKelola').classList.toggle('hidden', !(sudah && penggunaIni && penggunaIni.peran === 'admin'));
+}
 function tampil(nama){
-  $('landing').classList.toggle('hidden', nama !== 'landing');
+  const kelola = nama === 'kelola';
+  $('landing').classList.toggle('hidden', kelola);
   $('login').classList.toggle('hidden', nama !== 'login');
-  $('beranda').classList.toggle('hidden', nama !== 'beranda');
-  window.scrollTo(0, 0);
+  $('beranda').classList.toggle('hidden', !kelola);
+  document.body.classList.toggle('lp-login', nama === 'login');
+  if (!sesi.get() && $('mainBeranda').closest('#lpIsi')) { lepasBeranda(); if (dataLP) gambarLanding(dataLP); }
+  if (nama === 'beranda') pasangBeranda();
+  navMasuk();
+  if (nama !== 'login') window.scrollTo(0, 0);
 }
 function errorLogin(teks){
   const el = $('errorLogin');
@@ -990,6 +1018,8 @@ function gambarBeranda(d){
     : '<p class="kosong" style="grid-column:1/-1">Belum ada pengumuman. Tambahkan baris baru di sheet pengumuman.</p>';
 
   mulaiLengkung();
+  navMasuk();
+  skalaPv();
 }
 
 /* ---------- Pencarian aplikasi ---------- */
@@ -1093,7 +1123,7 @@ function mulaiGoogle(){
   if(!(window.google && google.accounts && google.accounts.id)){ setTimeout(mulaiGoogle, 200); return; }
   google.accounts.id.initialize({
     client_id: CONFIG.CLIENT_ID,
-    callback: (r) => { errorLogin(''); masuk(r.credential); },
+    callback: async (r) => { errorLogin(''); await masuk(r.credential); const t = $('h-layanan'); if (t && sesi.get()) t.scrollIntoView({ behavior: 'smooth' }); },
     auto_select: true
   });
   googleSiap = true;
@@ -1140,8 +1170,9 @@ async function api(aksi, data){
   } catch (e) { return { ok: false, error: 'Tidak bisa terhubung ke server. Periksa internet Anda.' }; }
 }
 
-function bukaAdmin(){ if (!penggunaIni || penggunaIni.peran !== 'admin') return; tampilMain('admin'); muatAdmin(); }
+function bukaAdmin(){ if (!penggunaIni || penggunaIni.peran !== 'admin') return; tampil('kelola'); tampilMain('admin'); muatAdmin(); }
 async function tutupAdmin(){
+  tampil('beranda');
   tampilMain('beranda');
   if (adm.berubah) { adm.berubah = false; const r = await api('beranda'); if (r.ok) gambarBeranda(r); }
 }
@@ -1847,7 +1878,9 @@ function gambarLanding(d){
   const kaki = '<footer class="lp-foot">© ' + new Date().getFullYear() + ' ' + esc(sek) + '</footer>';
   const overlay = '<div id="brt" class="hidden"><div class="brt-top"><button type="button" class="lp-btn" data-brt-tutup="1">← Kembali</button></div><div class="brt-in" id="brtIsi"></div></div>';
 
+  lepasBeranda();
   $('lpIsi').innerHTML = hero + hAngka + hSambut + hBerita + hVideo + hAgenda + hGuru + hTesti + hPeng + hLayanan + hPpdb + hKontak + kaki + overlay;
+  pasangBeranda();
   slideNo = 0;
   bangunMenu(d);
   gambarKalender();
@@ -1922,7 +1955,7 @@ document.addEventListener('keydown', (e) => { const br = $('brt'); if (e.key ===
 $('landing').addEventListener('click', (e) => {
   const c = (s) => e.target.closest(s);
   let el;
-  if (c('[data-lp="masuk"]')) { errorLogin(''); tampil('login'); }
+  if (c('[data-lp="masuk"]')) { if (sesi.get()) { const t = $('h-layanan'); if (t) t.scrollIntoView({ behavior: 'smooth' }); } else { errorLogin(''); tampil('login'); } }
   else if ((el = c('[data-sl]'))) { keSlide(Number(el.dataset.sl)); jadwalSlide(); }
   else if ((el = c('[data-sk]'))) { keSlide(slideNo + Number(el.dataset.sk)); jadwalSlide(); }
   else if ((el = c('[data-kal]'))) {
@@ -1980,6 +2013,10 @@ $('temaLanding').onclick = ubahTema;
 $('lMasuk').onclick = () => { errorLogin(''); tampil('login'); };
 $('lDaftar').onclick = () => { errorLogin(''); tampil('login'); };
 $('lKembali').onclick = () => { errorLogin(''); tampil('landing'); };
+$('login').addEventListener('click', (e) => { if (e.target === $('login')) { errorLogin(''); tampil('landing'); } });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && document.body.classList.contains('lp-login')) { errorLogin(''); tampil('landing'); } });
+$('lpKeluar').onclick = () => $('btnKeluar').click();
+$('lpKelola').onclick = () => $('btnKelola').click();
 document.querySelectorAll('[data-lp]').forEach((b) => b.addEventListener('click', () => { errorLogin(''); tampil('login'); }));
 $('lpTema').onclick = ubahTema;
 const pengamat = 'IntersectionObserver' in window
