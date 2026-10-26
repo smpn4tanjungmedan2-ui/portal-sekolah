@@ -352,6 +352,14 @@
   .lp-ikon:hover{background:var(--lg)}
   .lp-ikon svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
   #lpBurger{display:none}
+  .lp-btn,.lp-menu a,.lp-menu .lp-dd-b{white-space:nowrap}
+  .lp-menu a,.lp-menu .lp-dd-b{padding:8px 12px}
+  .lp-menu .lp-dd-b{display:inline-flex;align-items:center;gap:4px}
+  .lp-menu .lp-dd-b svg{flex:none}
+  .lp-aksi-nav{flex:none;gap:6px;margin-left:4px}
+  .lp-aksi-nav .lp-btn{padding:0 16px}
+  .lp-logo{flex:1 1 auto}
+  @media (max-width:1240px){.lp-aksi-nav a.lp-btn{display:none}}
   .lp-hero{position:relative;min-height:100vh;display:grid;place-items:center;text-align:center;padding:130px 20px 90px;overflow:hidden;background:var(--lb);--foto:none}
   .lp-hero::before{content:'';position:absolute;inset:0;background:var(--foto) center/cover;opacity:.22}
   .lp-hero::after{content:'';position:absolute;inset:0;background:radial-gradient(60% 55% at 50% 0%,color-mix(in srgb,var(--la) 38%,transparent),transparent 72%)}
@@ -1019,6 +1027,7 @@ function gambarBeranda(d){
 
   mulaiLengkung();
   navMasuk();
+  pasangBeranda();
   skalaPv();
 }
 
