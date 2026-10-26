@@ -362,6 +362,44 @@
     .lp-menu a{padding:12px 16px}
     .lp-aksi-nav .lp-btn:not(.utama){display:none}
   }
+  html{scroll-padding-top:90px}
+  .rv{opacity:0;transform:translateY(22px);transition:opacity .7s,transform .7s cubic-bezier(.2,.8,.2,1)}
+  .rv.on{opacity:1;transform:none}
+  .lp-sec{max-width:1180px;margin:0 auto;padding:80px 20px}
+  .lp-sec .kecil{color:var(--la);font-weight:700;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+  .lp-sec h2{font-family:var(--display);font-weight:800;font-size:clamp(1.8rem,4vw,2.6rem);letter-spacing:-.03em;line-height:1.1;margin-bottom:12px;color:var(--lt)}
+  .lp-sec .lead{color:var(--lm);max-width:56ch;margin-bottom:34px}
+  .lp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+  .lp-k{padding:24px;border-radius:20px;background:var(--lk);border:1px solid var(--lg);transition:transform .25s,border-color .25s,opacity .7s}
+  .lp-k:hover{transform:translateY(-4px);border-color:var(--la)}
+  .lp-k .ik{width:48px;height:48px;display:grid;place-items:center;font-size:1.5rem;border-radius:14px;background:color-mix(in srgb,var(--la) 14%,transparent);margin-bottom:16px}
+  .lp-k b{display:block;font-size:1.08rem;margin-bottom:6px;color:var(--lt)}
+  .lp-k p{color:var(--lm);font-size:.94rem;line-height:1.55;white-space:pre-line}
+  .lp-k time{display:block;color:var(--la);font-size:.8rem;font-weight:700;margin-bottom:8px}
+  .lp-kosong{color:var(--lm)}
+  .lp-sambut{display:grid;grid-template-columns:240px 1fr;gap:40px;align-items:center;padding:36px;border-radius:28px;background:var(--lk);border:1px solid var(--lg)}
+  .lp-foto{aspect-ratio:4/5;border-radius:20px;overflow:hidden;display:grid;place-items:center;font-size:4rem;background:linear-gradient(135deg,var(--la),color-mix(in srgb,var(--la) 45%,#7c3aed))}
+  .lp-foto img{width:100%;height:100%;object-fit:cover}
+  .lp-sambut h3{font-family:var(--display);font-size:1.5rem;margin-bottom:12px;color:var(--lt)}
+  .lp-sambut p{color:var(--lm);line-height:1.7;margin-bottom:12px}
+  .lp-sambut strong{color:var(--lt)}
+  .lp-angka{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;margin-top:20px}
+  .lp-angka div{text-align:center;padding:24px 12px;border-radius:20px;background:var(--lk);border:1px solid var(--lg)}
+  .lp-angka b{display:block;font-family:var(--display);font-size:2.3rem;color:var(--la);line-height:1.1}
+  .lp-angka span{color:var(--lm);font-size:.9rem}
+  .lp-kontak{display:grid;grid-template-columns:1fr 1.4fr;gap:20px}
+  .lp-info{padding:28px;border-radius:24px;background:var(--lk);border:1px solid var(--lg);display:grid;gap:20px;align-content:start}
+  .lp-info div b{display:block;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--la);margin-bottom:4px}
+  .lp-info div span{color:var(--lt);line-height:1.5}
+  .lp-peta{border-radius:24px;overflow:hidden;border:1px solid var(--lg);min-height:340px}
+  .lp-peta iframe{display:block;width:100%;height:100%;min-height:340px;border:0}
+  .lp-foot{border-top:1px solid var(--lg);padding:28px 20px;text-align:center;color:var(--lm);font-size:.88rem}
+  @media (max-width:760px){
+    .lp-sec{padding:56px 20px}
+    .lp-sambut,.lp-kontak{grid-template-columns:1fr}
+    .lp-sambut{padding:22px}
+    .lp-foto{max-width:200px}
+  }
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{animation:none!important;transition:none!important}
     .sketsa .g{stroke-dashoffset:0}
@@ -429,6 +467,62 @@
       <div class="lp-stat"><span>Satu akun Google</span><span>HP dan laptop</span><span>Tanpa kertas</span></div>
     </div>
   </header>
+
+  <section class="lp-sec" id="layanan">
+    <p class="kecil">Layanan</p>
+    <h2>Semua yang Anda butuhkan, di satu tempat</h2>
+    <p class="lead">Klik salah satu layanan, masuk dengan akun Google, lalu semua aplikasi sekolah langsung terbuka.</p>
+    <div class="lp-grid">
+      <div class="lp-k" data-lp="masuk" role="button" tabindex="0" style="cursor:pointer"><div class="ik">📝</div><b>Ujian Online</b><p>Kerjakan ujian dari HP atau laptop, nilai langsung tercatat.</p></div>
+      <div class="lp-k" data-lp="masuk" role="button" tabindex="0" style="cursor:pointer"><div class="ik">📬</div><b>Arsip Surat</b><p>Surat masuk dan keluar tersimpan rapi dan mudah dicari.</p></div>
+      <div class="lp-k" data-lp="masuk" role="button" tabindex="0" style="cursor:pointer"><div class="ik">🕘</div><b>Presensi</b><p>Catat kehadiran tanpa kertas, rekap otomatis.</p></div>
+      <div class="lp-k" data-lp="masuk" role="button" tabindex="0" style="cursor:pointer"><div class="ik">🎓</div><b>Satu akun</b><p>Cukup satu akun Google untuk semua aplikasi sekolah.</p></div>
+    </div>
+  </section>
+
+  <section class="lp-sec" id="agenda">
+    <p class="kecil">Pengumuman</p>
+    <h2>Kabar terbaru sekolah</h2>
+    <p class="lead">Informasi terbaru langsung dari sekolah.</p>
+    <div class="lp-grid" id="lpAgenda"><p class="lp-kosong">Memuat pengumuman...</p></div>
+  </section>
+
+  <section class="lp-sec" id="tentang">
+    <p class="kecil">Tentang</p>
+    <h2>Sambutan kepala sekolah</h2>
+    <div class="lp-sambut">
+      <div class="lp-foto">🏫</div>
+      <div>
+        <h3>Selamat datang di portal SMP Negeri 4 Tanjung Medan</h3>
+        <p>Assalamu'alaikum warahmatullahi wabarakatuh. Portal ini kami hadirkan agar layanan sekolah lebih mudah, cepat, dan tanpa kertas, bagi siswa, guru, maupun tenaga kependidikan.</p>
+        <p>Mari manfaatkan teknologi untuk belajar dan bekerja dengan lebih baik.</p>
+        <p><strong>[Nama Kepala Sekolah]</strong><br>Kepala SMP Negeri 4 Tanjung Medan</p>
+      </div>
+    </div>
+    <div class="lp-angka">
+      <div><b>150+</b><span>Siswa</span></div>
+      <div><b>20+</b><span>Guru dan staf</span></div>
+      <div><b>3</b><span>Layanan digital</span></div>
+      <div><b>1</b><span>Akun untuk semua</span></div>
+    </div>
+  </section>
+
+  <section class="lp-sec" id="kontak">
+    <p class="kecil">Kontak</p>
+    <h2>Hubungi kami</h2>
+    <p class="lead">Ada kendala masuk atau pendaftaran? Hubungi sekolah.</p>
+    <div class="lp-kontak">
+      <div class="lp-info">
+        <div><b>Alamat</b><span>[Isi alamat sekolah]</span></div>
+        <div><b>Telepon / WhatsApp</b><span>[Isi nomor telepon]</span></div>
+        <div><b>Email</b><span>[Isi email sekolah]</span></div>
+        <div><b>Jam layanan</b><span>Senin sampai Jumat, 07.00 sampai 15.00</span></div>
+      </div>
+      <div class="lp-peta"><iframe loading="lazy" title="Peta sekolah" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=SMP+Negeri+4+Tanjung+Medan&output=embed"></iframe></div>
+    </div>
+  </section>
+
+  <footer class="lp-foot">© SMP Negeri 4 Tanjung Medan. Portal Sekolah.</footer>
 
   <div class="hidden"><div class="l-bar">
     <svg class="mini" viewBox="0 0 64 64" aria-hidden="true"><use href="#gedung"/></svg>
@@ -1240,6 +1334,30 @@ $('lDaftar').onclick = () => { errorLogin(''); tampil('login'); };
 $('lKembali').onclick = () => { errorLogin(''); tampil('landing'); };
 document.querySelectorAll('[data-lp]').forEach((b) => b.addEventListener('click', () => { errorLogin(''); tampil('login'); }));
 $('lpTema').onclick = ubahTema;
+const pengamat = 'IntersectionObserver' in window
+  ? new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('on'); pengamat.unobserve(e.target); } }), { threshold: .12 })
+  : null;
+function pantau(){
+  if (!pengamat) return;
+  document.querySelectorAll('#landing .lp-sec h2, #landing .lp-k, #landing .lp-sambut, #landing .lp-angka div, #landing .lp-info, #landing .lp-peta').forEach((el) => {
+    if (el.dataset.rv) return;
+    el.dataset.rv = 1; el.classList.add('rv'); pengamat.observe(el);
+  });
+}
+function muatPublik(){
+  fetch(CONFIG.API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ aksi: 'publik' }) })
+    .then((r) => r.json())
+    .then((d) => {
+      const el = $('lpAgenda');
+      if (!d.ok || !d.pengumuman.length) { el.innerHTML = '<p class="lp-kosong">Belum ada pengumuman.</p>'; return; }
+      el.innerHTML = d.pengumuman.map((p) => '<article class="lp-k"><time>' + esc(tglID(p.tanggal)) + '</time><b>' + esc(p.judul) + '</b><p>' + esc(p.isi) + '</p></article>').join('');
+      pantau();
+    })
+    .catch(() => { $('lpAgenda').innerHTML = '<p class="lp-kosong">Pengumuman belum bisa dimuat.</p>'; });
+}
+pantau();
+muatPublik();
+document.querySelectorAll('.lp-k[data-lp]').forEach((k) => k.addEventListener('keydown', (e) => { if (e.key === 'Enter') { errorLogin(''); tampil('login'); } }));
 $('lpBurger').onclick = () => $('lpMenu').classList.toggle('buka');
 $('lpMenu').addEventListener('click', (e) => { if (e.target.closest('a')) $('lpMenu').classList.remove('buka'); });
 
