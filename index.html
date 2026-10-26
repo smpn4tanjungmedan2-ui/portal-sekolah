@@ -1445,7 +1445,8 @@ const PROFIL = [
   { k: 'ppdb_info', label: 'Keterangan PPDB (tampil di atas formulir)', tipe: 'area', baris: 3, maks: 300 },
   { k: 'hero_judul', label: 'Judul besar di foto depan (kosong = nama sekolah)', maks: 80 },
   { k: 'hero_teks', label: 'Kalimat di bawah judul (kosong = slogan sekolah)', maks: 160 },
-  { k: 'jam_layanan', label: 'Jam layanan (contoh: Senin sampai Jumat, 07.00 sampai 15.00)', maks: 120 }
+  { k: 'jam_layanan', label: 'Jam layanan (contoh: Senin sampai Jumat, 07.00 sampai 15.00)', maks: 120 },
+  { k: 'peta_url', label: 'Titik peta sekolah (koordinat)', maks: 60, tip: 'Di Google Maps, klik kanan pada gedung sekolah, lalu klik angka paling atas untuk menyalin. Tempel di sini, contoh: 2.0123, 100.1234' }
 ];
 
 function tabKonten(){
@@ -1783,6 +1784,11 @@ $('ppdbForm').addEventListener('submit', async (e) => {
 
 window.addEventListener('scroll', () => { const n = document.querySelector('.lp-nav'); if (n) n.classList.toggle('solid', window.scrollY > 60); }, { passive: true });
 
+function titikPeta(p){
+  const s = String((p && p.peta_url) || '').trim();
+  return /^-?\d{1,3}(\.\d+)?\s*,\s*-?\d{1,3}(\.\d+)?$/.test(s) ? s.replace(/\s+/g, '') : '';
+}
+
 function gambarLanding(d){
   dataLP = d;
   const p = d.pengaturan || {};
@@ -1836,7 +1842,7 @@ function gambarLanding(d){
   const alamat = p.alamat || '';
   const hKontak = '<section class="lp-sec" id="h-kontak"><p class="kecil">Kontak</p><h2 class="rv">Hubungi kami</h2><p class="lead">Ada kendala masuk atau pendaftaran? Hubungi sekolah.</p><div class="lp-kontak"><div class="lp-info rv">' +
     [['Alamat', alamat], ['Telepon / WhatsApp', p.telepon], ['Email', p.email], ['Jam layanan', p.jam_layanan || 'Senin sampai Jumat, 07.00 sampai 15.00']].filter(x => x[1]).map(x => '<div><b>' + x[0] + '</b><span>' + esc(x[1]) + '</span></div>').join('') +
-    '</div><div class="lp-peta rv"><iframe loading="lazy" title="Peta sekolah" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=' + encodeURIComponent(alamat || sek) + '&output=embed"></iframe></div></div></section>';
+    '</div><div class="lp-peta rv"><iframe loading="lazy" title="Peta sekolah" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=' + encodeURIComponent(titikPeta(p) || (sek + ' ' + alamat).trim()) + '&z=17&output=embed"></iframe></div></div></section>';
 
   const kaki = '<footer class="lp-foot">© ' + new Date().getFullYear() + ' ' + esc(sek) + '</footer>';
   const overlay = '<div id="brt" class="hidden"><div class="brt-top"><button type="button" class="lp-btn" data-brt-tutup="1">← Kembali</button></div><div class="brt-in" id="brtIsi"></div></div>';
