@@ -324,6 +324,44 @@
   #landing .l-fitur .f span{font-size:1.5rem}
   #landing .l-fitur .f small,#landing .l-langkah .s small,#landing .l-kaki{color:var(--lm)}
   #landing .l-langkah .s i{background:var(--la);border:0;color:#fff}
+  html{scroll-behavior:smooth}
+  .lp-nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:12px}
+  .lp-nav-in{max-width:1180px;margin:0 auto;padding:8px 10px 8px 16px;display:flex;align-items:center;gap:6px;border-radius:999px;background:color-mix(in srgb,var(--lb) 72%,transparent);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid var(--lg)}
+  .lp-logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;font-size:1.02rem;color:var(--lt);text-decoration:none;margin-right:auto;min-width:0}
+  .lp-logo svg{width:34px;height:34px;flex:none;border-radius:9px}
+  .lp-logo span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lp-menu{display:flex;align-items:center;gap:2px}
+  .lp-menu a{padding:8px 14px;border-radius:999px;color:var(--lm);text-decoration:none;font-weight:600;font-size:.9rem;transition:.2s}
+  .lp-menu a:hover{background:var(--lg);color:var(--lt)}
+  .lp-aksi-nav{display:flex;align-items:center;gap:8px;margin-left:8px}
+  .lp-btn{font:inherit;font-weight:600;font-size:.92rem;height:40px;padding:0 18px;border-radius:999px;cursor:pointer;border:1px solid var(--lg);background:transparent;color:var(--lt);transition:.2s}
+  .lp-btn:hover{background:var(--lg)}
+  .lp-btn.utama{background:var(--la);border-color:var(--la);color:#fff}
+  .lp-btn.utama:hover{filter:brightness(1.12);background:var(--la)}
+  .lp-btn.besar{height:52px;padding:0 28px;font-size:1rem}
+  .lp-ikon{width:40px;height:40px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--lg);background:transparent;color:var(--lt);cursor:pointer}
+  .lp-ikon:hover{background:var(--lg)}
+  .lp-ikon svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  #lpBurger{display:none}
+  .lp-hero{position:relative;min-height:100vh;display:grid;place-items:center;text-align:center;padding:130px 20px 90px;overflow:hidden;background:var(--lb);--foto:none}
+  .lp-hero::before{content:'';position:absolute;inset:0;background:var(--foto) center/cover;opacity:.22}
+  .lp-hero::after{content:'';position:absolute;inset:0;background:radial-gradient(60% 55% at 50% 0%,color-mix(in srgb,var(--la) 38%,transparent),transparent 72%)}
+  .lp-hero>div{position:relative;z-index:1;max-width:820px}
+  .lp-lencana{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;border:1px solid var(--lg);background:var(--lk);color:var(--lm);font-size:.85rem;font-weight:600;margin-bottom:22px}
+  .lp-lencana i{width:8px;height:8px;border-radius:50%;background:#22c55e}
+  .lp-hero h1{font-family:var(--display);font-weight:800;font-size:clamp(2.4rem,7vw,4.6rem);line-height:1.04;letter-spacing:-.04em;margin-bottom:18px;text-wrap:balance;color:var(--lt)}
+  .lp-hero h1 em{font-style:normal;color:var(--la)}
+  .lp-hero p{color:var(--lm);font-size:1.1rem;max-width:52ch;margin:0 auto 30px}
+  .lp-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .lp-stat{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:44px}
+  .lp-stat span{padding:8px 16px;border-radius:999px;background:var(--lk);border:1px solid var(--lg);color:var(--lm);font-size:.88rem;font-weight:600}
+  @media (max-width:860px){
+    #lpBurger{display:grid}
+    .lp-menu{display:none;position:absolute;left:12px;right:12px;top:72px;flex-direction:column;align-items:stretch;padding:10px;border-radius:22px;background:var(--lb);border:1px solid var(--lg)}
+    .lp-menu.buka{display:flex}
+    .lp-menu a{padding:12px 16px}
+    .lp-aksi-nav .lp-btn:not(.utama){display:none}
+  }
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{animation:none!important;transition:none!important}
     .sketsa .g{stroke-dashoffset:0}
@@ -357,7 +395,42 @@
 
 <!-- ===================== LANDING ===================== -->
 <section id="landing">
-  <div class="l-bar">
+  <nav class="lp-nav">
+    <div class="lp-nav-in">
+      <a class="lp-logo" href="#"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#gedung"/></svg><span>SMP Negeri 4 Tanjung Medan</span></a>
+      <div class="lp-menu" id="lpMenu">
+        <a href="#beranda-lp">Beranda</a>
+        <a href="#layanan">Layanan</a>
+        <a href="#agenda">Pengumuman</a>
+        <a href="#tentang">Tentang</a>
+        <a href="#kontak">Kontak</a>
+      </div>
+      <div class="lp-aksi-nav">
+        <button class="lp-ikon" id="lpTema" type="button" aria-label="Ganti tema">
+          <svg class="i-matahari" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="i-bulan" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+        </button>
+        <button class="lp-btn" data-lp="daftar" type="button">Daftar</button>
+        <button class="lp-btn utama" data-lp="masuk" type="button">Masuk</button>
+        <button class="lp-ikon" id="lpBurger" type="button" aria-label="Menu"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      </div>
+    </div>
+  </nav>
+
+  <header class="lp-hero" id="beranda-lp">
+    <div>
+      <span class="lp-lencana"><i></i> Portal resmi sekolah</span>
+      <h1>Semua layanan sekolah, <em>satu pintu</em>.</h1>
+      <p>Ujian online, arsip surat, presensi, dan pengumuman SMP Negeri 4 Tanjung Medan dalam satu portal dengan satu akun Google.</p>
+      <div class="lp-cta">
+        <button class="lp-btn utama besar" data-lp="masuk" type="button">Masuk ke portal</button>
+        <button class="lp-btn besar" data-lp="daftar" type="button">Daftar sebagai siswa</button>
+      </div>
+      <div class="lp-stat"><span>Satu akun Google</span><span>HP dan laptop</span><span>Tanpa kertas</span></div>
+    </div>
+  </header>
+
+  <div class="hidden"><div class="l-bar">
     <svg class="mini" viewBox="0 0 64 64" aria-hidden="true"><use href="#gedung"/></svg>
     <div class="nama">Portal Sekolah</div>
     <button class="btn-ikon" id="temaLanding" type="button" aria-label="Ganti tema terang atau gelap">
@@ -397,7 +470,7 @@
     </div>
   </div>
 
-  <div class="l-kaki">Portal Sekolah</div>
+  <div class="l-kaki">Portal Sekolah</div></div>
 </section>
 
 <!-- ===================== LOGIN ===================== -->
@@ -1165,6 +1238,10 @@ $('temaLanding').onclick = ubahTema;
 $('lMasuk').onclick = () => { errorLogin(''); tampil('login'); };
 $('lDaftar').onclick = () => { errorLogin(''); tampil('login'); };
 $('lKembali').onclick = () => { errorLogin(''); tampil('landing'); };
+document.querySelectorAll('[data-lp]').forEach((b) => b.addEventListener('click', () => { errorLogin(''); tampil('login'); }));
+$('lpTema').onclick = ubahTema;
+$('lpBurger').onclick = () => $('lpMenu').classList.toggle('buka');
+$('lpMenu').addEventListener('click', (e) => { if (e.target.closest('a')) $('lpMenu').classList.remove('buka'); });
 
 /* ---------- Mulai ---------- */
 (function(){
