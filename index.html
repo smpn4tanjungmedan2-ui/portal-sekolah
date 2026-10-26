@@ -329,7 +329,9 @@
   #landing .l-langkah .s i{background:var(--la);border:0;color:#fff}
   html{scroll-behavior:smooth}
   .lp-nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:12px}
-  .lp-nav-in{max-width:1180px;margin:0 auto;padding:8px 10px 8px 16px;display:flex;align-items:center;gap:6px;border-radius:999px;background:color-mix(in srgb,var(--lb) 72%,transparent);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid var(--lg)}
+  .lp-nav-in{max-width:1180px;margin:0 auto;padding:8px 10px 8px 16px;display:flex;align-items:center;gap:6px;border-radius:999px;background:color-mix(in srgb,var(--lb) 14%,transparent);-webkit-backdrop-filter:blur(12px) saturate(1.5);backdrop-filter:blur(12px) saturate(1.5);border:1px solid rgba(255,255,255,.22);transition:background .35s}
+  .lp-nav.solid .lp-nav-in{background:color-mix(in srgb,var(--lb) 80%,transparent);border-color:var(--lg)}
+  .lp-nav:not(.solid) .lp-menu a,.lp-nav:not(.solid) .lp-logo{color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.5)}
   .lp-logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;font-size:1.02rem;color:var(--lt);text-decoration:none;margin-right:auto;min-width:0}
   .lp-logo svg{width:34px;height:34px;flex:none;border-radius:9px}
   .lp-logo span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -435,6 +437,10 @@
   .hs-h{font-family:var(--display);font-weight:800;font-size:clamp(2.3rem,6.5vw,4.6rem);line-height:1.04;letter-spacing:-.04em;margin:0 0 16px;text-wrap:balance;color:#fff}
   .hs-cap p{font-size:1.12rem;max-width:52ch;color:rgba(255,255,255,.88);margin-bottom:28px}
   .hs .lp-lencana{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.25);color:#fff}
+  .hs>.hs-isi{position:absolute;inset:0;z-index:3;max-width:none;margin:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:100px 20px 140px;pointer-events:none}
+  .hs>.hs-isi .hs-cap{opacity:1;transform:none;margin:0 auto;animation:naik .9s .2s cubic-bezier(.2,.8,.2,1) backwards;pointer-events:auto}
+  .hs>.hs-isi .hs-cap p{margin-left:auto;margin-right:auto}
+  @keyframes naik{from{opacity:0;transform:translateY(24px)}}
   .hs .lp-btn{color:#fff;border-color:rgba(255,255,255,.4)}
   .hs .lp-btn:hover{background:rgba(255,255,255,.16)}
   .hs .lp-btn.utama{background:var(--la);border-color:var(--la)}
@@ -471,7 +477,7 @@
   .kal-g{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
   .kal-hr{text-align:center;color:var(--lm);font-size:.78rem;font-weight:700;padding:4px 0}
   .kal-k{min-height:80px;padding:6px;border-radius:12px;border:1px solid var(--lg);background:var(--lb);font-size:.82rem;overflow:hidden}
-  .kal-k.kosong{background:transparent;border-color:transparent}
+  .kal-k.kos{background:transparent;border-color:transparent}
   .kal-k b{display:block;color:var(--lm);font-weight:700;margin-bottom:3px}
   .kal-k.ini{border:2px solid var(--la)}
   .kal-k.ini b{color:var(--la)}
@@ -1405,9 +1411,8 @@ const KT = {
       { k: 'isi', label: 'Isi berita', tipe: 'area', baris: 10, maks: 20000, tip: 'Pisahkan paragraf dengan satu baris kosong.' },
       { k: 'foto', label: 'Foto', tipe: 'foto', maks: 1280 }] },
   slider: { nama: 'slider', ikon: '🖼️', tambah: 'Tambah foto slider', info: 'Foto besar yang bergulir di bagian paling atas. Pakai foto melebar (landscape).',
-    judul: i => i.judul, sub: i => i.teks,
-    f: [{ k: 'judul', label: 'Judul besar' }, { k: 'teks', label: 'Kalimat pendek di bawah judul', maks: 200 },
-      { k: 'foto', label: 'Foto', tipe: 'foto', maks: 1600 }, { k: 'urutan', label: 'Urutan (1 paling depan)', tipe: 'angka', awal: '1' }] },
+    judul: i => 'Foto slider', sub: i => 'Urutan ' + (i.urutan || '-'),
+    f: [{ k: 'foto', label: 'Foto', tipe: 'foto', maks: 1280 }, { k: 'urutan', label: 'Urutan (1 paling depan)', tipe: 'angka', awal: '1' }] },
   guru: { nama: 'guru', ikon: '👩‍🏫', tambah: 'Tambah guru', info: 'Guru dan tenaga pendidik beserta foto.',
     judul: i => i.nama, sub: i => [i.jabatan, i.bidang].filter(Boolean).join(' · '),
     f: [{ k: 'nama', label: 'Nama' }, { k: 'jabatan', label: 'Jabatan (contoh: Guru Matematika)' },
@@ -1437,7 +1442,10 @@ const PROFIL = [
   { k: 'alamat', label: 'Alamat sekolah', tipe: 'area', baris: 2, maks: 300 },
   { k: 'telepon', label: 'Telepon / WhatsApp' },
   { k: 'email', label: 'Email sekolah' },
-  { k: 'ppdb_info', label: 'Keterangan PPDB (tampil di atas formulir)', tipe: 'area', baris: 3, maks: 300 }
+  { k: 'ppdb_info', label: 'Keterangan PPDB (tampil di atas formulir)', tipe: 'area', baris: 3, maks: 300 },
+  { k: 'hero_judul', label: 'Judul besar di foto depan (kosong = nama sekolah)', maks: 80 },
+  { k: 'hero_teks', label: 'Kalimat di bawah judul (kosong = slogan sekolah)', maks: 160 },
+  { k: 'jam_layanan', label: 'Jam layanan (contoh: Senin sampai Jumat, 07.00 sampai 15.00)', maks: 120 }
 ];
 
 function tabKonten(){
@@ -1469,7 +1477,7 @@ function perkecil(file, maks){
       g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height);
       g.drawImage(img, 0, 0, c.width, c.height);
       URL.revokeObjectURL(url);
-      ok(c.toDataURL('image/jpeg', .85));
+      ok(c.toDataURL('image/jpeg', .8));
     };
     img.onerror = () => { URL.revokeObjectURL(url); gagal(new Error('Foto tidak bisa dibaca.')); };
     img.src = url;
@@ -1773,6 +1781,8 @@ $('ppdbForm').addEventListener('submit', async (e) => {
   tb.disabled = false; tb.textContent = 'Kirim pendaftaran';
 });
 
+window.addEventListener('scroll', () => { const n = document.querySelector('.lp-nav'); if (n) n.classList.toggle('solid', window.scrollY > 60); }, { passive: true });
+
 function gambarLanding(d){
   dataLP = d;
   const p = d.pengaturan || {};
@@ -1784,8 +1794,9 @@ function gambarLanding(d){
   const lencana = '<span class="lp-lencana"><i></i> ' + (buka ? 'PPDB kelas 7 dibuka' : 'Portal resmi sekolah') + '</span>';
   const slides = slider.length ? slider : [{ judul: sek, teks: p.tagline || 'Semua layanan sekolah dalam satu pintu.' }];
   const slideHtml = (s, i) => '<div class="hs-s' + (i === 0 ? ' on' : '') + '">' + (fotoUrl(s.foto) ? '<img class="hs-img" alt="" ' + (i ? 'loading="lazy" ' : '') + 'referrerpolicy="no-referrer" src="' + esc(fotoUrl(s.foto)) + '">' : '') +
-    '<div class="hs-gelap"></div><div class="hs-isi"><div class="hs-cap">' + lencana + '<' + (i ? 'h2' : 'h1') + ' class="hs-h">' + esc(s.judul) + '</' + (i ? 'h2' : 'h1') + '><p>' + esc(s.teks) + '</p><div class="lp-cta">' + tombol + '</div></div></div></div>';
+    '<div class="hs-gelap"></div></div>';
   const hero = '<div class="hs" id="h-beranda">' + slides.map(slideHtml).join('') +
+    '<div class="hs-isi"><div class="hs-cap">' + lencana + '<h1 class="hs-h">' + esc(p.hero_judul || sek) + '</h1><p>' + esc(p.hero_teks || p.tagline || 'Semua layanan sekolah dalam satu pintu.') + '</p><div class="lp-cta">' + tombol + '</div></div></div>' +
     (slides.length > 1 ? '<div class="hs-dots">' + slides.map((_, i) => '<button type="button" class="hs-dot' + (i === 0 ? ' on' : '') + '" data-sl="' + i + '" aria-label="Slide ' + (i + 1) + '"></button>').join('') + '</div><div class="hs-pan"><button type="button" class="lp-ikon" data-sk="-1" aria-label="Sebelumnya">‹</button><button type="button" class="lp-ikon" data-sk="1" aria-label="Berikutnya">›</button></div>' : '') + '</div>';
 
   const angka = [[p.jumlah_siswa, 'Siswa'], [p.jumlah_guru, 'Guru dan staf'], [p.akreditasi, 'Akreditasi']].filter(x => x[0]);
@@ -1824,7 +1835,7 @@ function gambarLanding(d){
 
   const alamat = p.alamat || '';
   const hKontak = '<section class="lp-sec" id="h-kontak"><p class="kecil">Kontak</p><h2 class="rv">Hubungi kami</h2><p class="lead">Ada kendala masuk atau pendaftaran? Hubungi sekolah.</p><div class="lp-kontak"><div class="lp-info rv">' +
-    [['Alamat', alamat], ['Telepon / WhatsApp', p.telepon], ['Email', p.email], ['Jam layanan', 'Senin sampai Jumat, 07.00 sampai 15.00']].filter(x => x[1]).map(x => '<div><b>' + x[0] + '</b><span>' + esc(x[1]) + '</span></div>').join('') +
+    [['Alamat', alamat], ['Telepon / WhatsApp', p.telepon], ['Email', p.email], ['Jam layanan', p.jam_layanan || 'Senin sampai Jumat, 07.00 sampai 15.00']].filter(x => x[1]).map(x => '<div><b>' + x[0] + '</b><span>' + esc(x[1]) + '</span></div>').join('') +
     '</div><div class="lp-peta rv"><iframe loading="lazy" title="Peta sekolah" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=' + encodeURIComponent(alamat || sek) + '&output=embed"></iframe></div></div></section>';
 
   const kaki = '<footer class="lp-foot">© ' + new Date().getFullYear() + ' ' + esc(sek) + '</footer>';
@@ -1860,7 +1871,7 @@ function gambarKalender(){
   const awal = new Date(y, m, 1).getDay(), jml = new Date(y, m + 1, 0).getDate();
   const hari = hariIni();
   let sel = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'].map(h => '<div class="kal-hr">' + h + '</div>').join('');
-  for (let i = 0; i < awal; i++) sel += '<div class="kal-k kosong"></div>';
+  for (let i = 0; i < awal; i++) sel += '<div class="kal-k kos"></div>';
   for (let d = 1; d <= jml; d++) {
     const t = y + '-' + pad2(m + 1) + '-' + pad2(d);
     const ev = agenda.filter(a => a.tanggal_mulai <= t && t <= (a.tanggal_selesai || a.tanggal_mulai));
