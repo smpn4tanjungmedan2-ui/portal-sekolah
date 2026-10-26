@@ -300,6 +300,30 @@
   .l-langkah .s small{color:var(--tinta-2);line-height:1.5;display:block}
   .l-kaki{max-width:1100px;margin:0 auto;padding:20px 20px 40px;color:var(--tinta-2);font-size:.85rem}
   @media (max-width:820px){.l-hero{grid-template-columns:1fr}.l-gambar{order:-1}}
+    :root{--lb:#ffffff;--lt:#0f172a;--lm:#64748b;--lk:#f8fafc;--lg:#e2e8f0;--la:#2563eb}
+  [data-theme="dark"]{--lb:#0b1220;--lt:#e5e9f2;--lm:#8b97ad;--lk:#111a2e;--lg:#1e293b;--la:#3b6cf5}
+  body:has(#landing:not(.hidden)){background:var(--lb)}
+  body:has(#landing:not(.hidden))::before{display:none}
+  #landing{color:var(--lt)}
+  #landing .l-bar{padding:18px 20px}
+  #landing .mini{border-radius:10px}
+  #landing .btn-ikon,#landing .btn-keluar{box-shadow:none;border:1px solid var(--lg);background:var(--lk);color:var(--lt);border-radius:10px}
+  #landing .btn-ikon:hover,#landing .btn-keluar:hover{transform:none;box-shadow:none;background:var(--lg)}
+  #landing .btn-utama{background:var(--la);border-color:var(--la);color:#fff}
+  #landing .btn-utama:hover{background:var(--la);filter:brightness(1.1)}
+  #landing .l-hero{grid-template-columns:1fr;justify-items:center;text-align:center;padding:72px 20px 56px}
+  #landing .l-hero h1{font-size:clamp(2.2rem,5.5vw,3.6rem);font-weight:700;letter-spacing:-.03em;line-height:1.1}
+  #landing .l-hero h1 mark{background:none;color:var(--la);animation:none}
+  #landing .l-hero p{color:var(--lm);margin-inline:auto}
+  #landing .l-aksi{justify-content:center}
+  #landing .l-gambar{display:none}
+  #landing .l-bagian{padding:36px 20px}
+  #landing .l-bagian h2{font-size:1.25rem;font-weight:700;letter-spacing:-.01em}
+  #landing .l-fitur .f,#landing .l-langkah .s{background:var(--lk);border:1px solid var(--lg);box-shadow:none;border-radius:14px;animation:none}
+  #landing .l-fitur .f:hover{transform:none;border-color:var(--la)}
+  #landing .l-fitur .f span{font-size:1.5rem}
+  #landing .l-fitur .f small,#landing .l-langkah .s small,#landing .l-kaki{color:var(--lm)}
+  #landing .l-langkah .s i{background:var(--la);border:0;color:#fff}
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{animation:none!important;transition:none!important}
     .sketsa .g{stroke-dashoffset:0}
