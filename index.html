@@ -544,6 +544,49 @@
   .lp-form .pesan-error{margin-top:0}
   .pd-no{font-family:var(--display);font-size:1.6rem;color:var(--la)}
   @media (max-width:760px){.pd{grid-template-columns:1fr}.lp-form{grid-template-columns:1fr;padding:20px}.hs-pan{display:none}}
+  .br-chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:26px}
+  .br-chip{font:inherit;font-weight:600;font-size:.88rem;height:42px;padding:0 20px;border-radius:999px;border:1px solid var(--lg);background:var(--lk);color:var(--lt);cursor:pointer;transition:.2s}
+  .br-chip:hover{border-color:var(--la)}
+  .br-chip.on{background:var(--la);border-color:var(--la);color:#fff}
+  .br-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:30px 20px}
+  .br-k{background:none;border:0;border-radius:0;overflow:visible;gap:0;animation:munculbr .5s backwards}
+  .br-k:hover{transform:none;border-color:transparent}
+  @keyframes munculbr{from{opacity:0;transform:translateY(14px)}}
+  .br-f{aspect-ratio:16/9;border-radius:14px}
+  .br-k:hover .br-f img{transform:scale(1.05)}
+  .br-b{padding:12px 2px 0}
+  .br-b h3{font-size:1.02rem;line-height:1.4;margin:0 0 8px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .br-m{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:.78rem;color:var(--lm)}
+  .br-m i{font-style:normal;color:var(--la);font-weight:600}
+  .br-m u{width:1px;height:11px;background:var(--lg);text-decoration:none}
+  .br-m time{color:var(--lm);font-weight:500;font-size:.78rem}
+  @media (max-width:1000px){.br-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media (max-width:520px){.br-grid{grid-template-columns:1fr}}
+  .brt-in{max-width:1240px;padding:30px 24px 90px}
+  .bd{display:grid;grid-template-columns:minmax(0,.42fr) minmax(0,1fr);gap:44px;align-items:start}
+  .bd-side{position:sticky;top:84px}
+  .bd-side h1{font-family:var(--display);font-size:clamp(1.5rem,2.6vw,2.1rem);line-height:1.2;letter-spacing:-.02em;margin:0 0 24px}
+  .bd-meta{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px;margin-bottom:26px}
+  .bd-meta small{display:block;color:var(--lm);font-size:.78rem;margin-bottom:3px}
+  .bd-meta span{font-size:.9rem;font-weight:600}
+  .bd-kat{display:inline-block;padding:2px 12px;border-radius:99px;background:color-mix(in srgb,var(--la) 14%,transparent);color:var(--la);font-size:.8rem;font-weight:700}
+  .bd-share small{display:block;color:var(--lm);font-size:.78rem;margin-bottom:8px}
+  .bd-share div{display:flex;gap:8px;flex-wrap:wrap}
+  .bd-share a,.bd-share button{font:inherit;font-size:.82rem;font-weight:600;padding:7px 14px;border-radius:999px;border:1px solid var(--lg);background:var(--lk);color:var(--lt);text-decoration:none;cursor:pointer}
+  .bd-share a:hover,.bd-share button:hover{border-color:var(--la);color:var(--la)}
+  .bd-main{min-width:0}
+  .bd-fig{margin:0 0 22px}
+  .bd-fig img{display:block;width:100%;height:auto;border-radius:16px;margin:0}
+  .bd-main p{text-align:justify;text-justify:inter-word;-webkit-hyphens:auto;hyphens:auto;overflow-wrap:break-word;line-height:1.85;font-size:1.02rem;margin:0 0 18px;color:var(--lt)}
+  .bd-lain{margin-top:64px;padding-top:34px;border-top:1px solid var(--lg)}
+  .bd-lain h2{font-family:var(--display);font-size:1.4rem;margin:0 0 22px}
+  .bd-lain .br-f img{margin:0;border-radius:0}
+  @media (max-width:860px){.bd{grid-template-columns:1fr;gap:24px}.bd-side{position:static}}
+  .gal-list{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px}
+  .gal-i{position:relative;width:84px;height:84px}
+  .gal-i img{width:100%;height:100%;object-fit:cover;border-radius:12px;border:2px solid var(--tinta)}
+  .gal-i b{position:absolute;left:4px;top:4px;min-width:22px;height:22px;display:grid;place-items:center;border-radius:99px;background:var(--tinta);color:var(--kertas);font-size:.75rem}
+  .gal-i button{position:absolute;right:-6px;top:-6px;width:24px;height:24px;padding:0;display:grid;place-items:center;border-radius:50%;border:2px solid var(--tinta);background:var(--margin);color:#fff;font-weight:800;line-height:1;cursor:pointer}
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{animation:none!important;transition:none!important}
     .sketsa .g{stroke-dashoffset:0}
@@ -1454,9 +1497,12 @@ const KT = {
   berita: { nama: 'berita', ikon: '📰', tambah: 'Tambah berita', info: 'Tampil di landing page, yang terbaru di depan.',
     judul: i => i.judul, sub: i => i.tanggal, urut: (a, b) => String(b.tanggal).localeCompare(String(a.tanggal)),
     f: [{ k: 'tanggal', label: 'Tanggal', tipe: 'tgl', awal: 'hari' }, { k: 'judul', label: 'Judul berita' },
+      { k: 'kategori', label: 'Kategori', tipe: 'pilih', opsi: ['Berita', 'Prestasi', 'Kegiatan', 'Pengumuman', 'Informasi'], tip: 'Dipakai untuk tombol filter di landing page.' },
+      { k: 'penulis', label: 'Penulis (opsional)' },
       { k: 'ringkasan', label: 'Ringkasan (tampil di kartu)', tipe: 'area', baris: 2, maks: 300 },
-      { k: 'isi', label: 'Isi berita', tipe: 'area', baris: 10, maks: 20000, tip: 'Pisahkan paragraf dengan satu baris kosong.' },
-      { k: 'foto', label: 'Foto', tipe: 'foto', maks: 1280 }] },
+      { k: 'isi', label: 'Isi berita', tipe: 'area', baris: 12, maks: 20000, tip: 'Pisahkan paragraf dengan satu baris kosong. Untuk menaruh foto tambahan di tempat tertentu, tulis [foto 1], [foto 2], dan seterusnya di baris sendiri.' },
+      { k: 'foto', label: 'Foto utama (tampil di kartu dan di atas berita)', tipe: 'foto', maks: 1280 },
+      { k: 'galeri', label: 'Foto tambahan (boleh banyak)', tipe: 'galeri', maks: 1280, tip: 'Pilih beberapa foto sekaligus. Angka di pojok foto adalah nomor untuk penanda [foto 1], [foto 2], dan seterusnya.' }] },
   slider: { nama: 'slider', ikon: '🖼️', tambah: 'Tambah foto slider', info: 'Foto besar yang bergulir di bagian paling atas. Pakai foto melebar (landscape).',
     judul: i => 'Foto slider', sub: i => 'Urutan ' + (i.urutan || '-'),
     f: [{ k: 'foto', label: 'Foto', tipe: 'foto', maks: 1280 }, { k: 'urutan', label: 'Urutan (1 paling depan)', tipe: 'angka', awal: 'urut' }] },
@@ -1507,6 +1553,7 @@ async function muatKonten(){
   if (!$('mainAdmin').classList.contains('hidden')) renderAdmin();
 }
 function inputKonten(f, nilai){
+  if (f.tipe === 'pilih' || f.tipe === 'galeri') return inputKontenBaru(f, nilai);
   const id = 'kf_' + f.k, v = esc(nilai == null ? '' : nilai), tip = f.tip ? '<small class="tip">' + f.tip + '</small>' : '';
   if (f.tipe === 'foto') return '<div class="fld"><span>' + f.label + '</span><div class="foto-pilih"><img id="' + id + '_pv" alt=""' + (nilai ? ' src="' + v + '"' : ' class="hidden"') + '><div><input type="file" accept="image/*" id="' + id + '_file"><div style="margin-top:6px"><button type="button" class="mini-btn" id="' + id + '_x">Hapus foto</button></div><small class="tip" id="' + id + '_st">Pilih foto dari HP atau laptop. Otomatis dikecilkan.</small></div></div><input type="hidden" id="' + id + '" value="' + v + '"></div>';
   if (f.tipe === 'area') return '<label class="fld"><span>' + f.label + '</span><textarea class="in" id="' + id + '" rows="' + (f.baris || 3) + '" maxlength="' + (f.maks || 300) + '">' + v + '</textarea>' + tip + '</label>';
@@ -1600,7 +1647,7 @@ function formKonten(tab, item){
     judul: (item ? 'Ubah ' : 'Tambah ') + c.nama, fokus: '#dlgBadan .in',
     badan: c.f.map(f => inputKonten(f, item ? item[f.k] : (f.awal === 'hari' ? hariIni() : f.awal === 'urut' ? urutBerikut(tab) : (f.awal || '')))).join('') +
       '<label class="cek"><input type="checkbox" id="kf_aktif"' + (!item || aktifYa(item.aktif) ? ' checked' : '') + '> Tampilkan di landing page</label>',
-    siap: () => { c.f.filter(f => f.tipe === 'foto').forEach(f => pasangFoto('kf_' + f.k, f.maks || 900)); },
+    siap: () => { c.f.filter(f => f.tipe === 'foto').forEach(f => pasangFoto('kf_' + f.k, f.maks || 900)); c.f.filter(f => f.tipe === 'galeri').forEach(f => pasangGaleri('kf_' + f.k, f.maks || 1280)); },
     simpan: () => {
       if (unggahan) return { ok: false, error: 'Tunggu foto selesai diunggah.' };
       const data = {};
@@ -1946,7 +1993,7 @@ function gambarLanding(d){
   const overlay = '<div id="brt" class="hidden"><div class="brt-top"><button type="button" class="lp-btn" data-brt-tutup="1">← Kembali</button></div><div class="brt-in" id="brtIsi"></div></div>';
 
   lepasBeranda();
-  $('lpIsi').innerHTML = hero + hAngka + hSambut + hBerita + hVideo + hAgenda + hGuru + hTesti + hPeng + hLayanan + hPpdb + hKontak + kaki + overlay;
+  $('lpIsi').innerHTML = hero + hAngka + hSambut + hBeritaBaru() + hVideo + hAgenda + hGuru + hTesti + hPeng + hLayanan + hPpdb + hKontak + kaki + overlay;
   pasangBeranda();
   slideNo = 0;
   bangunMenu(d);
@@ -1954,6 +2001,159 @@ function gambarLanding(d){
   gambarAgenda();
   jadwalSlide();
   document.querySelectorAll('#lpIsi .rv').forEach((el) => { if (pengamat) pengamat.observe(el); else el.classList.add('on'); });
+  gambarBerita();
+  if (brtId) isiBerita(brtId); else bukaDariHash();
+}
+
+/* ---------- Berita: daftar, halaman baca, dan galeri ---------- */
+let brKat = '', brBanyak = 8, brtId = null, hashSudah = false;
+
+function fotoPertama(b){
+  return fotoUrl(b.foto) || String(b.galeri || '').split(/\s+/).filter((u) => fotoUrl(u))[0] || '';
+}
+function kartuBr(b){
+  const k = String(b.kategori || '').trim();
+  return '<button type="button" class="br-k" data-brt="' + esc(b.id) + '"><div class="br-f">' + gambarImg(fotoPertama(b), b.judul) + '</div><div class="br-b"><h3>' + esc(b.judul) + '</h3><div class="br-m">' + (k ? '<i>' + esc(k) + '</i><u></u>' : '') + '<time>' + esc(tglPanjang(b.tanggal)) + '</time></div></div></button>';
+}
+function hBeritaBaru(){
+  return '<section class="lp-sec" id="h-berita"><p class="kecil">Informasi</p><h2 class="rv">Berita terkini</h2><p class="lead">Kegiatan dan kabar terbaru dari sekolah.</p><div id="brIsi"></div></section>';
+}
+function gambarBerita(){
+  const el = $('brIsi'); if (!el) return;
+  const semua = (dataLP && dataLP.berita) || [];
+  if (!semua.length) { el.innerHTML = '<p class="lp-kosong">Belum ada berita.</p>'; return; }
+  const kats = [];
+  semua.forEach((b) => { const k = String(b.kategori || '').trim(); if (k && kats.indexOf(k) < 0) kats.push(k); });
+  if (brKat && kats.indexOf(brKat) < 0) brKat = '';
+  const daftar = brKat ? semua.filter((b) => String(b.kategori || '').trim() === brKat) : semua;
+  const chip = (k, t) => '<button type="button" class="br-chip' + (brKat === k ? ' on' : '') + '" data-kat="' + esc(k) + '">' + esc(t) + '</button>';
+  el.innerHTML = (kats.length ? '<div class="br-chips">' + chip('', 'Semua') + kats.map((k) => chip(k, k)).join('') + '</div>' : '') +
+    '<div class="br-grid">' + daftar.slice(0, brBanyak).map((b) => kartuBr(b)).join('') + '</div>' +
+    (daftar.length > brBanyak ? '<p style="text-align:center;margin-top:30px"><button type="button" class="lp-btn" data-lebih-br="1">Tampilkan lebih banyak</button></p>' : '');
+}
+
+function badanBerita(b){
+  const gal = String(b.galeri || '').split(/\s+/).filter((u) => fotoUrl(u));
+  const teks = String(b.isi || b.ringkasan || '').replace(/\r/g, '').replace(/\[foto\s*(\d+)\]/gi, '\n\n[foto $1]\n\n');
+  const paras = teks.split(/\n{2,}/).map((x) => x.trim()).filter(Boolean);
+  const gbr = (u) => '<figure class="bd-fig"><img alt="" loading="lazy" referrerpolicy="no-referrer" src="' + esc(u) + '"></figure>';
+  const pakai = {};
+  let ada = false;
+  const out = [];
+  paras.forEach((p) => {
+    const m = /^\[foto\s*(\d+)\]$/i.exec(p);
+    if (m) {
+      ada = true;
+      const u = gal[Number(m[1]) - 1];
+      if (u && !pakai[u]) { pakai[u] = 1; out.push(gbr(u)); }
+      return;
+    }
+    out.push('<p>' + esc(p).replace(/\n/g, '<br>') + '</p>');
+  });
+  const sisa = gal.filter((u) => !pakai[u]);
+  if (ada || !sisa.length) return out.concat(sisa.map((u) => gbr(u))).join('');
+  const P = out.length, hasil = [];
+  let k = 0;
+  out.forEach((h, i) => {
+    hasil.push(h);
+    while (k < sisa.length && i + 1 >= Math.round((k + 1) * P / (sisa.length + 1))) { hasil.push(gbr(sisa[k])); k++; }
+  });
+  while (k < sisa.length) { hasil.push(gbr(sisa[k])); k++; }
+  return hasil.join('');
+}
+
+function isiBerita(id){
+  const semua = (dataLP && dataLP.berita) || [];
+  const b = semua.find((x) => String(x.id) === String(id));
+  const br = $('brt'); if (!b || !br) return;
+  brtId = String(b.id);
+  const kat = String(b.kategori || '').trim();
+  const url = location.origin + location.pathname + '#berita-' + b.id;
+  const bagi = encodeURIComponent(b.judul + ' ' + url);
+  const meta = [['Kategori', kat ? '<span class="bd-kat">' + esc(kat) + '</span>' : ''], ['Diterbitkan pada', esc(tglPanjang(b.tanggal))], ['Penulis', esc(b.penulis || '')]].filter((x) => x[1]);
+  const cover = fotoUrl(b.foto) ? '<figure class="bd-fig"><img alt="' + esc(b.judul) + '" referrerpolicy="no-referrer" src="' + esc(fotoUrl(b.foto)) + '"></figure>' : '';
+  const lain = semua.filter((x) => String(x.id) !== brtId);
+  lain.sort((a, c) => (String(c.kategori || '').trim() === kat ? 1 : 0) - (String(a.kategori || '').trim() === kat ? 1 : 0));
+  const lainHtml = lain.slice(0, 4).map((x) => kartuBr(x)).join('');
+  $('brtIsi').innerHTML = '<article class="bd"><aside class="bd-side"><h1>' + esc(b.judul) + '</h1><div class="bd-meta">' +
+    meta.map((x) => '<div><small>' + x[0] + '</small><span>' + x[1] + '</span></div>').join('') + '</div>' +
+    '<div class="bd-share"><small>Bagikan</small><div><a href="https://wa.me/?text=' + bagi + '" target="_blank" rel="noopener">WhatsApp</a><a href="https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url) + '" target="_blank" rel="noopener">Facebook</a><a href="https://twitter.com/intent/tweet?text=' + bagi + '" target="_blank" rel="noopener">X</a><button type="button" data-salin="' + esc(url) + '">Salin tautan</button></div></div></aside>' +
+    '<div class="bd-main">' + cover + badanBerita(b) + '</div></article>' +
+    (lainHtml ? '<section class="bd-lain"><h2>Berita lainnya</h2><div class="br-grid">' + lainHtml + '</div></section>' : '');
+  br.classList.remove('hidden');
+  br.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+function bukaBerita(id){
+  isiBerita(id);
+  const u = '#berita-' + id;
+  if (history.state && history.state.brt) history.replaceState({ brt: 1 }, '', u);
+  else history.pushState({ brt: 1 }, '', u);
+}
+function bukaDariHash(){
+  if (hashSudah) return;
+  const m = /^#berita-([A-Za-z0-9-]+)$/.exec(location.hash || '');
+  if (!m) return;
+  if (!((dataLP && dataLP.berita) || []).some((x) => String(x.id) === m[1])) return;
+  hashSudah = true;
+  isiBerita(m[1]);
+}
+
+$('landing').addEventListener('click', (e) => {
+  const kt = e.target.closest('[data-kat]');
+  if (kt) { brKat = kt.dataset.kat; brBanyak = 8; gambarBerita(); return; }
+  if (e.target.closest('[data-lebih-br]')) { brBanyak += 8; gambarBerita(); return; }
+  const sl = e.target.closest('[data-salin]');
+  if (sl) {
+    const u = sl.dataset.salin;
+    const selesai = () => { sl.textContent = 'Tersalin ✓'; setTimeout(() => { sl.textContent = 'Salin tautan'; }, 2000); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(u).then(selesai).catch(() => { prompt('Salin tautan ini:', u); });
+    else prompt('Salin tautan ini:', u);
+  }
+});
+
+function inputKontenBaru(f, nilai){
+  const id = 'kf_' + f.k, tip = f.tip ? '<small class="tip">' + f.tip + '</small>' : '';
+  if (f.tipe === 'pilih') {
+    const cur = String(nilai == null ? '' : nilai).trim();
+    const opsi = f.opsi.slice();
+    if (cur && opsi.indexOf(cur) < 0) opsi.push(cur);
+    return '<label class="fld"><span>' + f.label + '</span><select class="in" id="' + id + '"><option value="">Pilih</option>' + opsi.map((o) => '<option' + (o === cur ? ' selected' : '') + '>' + esc(o) + '</option>').join('') + '</select>' + tip + '</label>';
+  }
+  return '<div class="fld"><span>' + f.label + '</span><div class="gal-list" id="' + id + '_list"></div><input type="file" accept="image/*" multiple id="' + id + '_file"><small class="tip" id="' + id + '_st">' + (f.tip || '') + '</small><input type="hidden" id="' + id + '" value="' + esc(nilai == null ? '' : nilai) + '"></div>';
+}
+function pasangGaleri(id, maks){
+  const h = $(id), list = $(id + '_list'), file = $(id + '_file'), st = $(id + '_st');
+  const baca = () => String(h.value || '').split(/\s+/).filter(Boolean);
+  const gambar = () => {
+    list.innerHTML = baca().map((x, i) => '<div class="gal-i"><img alt="" referrerpolicy="no-referrer" src="' + esc(x) + '"><b>' + (i + 1) + '</b><button type="button" data-hapus="' + i + '" aria-label="Hapus foto ' + (i + 1) + '">×</button></div>').join('');
+  };
+  gambar();
+  list.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-hapus]'); if (!b) return;
+    const u = baca(); u.splice(Number(b.dataset.hapus), 1); h.value = u.join(' '); gambar();
+  });
+  file.addEventListener('change', async () => {
+    const files = Array.from(file.files); if (!files.length) return;
+    unggahan = true;
+    const u = baca();
+    for (let i = 0; i < files.length; i++) {
+      if (u.length >= 12) { st.textContent = 'Maksimal 12 foto tambahan.'; break; }
+      st.textContent = 'Mengunggah foto ' + (i + 1) + ' dari ' + files.length + '...';
+      try {
+        const data = await perkecil(files[i], maks);
+        const r = await api('admin_unggah', { data: data });
+        if (!r.ok) throw new Error(r.error || 'Gagal mengunggah.');
+        u.push(r.url); h.value = u.join(' '); gambar();
+      } catch (e) {
+        st.textContent = (e && e.message) || 'Gagal mengunggah.';
+        unggahan = false; file.value = '';
+        return;
+      }
+    }
+    unggahan = false; file.value = '';
+    st.textContent = 'Foto terunggah. Klik Simpan untuk menerapkan.';
+  });
 }
 
 function keSlide(n){
@@ -2000,7 +2200,7 @@ function gambarAgenda(){
   el.innerHTML = '<div class="ag-h">Sedang dan akan berlangsung <i>' + semua.length + '</i></div>' + (semua.length ? '<div class="ag-d">' + semua.join('') + '</div>' : '<p class="lp-kosong">Belum ada kegiatan yang akan datang.</p>');
 }
 
-function bukaBerita(id){
+function bukaBeritaLama(id){
   const b = ((dataLP && dataLP.berita) || []).find(x => String(x.id) === String(id));
   if (!b) return;
   $('brtIsi').innerHTML = '<time>' + esc(tglPanjang(b.tanggal)) + '</time><h1>' + esc(b.judul) + '</h1>' + gambarImg(b.foto, b.judul) + paragraf(b.isi || b.ringkasan);
