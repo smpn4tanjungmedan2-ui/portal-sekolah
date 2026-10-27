@@ -598,6 +598,8 @@
   .vd-tautan a,.vd-gagal a{color:var(--la);font-weight:600}
   .vd-gagal{padding:16px;border:1px dashed var(--lg);border-radius:14px;color:var(--lm)}
   .bd-main .vd-b{margin:0 0 24px}
+  .sos{display:flex;justify-content:center;min-height:120px}
+  .sos iframe{max-width:100%}
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{animation:none!important;transition:none!important}
     .sketsa .g{stroke-dashoffset:0}
@@ -2179,9 +2181,9 @@ function videoEmbed(url){
   if ((m = /(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/))([A-Za-z0-9_-]{11})/.exec(u)))
     return { nama: 'YouTube', src: 'https://www.youtube-nocookie.com/embed/' + m[1] + '?rel=0', kelas: /\/shorts\//.test(u) ? 'tegak' : '' };
   if ((m = /tiktok\.com\/(?:@[\w.\-]+\/)?video\/(\d+)/.exec(u)))
-    return { nama: 'TikTok', src: 'https://www.tiktok.com/embed/v2/' + m[1], kelas: 'tegak' };
+    return { nama: 'TikTok', sos: 'tt', id: m[1], tautan: u, kelas: 'tegak' };
   if ((m = /instagram\.com\/(?:[\w.]+\/)?(reel|reels|p|tv)\/([A-Za-z0-9_-]+)/.exec(u)))
-    return { nama: 'Instagram', src: 'https://www.instagram.com/' + (m[1] === 'reels' ? 'reel' : m[1]) + '/' + m[2] + '/embed', kelas: 'ig' };
+    return { nama: 'Instagram', sos: 'ig', tautan: 'https://www.instagram.com/' + (m[1] === 'reels' ? 'reel' : m[1]) + '/' + m[2] + '/', kelas: 'ig' };
   if (/^https:\/\/(?:[\w-]+\.)?(?:facebook\.com|fb\.watch|fb\.com)\//i.test(u))
     return { nama: 'Facebook', src: 'https://www.facebook.com/plugins/video.php?href=' + encodeURIComponent(u) + '&show_text=false', kelas: /\/reel\//.test(u) ? 'tegak' : '' };
   if ((m = /drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:.*&)?id=)([\w-]{20,})/.exec(u)))
@@ -2196,6 +2198,12 @@ function videoHtml(u){
   const v = videoEmbed(u);
   const tautan = /^https:\/\/\S+$/i.test(String(u).trim()) ? esc(String(u).trim()) : '';
   if (!v) return tautan ? '<div class="vd-b"><p class="vd-gagal">Video ini belum bisa diputar di sini. <a href="' + tautan + '" target="_blank" rel="noopener">Buka tautan</a></p></div>' : '';
+  if (v.sos) {
+    const blok = v.sos === 'tt'
+      ? '<blockquote class="tiktok-embed" cite="' + esc(v.tautan) + '" data-video-id="' + esc(v.id) + '" style="max-width:340px;min-width:260px;margin:0 auto"><section></section></blockquote>'
+      : '<blockquote class="instagram-media" data-instgrm-permalink="' + esc(v.tautan) + '" data-instgrm-version="14" style="background:#fff;border:0;border-radius:14px;margin:0 auto;max-width:480px;min-width:280px;width:100%"></blockquote>';
+    return '<div class="vd-b"><div class="sos">' + blok + '</div><p class="vd-tautan">Tidak tampil? <a href="' + esc(String(u).trim()) + '" target="_blank" rel="noopener">Buka di ' + v.nama + '</a></p></div>';
+  }
   const isi = v.file
     ? '<video controls preload="metadata" playsinline src="' + esc(v.file) + '"></video>'
     : '<iframe loading="lazy" title="Video ' + v.nama + '" src="' + esc(v.src) + '" allow="autoplay; encrypted-media; picture-in-picture; fullscreen; clipboard-write" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>';
@@ -2221,6 +2229,29 @@ function badanBerita(b){
   vids.forEach((u, i) => { if (!dipakai[i + 1]) html += videoHtml(u); });
   return html;
 }
+
+function muatSosial(){
+  const tt = Array.from(document.querySelectorAll('#landing .tiktok-embed:not([data-sos])'));
+  if (tt.length) {
+    tt.forEach((b) => b.setAttribute('data-sos', '1'));
+    document.querySelectorAll('script[data-sos="tt"]').forEach((s) => s.remove());
+    const s = document.createElement('script');
+    s.async = true; s.src = 'https://www.tiktok.com/embed.js'; s.setAttribute('data-sos', 'tt');
+    document.body.appendChild(s);
+  }
+  const ig = Array.from(document.querySelectorAll('#landing .instagram-media:not([data-sos])'));
+  if (ig.length) {
+    ig.forEach((b) => b.setAttribute('data-sos', '1'));
+    if (window.instgrm && window.instgrm.Embeds) window.instgrm.Embeds.process();
+    else if (!document.querySelector('script[data-sos="ig"]')) {
+      const s = document.createElement('script');
+      s.async = true; s.src = 'https://www.instagram.com/embed.js'; s.setAttribute('data-sos', 'ig');
+      document.body.appendChild(s);
+    }
+  }
+}
+let tundaSos = null;
+new MutationObserver(() => { clearTimeout(tundaSos); tundaSos = setTimeout(muatSosial, 150); }).observe($('landing'), { childList: true, subtree: true });
 
 function keSlide(n){
   const s = document.querySelectorAll('#h-beranda .hs-s'), dt = document.querySelectorAll('#h-beranda .hs-dot');
