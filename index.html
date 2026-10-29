@@ -635,6 +635,11 @@
   .agd-poster{display:block;width:100%;max-height:60vh;object-fit:contain;background:var(--lk);border-radius:16px;margin:0 0 16px}
   .agd-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;margin-top:14px}
   .agd-th{width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px}
+  .bd-grid{display:grid;gap:10px;margin:0 0 22px}
+  .bd-grid.g2,.bd-grid.g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .bd-grid.g3,.bd-grid.g5{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .bd-grid img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px}
+  @media (max-width:520px){.bd-grid.g3,.bd-grid.g5{grid-template-columns:repeat(2,minmax(0,1fr))}}
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{animation:none!important;transition:none!important}
     .sketsa .g{stroke-dashoffset:0}
@@ -2111,13 +2116,22 @@ function gambarBerita(){
 
 function badanBeritaFoto(b){
   const gal = String(b.galeri || '').split(/\s+/).filter((u) => fotoUrl(u));
-  const teks = String(b.isi || b.ringkasan || '').replace(/\r/g, '').replace(/\[foto\s*(\d+)\]/gi, '\n\n[foto $1]\n\n');
+  const teks = String(b.isi || b.ringkasan || '').replace(/\r/g, '').replace(/(?:\[foto\s*\d+\][ \t]*(?:\n[ \t]*)?){2,}/gi, (m) => '\n\n[grup ' + (m.match(/\d+/g) || []).join(',') + ']\n\n').replace(/\[foto\s*(\d+)\]/gi, '\n\n[foto $1]\n\n');
   const paras = teks.split(/\n{2,}/).map((x) => x.trim()).filter(Boolean);
   const gbr = (u) => '<figure class="bd-fig">' + gambarZoom(u, 1400, 'brt', '') + '</figure>';
   const pakai = {};
   let ada = false;
   const out = [];
   paras.forEach((p) => {
+    const gr = /^\[grup ([\d,]+)\]$/.exec(p);
+    if (gr) {
+      ada = true;
+      const us = gr[1].split(',').map((n) => gal[Number(n) - 1]).filter((u) => u && !pakai[u]);
+      us.forEach((u) => { pakai[u] = 1; });
+      if (us.length === 1) out.push(gbr(us[0]));
+      else if (us.length) out.push('<div class="bd-grid g' + (us.length <= 4 ? us.length : 5) + '">' + us.map((u) => gambarZoom(u, 900, 'brt', '')).join('') + '</div>');
+      return;
+    }
     const m = /^\[foto\s*(\d+)\]$/i.exec(p);
     if (m) {
       ada = true;
