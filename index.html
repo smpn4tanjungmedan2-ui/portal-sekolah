@@ -6,6 +6,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Portal Sekolah</title>
 <meta name="theme-color" content="#1f4fd8">
+<meta name="description" content="Portal resmi SMP Negeri 4 Tanjung Medan: berita, kegiatan, pendaftaran siswa baru kelas 7, dan layanan digital sekolah.">
+<link rel="preconnect" href="https://lh3.googleusercontent.com" crossorigin>
+<link rel="preconnect" href="https://script.google.com" crossorigin>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E%F0%9F%8F%AB%3C/text%3E%3C/svg%3E">
 <script>
   // Pasang tema sebelum halaman tampil supaya tidak berkedip
@@ -15,10 +18,10 @@
     document.documentElement.setAttribute('data-theme', t);
   })();
 </script>
-<script src="https://accounts.google.com/gsi/client" async defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Public+Sans:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Public+Sans:wght@400;500;600;700&display=swap"></noscript>
 <style>
   :root{
     --display:'Bricolage Grotesque',system-ui,sans-serif;
@@ -600,6 +603,38 @@
   .bd-main .vd-b{margin:0 0 24px}
   .sos{display:flex;justify-content:center;min-height:120px}
   .sos iframe{max-width:100%}
+  img[data-zoom]{cursor:zoom-in}
+  .kal-k[data-hari]{cursor:pointer}
+  .kal-th{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:6px;margin-top:3px}
+  .ag-i[data-ag1]{cursor:pointer}
+  .ag-i.ada{display:grid;grid-template-columns:130px minmax(0,1fr);gap:18px;align-items:start}
+  .ag-th{display:block;width:130px;aspect-ratio:3/4;object-fit:cover;border-radius:12px;background:var(--lb)}
+  @media (max-width:640px){.kal-th{display:none}}
+  @media (max-width:520px){.ag-i.ada{grid-template-columns:96px minmax(0,1fr);gap:12px}.ag-th{width:96px}}
+  #lbx{position:fixed;inset:0;z-index:400;background:rgba(4,8,20,.94);display:flex;flex-direction:column;animation:buka .25s ease}
+  .lbx-stage{flex:1;min-height:0;display:grid;place-items:center;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;padding:60px 12px 130px}
+  #lbx.bisa-geser .lbx-stage{cursor:grab}
+  #lbxImg{max-width:100%;max-height:100%;object-fit:contain;will-change:transform;border-radius:6px;-webkit-user-drag:none}
+  .lbx-x{position:absolute;top:14px;right:14px;z-index:3;width:46px;height:46px;border-radius:50%;border:0;background:rgba(255,255,255,.16);color:#fff;font-size:1.9rem;line-height:1;cursor:pointer}
+  .lbx-n{position:absolute;top:50%;z-index:3;width:48px;height:48px;margin-top:-24px;border-radius:50%;border:0;background:rgba(255,255,255,.16);color:#fff;font-size:1.8rem;line-height:1;cursor:pointer}
+  .lbx-p{left:14px}.lbx-s{right:14px}
+  .lbx-x:hover,.lbx-n:hover{background:rgba(255,255,255,.3)}
+  .lbx-cap{position:absolute;left:0;right:0;bottom:76px;text-align:center;color:#e5e9f2;font-size:.92rem;padding:0 70px}
+  .lbx-bar{position:absolute;z-index:3;left:50%;bottom:16px;transform:translateX(-50%);display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;background:rgba(30,34,45,.94);color:#fff}
+  .lbx-bar button{font:inherit;color:#fff;background:none;border:0;min-width:36px;height:36px;border-radius:99px;font-size:1.25rem;cursor:pointer}
+  .lbx-bar button.t{font-size:.9rem;font-weight:700;padding:0 10px}
+  .lbx-bar button:hover{background:rgba(255,255,255,.14)}
+  .lbx-bar b{min-width:52px;text-align:center;font-size:.9rem}
+  #agd{position:fixed;inset:0;z-index:350;overflow:auto;background:rgba(4,8,20,.72);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);padding:40px 14px;animation:buka .25s ease}
+  .agd-box{position:relative;max-width:760px;margin:0 auto;padding:22px;border-radius:24px;background:var(--lb);color:var(--lt);border:1px solid var(--lg)}
+  .agd-x{position:absolute;top:12px;right:12px;z-index:2;width:40px;height:40px;border-radius:50%;border:0;background:var(--lg);color:var(--lt);font-size:1.6rem;line-height:1;cursor:pointer}
+  .agd-i{padding:6px 0 22px;border-bottom:1px solid var(--lg);margin-bottom:22px}
+  .agd-i:last-child{border:0;margin:0;padding-bottom:0}
+  .agd-i h3{font-family:var(--display);font-size:1.45rem;line-height:1.25;margin:0 0 8px;padding-right:44px}
+  .agd-i p{color:var(--lm);line-height:1.7;margin-top:10px}
+  .agd-poster{display:block;width:100%;max-height:60vh;object-fit:contain;background:var(--lk);border-radius:16px;margin:0 0 16px}
+  .agd-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;margin-top:14px}
+  .agd-th{width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px}
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{animation:none!important;transition:none!important}
     .sketsa .g{stroke-dashoffset:0}
@@ -957,6 +992,7 @@ function navMasuk(){
   $('lpKelola').classList.toggle('hidden', !(sudah && penggunaIni && penggunaIni.peran === 'admin'));
 }
 function tampil(nama){
+  if (nama === 'login') muatGsi();
   const kelola = nama === 'kelola';
   $('landing').classList.toggle('hidden', kelola);
   $('login').classList.toggle('hidden', nama !== 'login');
@@ -1190,6 +1226,17 @@ function renderTombol(){
     theme: document.documentElement.getAttribute('data-theme') === 'dark' ? 'filled_black' : 'outline',
     size: 'large', text: 'signin_with', shape: 'rectangular', locale: 'id', width: 300
   });
+}
+let gsiMuat = false;
+function muatGsi(){
+  if (gsiMuat) return;
+  gsiMuat = true;
+  const s = document.createElement('script');
+  s.src = 'https://accounts.google.com/gsi/client';
+  s.async = true; s.defer = true;
+  s.onload = mulaiGoogle;
+  s.onerror = () => { gsiMuat = false; };
+  document.head.appendChild(s);
 }
 function mulaiGoogle(){
   if(!(window.google && google.accounts && google.accounts.id)){ setTimeout(mulaiGoogle, 200); return; }
@@ -1535,7 +1582,9 @@ const KT = {
     f: [{ k: 'judul', label: 'Nama kegiatan' }, { k: 'tanggal_mulai', label: 'Tanggal mulai', tipe: 'tgl', awal: 'hari' },
       { k: 'tanggal_selesai', label: 'Tanggal selesai', tipe: 'tgl', tip: 'Kosongkan kalau hanya satu hari.' },
       { k: 'jam', label: 'Jam (contoh: 08:00 - 15:00)' }, { k: 'lokasi', label: 'Lokasi' },
-      { k: 'penanggung_jawab', label: 'Penanggung jawab' }, { k: 'keterangan', label: 'Keterangan', tipe: 'area', baris: 2, maks: 500 }] }
+      { k: 'penanggung_jawab', label: 'Penanggung jawab' }, { k: 'keterangan', label: 'Keterangan', tipe: 'area', baris: 2, maks: 500 },
+      { k: 'foto', label: 'Poster / foto kegiatan', tipe: 'foto', maks: 1280 },
+      { k: 'galeri', label: 'Foto tambahan (boleh banyak)', tipe: 'galeri', maks: 1280 }] }
 };
 const PROFIL = [
   { k: 'tagline', label: 'Slogan sekolah', maks: 120 },
@@ -1835,7 +1884,19 @@ function tglPanjang(s){
   return new Date(+m[1], +m[2] - 1, +m[3]).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 function fotoUrl(u){ return /^https:\/\/\S+$/i.test(u || '') ? u : ''; }
-function gambarImg(u, alt){ return fotoUrl(u) ? '<img alt="' + esc(alt || '') + '" loading="lazy" referrerpolicy="no-referrer" src="' + esc(fotoUrl(u)) + '">' : ''; }
+function fotoKecil(u, w){
+  const s = fotoUrl(u);
+  return /^https:\/\/lh3\.googleusercontent\.com\/d\/[\w-]+$/.test(s) ? s + '=w' + w : s;
+}
+const GAGAL_IMG = 'if(!this.dataset.f){this.dataset.f=1;this.src=this.dataset.o}';
+function gambarImg(u, alt, w){
+  const o = fotoUrl(u); if (!o) return '';
+  return '<img alt="' + esc(alt || '') + '" loading="lazy" decoding="async" referrerpolicy="no-referrer" src="' + esc(fotoKecil(o, w || 640)) + '" data-o="' + esc(o) + '" onerror="' + GAGAL_IMG + '">';
+}
+function gambarZoom(u, w, g, alt, kelas){
+  const o = fotoUrl(u); if (!o) return '';
+  return '<img' + (kelas ? ' class="' + kelas + '"' : '') + ' alt="' + esc(alt || '') + '" loading="lazy" decoding="async" referrerpolicy="no-referrer" src="' + esc(fotoKecil(o, w)) + '" data-o="' + esc(o) + '" data-zoom="' + esc(fotoKecil(o, 2000)) + '" data-zg="' + esc(g) + '" onerror="' + GAGAL_IMG + '">';
+}
 function inisialDari(n){ return esc(String(n || '?').trim().charAt(0).toUpperCase()); }
 function idYoutube(u){
   const m = /(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/))([A-Za-z0-9_-]{11})/.exec(String(u || ''));
@@ -1958,7 +2019,7 @@ function gambarLanding(d){
   const tombol = '<button class="lp-btn utama besar" type="button" data-ppdb="buka">Daftar Kelas 7</button><button class="lp-btn besar" type="button" data-lp="masuk">Masuk ke portal</button>';
   const lencana = '<span class="lp-lencana"><i></i> ' + (buka ? 'PPDB kelas 7 dibuka' : 'Portal resmi sekolah') + '</span>';
   const slides = slider.length ? slider : [{ judul: sek, teks: p.tagline || 'Semua layanan sekolah dalam satu pintu.' }];
-  const slideHtml = (s, i) => '<div class="hs-s' + (i === 0 ? ' on' : '') + '">' + (fotoUrl(s.foto) ? '<img class="hs-img" alt="" ' + (i ? 'loading="lazy" ' : '') + 'referrerpolicy="no-referrer" src="' + esc(fotoUrl(s.foto)) + '">' : '') +
+  const slideHtml = (s, i) => '<div class="hs-s' + (i === 0 ? ' on' : '') + '">' + (fotoUrl(s.foto) ? '<img class="hs-img" alt="" decoding="async" ' + (i ? 'data-src="' + esc(fotoKecil(s.foto, 1600)) + '"' : 'fetchpriority="high" src="' + esc(fotoKecil(s.foto, 1600)) + '"') + ' data-o="' + esc(fotoUrl(s.foto)) + '" referrerpolicy="no-referrer" onerror="' + GAGAL_IMG + '">' : '') +
     '<div class="hs-gelap"></div></div>';
   const hero = '<div class="hs" id="h-beranda">' + slides.map(slideHtml).join('') +
     '<div class="hs-isi"><div class="hs-cap">' + lencana + '<h1 class="hs-h">' + esc(p.hero_judul || sek) + '</h1><p>' + esc(p.hero_teks || p.tagline || 'Semua layanan sekolah dalam satu pintu.') + '</p><div class="lp-cta">' + tombol + '</div></div></div>' +
@@ -2017,6 +2078,8 @@ function gambarLanding(d){
   document.querySelectorAll('#lpIsi .rv').forEach((el) => { if (pengamat) pengamat.observe(el); else el.classList.add('on'); });
   gambarBerita();
   if (brtId) isiBerita(brtId); else bukaDariHash();
+  if (document.readyState === 'complete') setTimeout(muatSlideLain, 1500);
+  else window.addEventListener('load', () => setTimeout(muatSlideLain, 1500), { once: true });
 }
 
 /* ---------- Berita: daftar, halaman baca, dan galeri ---------- */
@@ -2050,7 +2113,7 @@ function badanBeritaFoto(b){
   const gal = String(b.galeri || '').split(/\s+/).filter((u) => fotoUrl(u));
   const teks = String(b.isi || b.ringkasan || '').replace(/\r/g, '').replace(/\[foto\s*(\d+)\]/gi, '\n\n[foto $1]\n\n');
   const paras = teks.split(/\n{2,}/).map((x) => x.trim()).filter(Boolean);
-  const gbr = (u) => '<figure class="bd-fig"><img alt="" loading="lazy" referrerpolicy="no-referrer" src="' + esc(u) + '"></figure>';
+  const gbr = (u) => '<figure class="bd-fig">' + gambarZoom(u, 1400, 'brt', '') + '</figure>';
   const pakai = {};
   let ada = false;
   const out = [];
@@ -2085,7 +2148,7 @@ function isiBerita(id){
   const url = location.origin + location.pathname + '#berita-' + b.id;
   const bagi = encodeURIComponent(b.judul + ' ' + url);
   const meta = [['Kategori', kat ? '<span class="bd-kat">' + esc(kat) + '</span>' : ''], ['Diterbitkan pada', esc(tglPanjang(b.tanggal))], ['Penulis', esc(b.penulis || '')]].filter((x) => x[1]);
-  const cover = fotoUrl(b.foto) ? '<figure class="bd-fig"><img alt="' + esc(b.judul) + '" referrerpolicy="no-referrer" src="' + esc(fotoUrl(b.foto)) + '"></figure>' : '';
+  const cover = fotoUrl(b.foto) ? '<figure class="bd-fig">' + gambarZoom(b.foto, 1400, 'brt', b.judul) + '</figure>' : '';
   const lain = semua.filter((x) => String(x.id) !== brtId);
   lain.sort((a, c) => (String(c.kategori || '').trim() === kat ? 1 : 0) - (String(a.kategori || '').trim() === kat ? 1 : 0));
   const lainHtml = lain.slice(0, 4).map((x) => kartuBr(x)).join('');
@@ -2253,6 +2316,183 @@ function muatSosial(){
 let tundaSos = null;
 new MutationObserver(() => { clearTimeout(tundaSos); tundaSos = setTimeout(muatSosial, 150); }).observe($('landing'), { childList: true, subtree: true });
 
+/* ---------- Pratinjau gambar (zoom) dan detail kegiatan ---------- */
+const lbx = { list: [], i: 0, z: 1, x: 0, y: 0, r: 0 };
+const lbxPtr = new Map();
+let lbxD = 0, lbxGeser = false, lbxAwal = null;
+
+function muatSlideLain(){
+  document.querySelectorAll('#h-beranda img.hs-img[data-src]').forEach((im) => { im.src = im.dataset.src; im.removeAttribute('data-src'); });
+}
+function agendaById(id){ return ((dataLP && dataLP.agenda) || []).find((a) => String(a.id) === String(id)); }
+function urlFotoAgenda(a){
+  const hasil = [];
+  [a.foto].concat(String(a.galeri || '').split(/\s+/)).forEach((u) => { if (fotoUrl(u) && hasil.indexOf(u) < 0) hasil.push(u); });
+  return hasil;
+}
+function capAgenda(a){ return a.judul + (a.tanggal_mulai ? ' · ' + tglPanjang(a.tanggal_mulai) : ''); }
+function chipAgenda(a){
+  const f = urlFotoAgenda(a)[0];
+  return (f ? gambarZoom(f, 320, 'ag-' + a.id, a.judul, 'kal-th') : '') + '<span class="kal-e" title="' + esc(a.judul) + '">' + esc(a.judul) + '</span>';
+}
+function agendaHtml(a){
+  const u = urlFotoAgenda(a);
+  const akhir = a.tanggal_selesai || a.tanggal_mulai;
+  const meta = [tglPanjang(a.tanggal_mulai) + (akhir !== a.tanggal_mulai ? ' – ' + tglPanjang(akhir) : ''), a.jam, a.lokasi, a.penanggung_jawab].filter(Boolean).map((x) => '<span>' + esc(x) + '</span>').join('');
+  return '<article class="agd-i">' + (u[0] ? gambarZoom(u[0], 1000, 'ag-' + a.id, a.judul, 'agd-poster') : '') + '<h3>' + esc(a.judul) + '</h3><div class="ag-m">' + meta + '</div>' + (a.keterangan ? '<p>' + esc(a.keterangan) + '</p>' : '') +
+    (u.length > 1 ? '<div class="agd-g">' + u.slice(1).map((x) => gambarZoom(x, 400, 'ag-' + a.id, a.judul, 'agd-th')).join('') + '</div>' : '') + '</article>';
+}
+function bukaAgd(list){
+  $('agdIsi').innerHTML = list.map(agendaHtml).join('');
+  $('agd').classList.remove('hidden');
+  $('agd').scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+function bukaHari(t){
+  const list = ((dataLP && dataLP.agenda) || []).filter((a) => a.tanggal_mulai <= t && t <= (a.tanggal_selesai || a.tanggal_mulai));
+  if (list.length) bukaAgd(list);
+}
+function bebasScroll(){
+  const brt = $('brt');
+  if ((!brt || brt.classList.contains('hidden')) && $('agd').classList.contains('hidden') && $('lbx').classList.contains('hidden')) document.body.style.overflow = '';
+}
+function tutupAgd(){ $('agd').classList.add('hidden'); bebasScroll(); }
+
+function lbxTerap(){
+  const im = $('lbxImg'); if (!im) return;
+  im.style.transform = 'translate(' + lbx.x + 'px,' + lbx.y + 'px) rotate(' + lbx.r + 'deg) scale(' + lbx.z + ')';
+  $('lbxZ').textContent = Math.round(lbx.z * 100) + '%';
+  $('lbx').classList.toggle('bisa-geser', lbx.z > 1);
+}
+function lbxReset(){ lbx.z = 1; lbx.x = 0; lbx.y = 0; lbx.r = 0; lbxTerap(); }
+function lbxZoom(f){
+  lbx.z = Math.min(6, Math.max(1, +(lbx.z * f).toFixed(3)));
+  if (lbx.z === 1) { lbx.x = 0; lbx.y = 0; }
+  lbxTerap();
+}
+function lbxTampil(){
+  const it = lbx.list[lbx.i], im = $('lbxImg');
+  if (!it) return;
+  im.dataset.f = '';
+  im.onerror = () => { if (!im.dataset.f && it.o) { im.dataset.f = '1'; im.src = it.o; } };
+  im.src = it.src;
+  im.alt = it.cap || '';
+  $('lbxCap').textContent = (it.cap || '') + (lbx.list.length > 1 ? '  (' + (lbx.i + 1) + '/' + lbx.list.length + ')' : '');
+  document.querySelectorAll('#lbx .lbx-n').forEach((b) => b.classList.toggle('hidden', lbx.list.length < 2));
+  lbxReset();
+}
+function lbxNav(d){
+  const n = lbx.list.length; if (n < 2) return;
+  lbx.i = (lbx.i + d + n) % n;
+  lbxTampil();
+}
+function bukaLbx(list, i){
+  lbx.list = list; lbx.i = i;
+  $('lbx').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+  lbxTampil();
+}
+function tutupLbx(){
+  $('lbx').classList.add('hidden');
+  $('lbxImg').removeAttribute('src');
+  bebasScroll();
+}
+function lbxAksi(a){
+  if (a === 'tutup') tutupLbx();
+  else if (a === 'prev') lbxNav(-1);
+  else if (a === 'next') lbxNav(1);
+  else if (a === 'in') lbxZoom(1.3);
+  else if (a === 'out') lbxZoom(1 / 1.3);
+  else if (a === 'rot') { lbx.r += 90; lbxTerap(); }
+  else if (a === 'reset') lbxReset();
+}
+function bukaZoom(im){
+  const g = im.dataset.zg || '';
+  let list = [];
+  if (g.indexOf('ag-') === 0) {
+    const a = agendaById(g.slice(3));
+    if (a) list = urlFotoAgenda(a).map((u) => ({ src: fotoKecil(u, 2000), o: u, cap: capAgenda(a) }));
+  } else {
+    const lihat = {};
+    Array.from(document.querySelectorAll('img[data-zoom][data-zg="' + g + '"]')).forEach((x) => {
+      if (lihat[x.dataset.zoom]) return;
+      lihat[x.dataset.zoom] = 1;
+      list.push({ src: x.dataset.zoom, o: x.dataset.o || x.dataset.zoom, cap: x.alt || '' });
+    });
+  }
+  if (!list.length) list = [{ src: im.dataset.zoom, o: im.dataset.o || im.dataset.zoom, cap: im.alt || '' }];
+  let i = list.findIndex((x) => x.src === im.dataset.zoom);
+  if (i < 0) i = 0;
+  bukaLbx(list, i);
+}
+function lbxJarak(){
+  const p = Array.from(lbxPtr.values());
+  return p.length < 2 ? 0 : Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y);
+}
+function pasangLbx(){
+  if ($('lbx')) return;
+  document.body.insertAdjacentHTML('beforeend',
+    '<div id="lbx" class="hidden" role="dialog" aria-modal="true" aria-label="Pratinjau gambar">' +
+    '<button type="button" class="lbx-x" data-lbx="tutup" aria-label="Tutup">×</button>' +
+    '<button type="button" class="lbx-n lbx-p" data-lbx="prev" aria-label="Sebelumnya">‹</button>' +
+    '<button type="button" class="lbx-n lbx-s" data-lbx="next" aria-label="Berikutnya">›</button>' +
+    '<div class="lbx-stage" id="lbxStage"><img id="lbxImg" alt="" draggable="false"></div>' +
+    '<div class="lbx-cap" id="lbxCap"></div>' +
+    '<div class="lbx-bar"><button type="button" data-lbx="out" aria-label="Perkecil">−</button><b id="lbxZ">100%</b><button type="button" data-lbx="in" aria-label="Perbesar">+</button><button type="button" data-lbx="rot" aria-label="Putar">⟳</button><button type="button" class="t" data-lbx="reset">Reset</button></div></div>' +
+    '<div id="agd" class="hidden" role="dialog" aria-modal="true" aria-label="Detail kegiatan"><div class="agd-box"><button type="button" class="agd-x" data-agd="tutup" aria-label="Tutup">×</button><div id="agdIsi"></div></div></div>');
+  const st = $('lbxStage');
+  st.addEventListener('wheel', (e) => { e.preventDefault(); lbxZoom(e.deltaY < 0 ? 1.15 : 1 / 1.15); }, { passive: false });
+  st.addEventListener('pointerdown', (e) => {
+    lbxAwal = e.target; lbxGeser = false;
+    lbxPtr.set(e.pointerId, { x: e.clientX, y: e.clientY, sx: e.clientX });
+    try { st.setPointerCapture(e.pointerId); } catch (x) {}
+    if (lbxPtr.size === 2) lbxD = lbxJarak();
+  });
+  st.addEventListener('pointermove', (e) => {
+    const p = lbxPtr.get(e.pointerId); if (!p) return;
+    const dx = e.clientX - p.x, dy = e.clientY - p.y;
+    p.x = e.clientX; p.y = e.clientY;
+    if (lbxPtr.size === 2) { const d = lbxJarak(); if (lbxD) lbxZoom(d / lbxD); lbxD = d; lbxGeser = true; return; }
+    if (Math.abs(dx) + Math.abs(dy) > 2) lbxGeser = true;
+    if (lbx.z > 1) { lbx.x += dx; lbx.y += dy; lbxTerap(); }
+  });
+  st.addEventListener('pointerup', (e) => {
+    const p = lbxPtr.get(e.pointerId);
+    if (p && lbxPtr.size === 1 && lbx.z === 1 && lbx.list.length > 1 && Math.abs(e.clientX - p.sx) > 70) lbxNav(e.clientX < p.sx ? 1 : -1);
+    lbxPtr.delete(e.pointerId); lbxD = 0;
+  });
+  st.addEventListener('pointercancel', (e) => { lbxPtr.delete(e.pointerId); lbxD = 0; });
+  st.addEventListener('click', () => { if (!lbxGeser && lbxAwal === st) tutupLbx(); lbxGeser = false; });
+  st.addEventListener('dblclick', () => { if (lbx.z > 1) lbxReset(); else { lbx.z = 2.5; lbxTerap(); } });
+}
+document.addEventListener('click', (e) => {
+  const im = e.target.closest('img[data-zoom]');
+  if (im) { e.preventDefault(); e.stopPropagation(); bukaZoom(im); return; }
+  const lb = e.target.closest('[data-lbx]');
+  if (lb) { lbxAksi(lb.dataset.lbx); return; }
+  if (e.target.closest('[data-agd="tutup"]') || e.target.id === 'agd') { tutupAgd(); return; }
+  const hr = e.target.closest('.kal-k[data-hari]');
+  if (hr) { bukaHari(hr.dataset.hari); return; }
+  const k1 = e.target.closest('[data-ag1]');
+  if (k1) { const a = agendaById(k1.dataset.ag1); if (a) bukaAgd([a]); }
+});
+document.addEventListener('keydown', (e) => {
+  const lb = !$('lbx').classList.contains('hidden'), ag = !$('agd').classList.contains('hidden');
+  if (e.key === 'Enter' && !lb && !ag && e.target.closest) {
+    const k = e.target.closest('.kal-k[data-hari]');
+    if (k) { bukaHari(k.dataset.hari); return; }
+  }
+  if (!lb && !ag) return;
+  if (e.key === 'Escape') { e.stopImmediatePropagation(); if (lb) tutupLbx(); else tutupAgd(); return; }
+  if (lb) {
+    if (e.key === 'ArrowLeft') lbxNav(-1);
+    else if (e.key === 'ArrowRight') lbxNav(1);
+    else if (e.key === '+' || e.key === '=') lbxZoom(1.25);
+    else if (e.key === '-') lbxZoom(0.8);
+  }
+}, true);
+pasangLbx();
+
 function keSlide(n){
   const s = document.querySelectorAll('#h-beranda .hs-s'), dt = document.querySelectorAll('#h-beranda .hs-dot');
   if (!s.length) return;
@@ -2278,7 +2518,7 @@ function gambarKalender(){
   for (let d = 1; d <= jml; d++) {
     const t = y + '-' + pad2(m + 1) + '-' + pad2(d);
     const ev = agenda.filter(a => a.tanggal_mulai <= t && t <= (a.tanggal_selesai || a.tanggal_mulai));
-    sel += '<div class="kal-k' + (t === hari ? ' ini' : '') + '"><b>' + d + '</b>' + ev.slice(0, 2).map(a => '<span class="kal-e" title="' + esc(a.judul) + '">' + esc(a.judul) + '</span>').join('') + (ev.length > 2 ? '<span class="kal-lagi">+' + (ev.length - 2) + ' lagi</span>' : '') + '</div>';
+        sel += '<div class="kal-k' + (t === hari ? ' ini' : '') + '"' + (ev.length ? ' data-hari="' + t + '" tabindex="0"' : '') + '><b>' + d + '</b>' + ev.slice(0, 2).map(chipAgenda).join('') + (ev.length > 2 ? '<span class="kal-lagi">+' + (ev.length - 2) + ' lagi</span>' : '') + '</div>';
   }
   box.innerHTML = '<div class="kal-h"><button type="button" class="lp-ikon" data-kal="-1" aria-label="Bulan sebelumnya">‹</button><b>' + new Date(y, m, 1).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' }) + '</b><span class="kal-n"><button type="button" class="lp-btn" data-kal="0">Hari ini</button><button type="button" class="lp-ikon" data-kal="1" aria-label="Bulan berikutnya">›</button></span></div><div class="kal-g">' + sel + '</div>';
 }
@@ -2291,7 +2531,8 @@ function gambarAgenda(){
   const nanti = agenda.filter(a => a.tanggal_mulai > hari).slice(0, 8);
   const kartu = (a, k) => {
     const meta = [tglPanjang(a.tanggal_mulai) + (akhir(a) !== a.tanggal_mulai ? ' – ' + tglPanjang(akhir(a)) : ''), a.jam, a.lokasi, a.penanggung_jawab].filter(Boolean).map(x => '<span>' + esc(x) + '</span>').join('');
-    return '<div class="ag-i' + (k ? ' kini' : '') + '"><div class="ag-a"><b>' + esc(a.judul) + '</b><span class="ag-s' + (k ? ' kini' : '') + '">' + (k ? 'Sedang berlangsung' : 'Akan datang') + '</span></div><div class="ag-m">' + meta + '</div>' + (a.keterangan ? '<p>' + esc(a.keterangan) + '</p>' : '') + '</div>';
+       const f = urlFotoAgenda(a)[0];
+    return '<div class="ag-i' + (k ? ' kini' : '') + (f ? ' ada' : '') + '" data-ag1="' + esc(a.id) + '">' + (f ? gambarZoom(f, 360, 'ag-' + a.id, a.judul, 'ag-th') : '') + '<div class="ag-t"><div class="ag-a"><b>' + esc(a.judul) + '</b><span class="ag-s' + (k ? ' kini' : '') + '">' + (k ? 'Sedang berlangsung' : 'Akan datang') + '</span></div><div class="ag-m">' + meta + '</div>' + (a.keterangan ? '<p>' + esc(a.keterangan) + '</p>' : '') + '</div></div>';
   };
   const semua = kini.map(a => kartu(a, true)).concat(nanti.map(a => kartu(a, false)));
   el.innerHTML = '<div class="ag-h">Sedang dan akan berlangsung <i>' + semua.length + '</i></div>' + (semua.length ? '<div class="ag-d">' + semua.join('') + '</div>' : '<p class="lp-kosong">Belum ada kegiatan yang akan datang.</p>');
@@ -2413,8 +2654,7 @@ $('lpMenu').addEventListener('click', (e) => { if (e.target.closest('a')) $('lpM
 /* ---------- Mulai ---------- */
 (function(){
   const tersimpan = sesi.get();
-  if(tersimpan) masuk(tersimpan); else tampil('landing');
-  mulaiGoogle();
+    if(tersimpan) masuk(tersimpan); else tampil('landing');
 })();
 </script>
 </body>
