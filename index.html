@@ -2033,7 +2033,7 @@ function gambarLanding(d){
   const slideHtml = (s, i) => '<div class="hs-s' + (i === 0 ? ' on' : '') + '">' + (fotoUrl(s.foto) ? '<img class="hs-img" alt="" decoding="async" ' + (i ? 'data-src="' + esc(fotoKecil(s.foto, 1600)) + '"' : 'fetchpriority="high" src="' + esc(fotoKecil(s.foto, 1600)) + '"') + ' data-o="' + esc(fotoUrl(s.foto)) + '" referrerpolicy="no-referrer" onerror="' + GAGAL_IMG + '">' : '') +
     '<div class="hs-gelap"></div></div>';
   const hero = '<div class="hs" id="h-beranda">' + slides.map(slideHtml).join('') +
-    '<div class="hs-isi"><div class="hs-cap">' + lencana + '<h1 class="hs-h">' + esc(p.hero_judul || sek) + '</h1><p>' + esc(p.hero_teks || p.tagline || 'Semua layanan sekolah dalam satu pintu.') + '</p><div class="lp-cta">' + tombol + '</div></div></div>' +
+    '<div class="hs-isi"><div class="hs-cap"><h1 class="hs-h">' + esc(p.hero_judul || sek) + '</h1><p>' + esc(p.hero_teks || p.tagline || 'Semua layanan sekolah dalam satu pintu.') + '</p></div></div>' +
     (slides.length > 1 ? '<div class="hs-dots">' + slides.map((_, i) => '<button type="button" class="hs-dot' + (i === 0 ? ' on' : '') + '" data-sl="' + i + '" aria-label="Slide ' + (i + 1) + '"></button>').join('') + '</div><div class="hs-pan"><button type="button" class="lp-ikon" data-sk="-1" aria-label="Sebelumnya">‹</button><button type="button" class="lp-ikon" data-sk="1" aria-label="Berikutnya">›</button></div>' : '') + '</div>';
 
   const angka = [[p.jumlah_siswa, 'Siswa'], [p.jumlah_guru, 'Guru dan staf'], [p.akreditasi, 'Akreditasi']].filter(x => x[0]);
