@@ -9,6 +9,10 @@
 <meta name="description" content="Portal resmi SMP Negeri 4 Tanjung Medan: berita, kegiatan, pendaftaran siswa baru kelas 7, dan layanan digital sekolah.">
 <link rel="preconnect" href="https://lh3.googleusercontent.com" crossorigin>
 <link rel="preconnect" href="https://script.google.com" crossorigin>
+<meta property="og:type" content="website">
+<meta property="og:locale" content="id_ID">
+<meta property="og:title" content="SMP Negeri 4 Tanjung Medan">
+<meta property="og:description" content="Berita, kegiatan, pendaftaran siswa baru kelas 7, dan layanan digital sekolah.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E%F0%9F%8F%AB%3C/text%3E%3C/svg%3E">
 <script>
   // Pasang tema sebelum halaman tampil supaya tidak berkedip
@@ -1973,7 +1977,8 @@ function bukaPpdb(){
     '<h3 class="ppdb-sek">Hobi dan cita-cita</h3>' +
     '<div class="dua">' + f('hobi', 'Hobi', sel('hobi', HOBI)) + f('cita_cita', 'Cita-cita', sel('cita_cita', CITA)) + '</div>' +
     '<div aria-hidden="true" style="position:absolute;left:-9999px"><input id="pp_web" tabindex="-1" autocomplete="off"></div>' +
-    '<p class="tip-besar">Data hanya dipakai sekolah untuk proses penerimaan siswa baru.</p>';
+    '<label class="cek"><input type="checkbox" id="pp_setuju"> Saya orang tua/wali calon siswa dan menyetujui data ini dipakai sekolah untuk proses penerimaan siswa baru.</label>' +
+    '<p class="tip-besar">Data hanya dipakai sekolah untuk proses penerimaan siswa baru dan tidak ditampilkan di web.</p>';
   $('ppdbError').classList.add('hidden');
   $('ppdbKirim').classList.remove('hidden'); $('ppdbKirim').disabled = false; $('ppdbKirim').textContent = 'Kirim pendaftaran';
   $('ppdbBatal').textContent = 'Batal';
@@ -1987,6 +1992,7 @@ $('ppdbForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   const tb = $('ppdbKirim'), er = $('ppdbError');
   if (!$('pp_nama')) return;
+  if (!$('pp_setuju').checked) { er.textContent = 'Centang pernyataan persetujuan terlebih dahulu.'; er.classList.remove('hidden'); return; }
   er.classList.add('hidden'); tb.disabled = true; tb.textContent = 'Mengirim...';
   const data = {};
   KUNCI_PPDB.forEach((k) => { data[k] = $('pp_' + k).value; });
@@ -2562,6 +2568,7 @@ function bukaBeritaLama(id){
   history.pushState({ brt: 1 }, '');
 }
 function selesaiBerita(){
+  brtId = null;
   const br = $('brt'); if (br) br.classList.add('hidden');
   document.body.style.overflow = '';
 }
